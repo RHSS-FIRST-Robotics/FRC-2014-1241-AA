@@ -1,0 +1,6 @@
+MIDlet-Name: AA1241
+MIDlet-Version: 1.0.0
+MIDlet-Vendor: FIRST
+MIDlet-1: AA1241, ,  theory6.main.AA1241
+MicroEdition-Profile: IMP-1.0
+MicroEdition-Configuration: CLDC-1.1
