@@ -14,18 +14,11 @@ public class ElectricalConstants {
     //****************************** PWMs **************************************
     //**************************************************************************        
     
-    public static final int HANGER_MOTOR_1_PWM                  = 1;
-    public static final int HANGER_MOTOR_2_PWM                  = 2;
-    public static final int FRONT_RIGHT_DRIVE_PWM               = 3; 
-    public static final int BACK_RIGHT_DRIVE_PWM                = 3;
-    public static final int SHOOTER_MOTOR_1_PWM                 = 4; //4 on real robot
-    public static final int SHOOTER_MOTOR_2_PWM                 = 4; //4 on real robot
-    public static final int DROP_DOWN_MOTOR_1_PWM               = 5; //5 on real robot
-    public static final int DROP_DOWN_MOTOR_2_PWM               = 5; //5 on real robot
-    public static final int FRONT_LEFT_DRIVE_PWM                = 6; 
-    public static final int BACK_LEFT_DRIVE_PWM                 = 6;
-    public static final int LEFT_INTAKE_PWM                     = 7; 
-    public static final int RIGHT_INTAKE_PWM                    = 8;
+    public static final int FRONT_AND_BACK_RIGHT_DRIVE_PWM      = 5; 
+    public static final int TOP_RIGHT_DRIVE_PWM                 = 6;
+    public static final int FRONT_AND_BACK_LEFT_DRIVE_PWM       = 1; 
+    public static final int TOP_LEFT_DRIVE_PWM                  = 2;
+
 
     //**************************************************************************
     //***************************Analog Sensors*********************************

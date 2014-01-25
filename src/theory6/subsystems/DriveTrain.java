@@ -18,13 +18,11 @@
         Encoder leftDriveEncoder;
         Encoder rightDriveEncoder;
 
-        Talon leftDriveBottomLeft;
-        Talon leftDriveTopMiddle;
-        Talon leftDriveBottomRight;
+        Talon leftDriveBackAndFront;
+        Talon leftDriveTop;
         
-        Talon rightDriveBottomLeft;
-        Talon rightDriveTopMiddle;
-        Talon rightDriveBottomRight;
+        Talon rightDriveBackAndFront;
+        Talon rightDriveTop;
         
         RelativeGyro driveGyro;
 
@@ -34,13 +32,11 @@
         public DriveTrain()
         {
 
-//            leftDriveBottomLeft = new Talon(ElectricalConstants.LEFT_BOTTOM_LEFT_PWM);
-//            leftDriveTopMiddle = new Talon(ElectricalConstants.LEFT_MIDDLE_TOP_PWM);
-//            leftDriveBottomRight = new Talon(ElectricalConstants.lEFT_BOTTOM_RIGHT_PWM);
-//            
-//            rightDriveBottomLeft = new Talon(ElectricalConstants.RIGHT_BOTTOM_LEFT_PWM);
-//            rightDriveTopMiddle = new Talon(ElectricalConstants.RIGHT_MIDDLE_TOP_PWM);
-//            rightDriveBottomRight = new Talon(ElectricalConstants.RIGHT_BOTTOM_RIGHT_PWM);
+            leftDriveBackAndFront = new Talon(ElectricalConstants.FRONT_AND_BACK_LEFT_DRIVE_PWM);
+            leftDriveTop = new Talon(ElectricalConstants.TOP_RIGHT_DRIVE_PWM);
+            
+            rightDriveBackAndFront = new Talon(ElectricalConstants.FRONT_AND_BACK_RIGHT_DRIVE_PWM);
+            rightDriveTop = new Talon(ElectricalConstants.TOP_LEFT_DRIVE_PWM);
 
         }
             public static DriveTrain getInstance() 
@@ -58,9 +54,8 @@
         {
             speed = 0.0;
         }
-        leftDriveBottomRight.set(speed);
-        leftDriveBottomLeft.set(speed);
-        leftDriveTopMiddle.set(speed);
+        leftDriveBackAndFront.set(speed);
+        leftDriveTop.set(speed);
         }
         public void setRightSpeed(double speed)
         {
@@ -68,9 +63,8 @@
             {
                 speed = 0.0;
             }
-        rightDriveBottomRight.set(speed);
-        rightDriveBottomLeft.set(speed);
-        rightDriveTopMiddle.set(speed);
+        rightDriveBackAndFront.set(speed);
+        rightDriveTop.set(speed);
         }
 
 
