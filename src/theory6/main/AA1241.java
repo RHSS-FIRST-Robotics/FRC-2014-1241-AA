@@ -46,11 +46,11 @@ public class AA1241 extends IterativeRobot {
         
         if(drivePad.getRawButton(GamepadConstants.RIGHT_BUMPER))
         {
-            driveTrain.tankDrive(-leftAnalogY/2, -rightAnalogY/2, 3);
+            driveTrain.tankDrive(-leftAnalogY/2, rightAnalogY/2, 3);
         }
         else
         {
-            driveTrain.tankDrive(-leftAnalogY, -rightAnalogY, 3);
+            driveTrain.tankDrive(-leftAnalogY, rightAnalogY, 3);
         }
         
     }

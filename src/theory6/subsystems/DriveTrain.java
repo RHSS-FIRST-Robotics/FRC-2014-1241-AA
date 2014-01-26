@@ -33,10 +33,10 @@
         {
 
             leftDriveBackAndFront = new Talon(ElectricalConstants.FRONT_AND_BACK_LEFT_DRIVE_PWM);
-            leftDriveTop = new Talon(ElectricalConstants.TOP_RIGHT_DRIVE_PWM);
+            leftDriveTop = new Talon(ElectricalConstants.TOP_LEFT_DRIVE_PWM);
             
             rightDriveBackAndFront = new Talon(ElectricalConstants.FRONT_AND_BACK_RIGHT_DRIVE_PWM);
-            rightDriveTop = new Talon(ElectricalConstants.TOP_LEFT_DRIVE_PWM);
+            rightDriveTop = new Talon(ElectricalConstants.TOP_RIGHT_DRIVE_PWM);
 
         }
             public static DriveTrain getInstance() 
