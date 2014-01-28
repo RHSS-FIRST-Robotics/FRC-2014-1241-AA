@@ -14,11 +14,13 @@ public class ElectricalConstants {
     //****************************** PWMs **************************************
     //**************************************************************************        
     
-    public static final int FRONT_AND_BACK_RIGHT_DRIVE_PWM      = 7; 
-    public static final int TOP_RIGHT_DRIVE_PWM                 = 8;
+
     public static final int FRONT_AND_BACK_LEFT_DRIVE_PWM       = 1; 
     public static final int TOP_LEFT_DRIVE_PWM                  = 2;
-
+    public static final int FRONT_AND_BACK_RIGHT_DRIVE_PWM      = 7; 
+    public static final int TOP_RIGHT_DRIVE_PWM                 = 8;
+    public static final int LEFT_SIDE_INTAKE_PWM                = ;
+    public static final int RIGHT_SIDE_INTAKE_PWM               = ;
 
     //**************************************************************************
     //***************************Analog Sensors*********************************
@@ -26,8 +28,7 @@ public class ElectricalConstants {
 
     public static final int DRIVE_GYRO_PORT                     = 1;
     public static final int DROP_DOWN_POT                       = 2;
-    public static final int INTAKE_LEFT_SENSOR                  = 3;
-    public static final int INTAKE_RIGHT_SENSOR                 = 4;
+
     
     //**************************************************************************
     //*************************** ENCODERS *************************************
@@ -44,8 +45,8 @@ public class ElectricalConstants {
     //*************************** Digital Sensors ******************************
     //**************************************************************************
     public static final int COMPRESSOR_PRESSURE_SENSOR          = 7;
-    public static final int LEFT_ROLLER_LIMIT                   = 9;
-    public static final int RIGHT_ROLLER_LIMIT                  = 8;
+    public static final int INTAKE_BALL_LIMIT                   = ;
+
     
     //******************UPDATE THESE CONSTANTS WITH REAL ROBOT******************
     public static final int driveWheelRadius = 2;//wheel radius in inches
@@ -60,21 +61,7 @@ public class ElectricalConstants {
    //*************************** Pneumatics ************************************
    //***************************************************************************
     
-    //Solenoid Breakout 1 (Module 3 on cRIO)
-    public static final int SHIFTER_EXTEND                      = 1;
-    public static final int SHIFTER_RETRACT                     = 2;
-    public static final int FRISBEE_LOADING_EXTEND              = 3;
-    public static final int FRISBEE_LOADING_RETRACT             = 4;
-    public static final int SHOOTER_ANGLE_EXTEND                = 6;
-    public static final int SHOOTER_ANGLE_RETRACT               = 5;
-    public static final int HANGER_EXTEND                       = 7;
-    public static final int HANGER_RETRACT                      = 8;
-    
-    //Solenoid Breakout 2 (Module 4 on cRIO)
-    
-    public static final int WIPER_PISTON_EXTEND                 = 1;
-    public static final int WIPER_PISTON_RETRACT                = 2;
-            
+
     
    //***************************************************************************
    //*************************** Relays ****************************************
