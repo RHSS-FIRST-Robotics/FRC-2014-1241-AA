@@ -12,6 +12,7 @@ import theory6.main.ElectricalConstants;
 import theory6.pid.PIDController;
 import edu.wpi.first.wpilibj.AnalogChannel;
 import theory6.utilities.ToggleBoolean;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
  *
@@ -23,16 +24,17 @@ public class Intake {
     
     Talon leftSide;
     Talon rightSide;
-    
+    DoubleSolenoid intakeAnglePiston;
     DigitalInput intakeLimit;
-    
-
+    ToggleBoolean intakeAngleToggle;
+    boolean intakeAngleState = false;
     public Intake(){
 
         leftSide = new Talon(ElectricalConstants.LEFT_SIDE_INTAKE_PWM);
         rightSide = new Talon(ElectricalConstants.RIGHT_SIDE_INTAKE_PWM);
-        
-        intakeLimit = new DigitalInput(ElectricalConstants.INTAKE_BALL_LIMIT);
+        intakeAnglePiston = new DoubleSolenoid (ElectricalConstants.INTAKE_DOWN, ElectricalConstants.INTAKE_UP);
+        intakeAngleToggle = new ToggleBoolean();
+        //intakeLimit = new DigitalInput(ElectricalConstants.INTAKE_BALL_LIMIT);
         
 
     }
@@ -45,11 +47,22 @@ public class Intake {
     }
     public void setIntakeSpeed(double pwm) {
         
-        rightSide.set(pwm);
+        rightSide.set(-pwm);
         leftSide.set(pwm);
     }
-    public boolean ballDetected() {
-        return !intakeLimit.get();
+    //public boolean ballDetected() {
+        //return !intakeLimit.get();
+    //}
+    
+    public void setIntakePosition(boolean intakeAngleToggleButton) {
+        intakeAngleToggle.set(intakeAngleToggleButton);
+        if(intakeAngleToggle.get())
+            intakeAngleState = !intakeAngleState;
+        
+        if(intakeAngleState)
+            intakeAnglePiston.set(DoubleSolenoid.Value.kForward);
+        else 
+            intakeAnglePiston.set(DoubleSolenoid.Value.kReverse);
     }
     
    
