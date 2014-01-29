@@ -19,8 +19,8 @@ public class ElectricalConstants {
     public static final int TOP_LEFT_DRIVE_PWM                  = 2;
     public static final int FRONT_AND_BACK_RIGHT_DRIVE_PWM      = 7; 
     public static final int TOP_RIGHT_DRIVE_PWM                 = 8;
-    public static final int LEFT_SIDE_INTAKE_PWM                = ;
-    public static final int RIGHT_SIDE_INTAKE_PWM               = ;
+    public static final int LEFT_SIDE_INTAKE_PWM                = 4;
+    public static final int RIGHT_SIDE_INTAKE_PWM               = 5;
 
     //**************************************************************************
     //***************************Analog Sensors*********************************
@@ -45,7 +45,7 @@ public class ElectricalConstants {
     //*************************** Digital Sensors ******************************
     //**************************************************************************
     public static final int COMPRESSOR_PRESSURE_SENSOR          = 7;
-    public static final int INTAKE_BALL_LIMIT                   = ;
+    //public static final int INTAKE_BALL_LIMIT                   = ;
 
     
     //******************UPDATE THESE CONSTANTS WITH REAL ROBOT******************
@@ -60,7 +60,9 @@ public class ElectricalConstants {
    //***************************************************************************
    //*************************** Pneumatics ************************************
    //***************************************************************************
-    
+    public static final int INTAKE_DOWN                         = 1;
+    public static final int INTAKE_UP                           = 2;
+         
 
     
    //***************************************************************************
