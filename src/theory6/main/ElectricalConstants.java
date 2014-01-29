@@ -14,11 +14,16 @@ public class ElectricalConstants {
     //****************************** PWMs **************************************
     //**************************************************************************        
     
+    // 1, 2, 3, 4 LEFT SIDE 
+    // 5, 6, 7, 8 RIGHT SIDE 
+    
 
     public static final int FRONT_AND_BACK_LEFT_DRIVE_PWM       = 1; 
     public static final int TOP_LEFT_DRIVE_PWM                  = 2;
+    
     public static final int FRONT_AND_BACK_RIGHT_DRIVE_PWM      = 7; 
     public static final int TOP_RIGHT_DRIVE_PWM                 = 8;
+    
     public static final int LEFT_SIDE_INTAKE_PWM                = 4;
     public static final int RIGHT_SIDE_INTAKE_PWM               = 5;
 

@@ -39,8 +39,8 @@
             rightDriveTop = new Talon(ElectricalConstants.TOP_RIGHT_DRIVE_PWM);
 
         }
-            public static DriveTrain getInstance() 
-            {
+        public static DriveTrain getInstance() 
+        {
             if(inst == null) 
             {
                 inst = new DriveTrain();

@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Joystick;
 import theory6.subsystems.DriveTrain;
 import theory6.subsystems.Intake;
-import theory6.utilities.JoystickScaler;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -51,6 +50,7 @@ public class AA1241 extends IterativeRobot {
         double leftAnalogY = drivePad.getRawAxis(GamepadConstants.LEFT_ANALOG_Y);
         double rightAnalogY = drivePad.getRawAxis(GamepadConstants.RIGHT_ANALOG_Y);
         double intakeSpeed = toolPad.getRawAxis(GamepadConstants.RIGHT_ANALOG_Y);
+;
         //Drive Code
         if(drivePad.getRawButton(GamepadConstants.RIGHT_BUMPER))
         {
@@ -62,21 +62,16 @@ public class AA1241 extends IterativeRobot {
         }
         
         //Intake Code
-//        if(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER))
-//        {
-//            intake.setIntakeSpeed(1);
-//        }
-//        else if (toolPad.getRawButton(GamepadConstants.RIGHT_TRIGGER))
-//        {
+
+            intake.intakeBall(intakeSpeed, 3);
+        
+
+//        intake.setIntakePosition(toolPad.getRawButton(GamepadConstants.LEFT_TRIGGER));
+//        
+//        if(Math.abs(intakeSpeed) > 0.05)
+//            intake.setIntakeSpeed(intakeSpeed);
+//        else 
 //            intake.setIntakeSpeed(0);
-//        }
-        
-        intake.setIntakePosition(toolPad.getRawButton(GamepadConstants.LEFT_TRIGGER));
-        
-        if(Math.abs(intakeSpeed) > 0.05)
-            intake.setIntakeSpeed(intakeSpeed);
-        else 
-            intake.setIntakeSpeed(0);
     }
     
     public void testPeriodic() {
