@@ -26,13 +26,16 @@ public class ElectricalConstants {
     
     public static final int LEFT_SIDE_INTAKE_PWM                = 4;
     public static final int RIGHT_SIDE_INTAKE_PWM               = 5;
+    
+    public static final int LEFT_WINCH_PWM                      = 6;
+    public static final int RIGHT_WINCH_PWM                     = 3;
 
     //**************************************************************************
     //***************************Analog Sensors*********************************
     //**************************************************************************
 
     public static final int DRIVE_GYRO_PORT                     = 1;
-    public static final int DROP_DOWN_POT                       = 2;
+    public static final int WINCH_POT                           = 2;
 
     
     //**************************************************************************
