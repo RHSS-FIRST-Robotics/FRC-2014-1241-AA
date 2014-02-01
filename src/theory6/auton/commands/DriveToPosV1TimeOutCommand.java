@@ -56,11 +56,11 @@ public class DriveToPosV1TimeOutCommand implements AutonCommand {
         
         leftDrivePID = new PIDController(Constants.getDouble("driveLongV1P"), 
                                          Constants.getDouble("driveLongV1I"), 
-                                         Constants.getDouble("driveLongV1D"));
+                                         Constants.getDouble("driveLongV1D"), 0);
         
         rightDrivePID = new PIDController(Constants.getDouble("driveLongV1P"), 
                                           Constants.getDouble("driveLongV1I"), 
-                                          Constants.getDouble("driveLongV1D"));
+                                          Constants.getDouble("driveLongV1D"), 0);
         
         longP = Constants.getDouble("driveLongV1P");
         longI = Constants.getDouble("driveLongV1I");
@@ -71,12 +71,12 @@ public class DriveToPosV1TimeOutCommand implements AutonCommand {
         shortD = Constants.getDouble("driveShortV1D");
         
         if (Math.abs(distGoal) <= 30){
-            leftDrivePID.changePIDGains(shortP, shortI, shortD);
-            rightDrivePID.changePIDGains(shortP, shortI, shortD);
+            leftDrivePID.changeGains(shortP, shortI, shortD, 0);
+            rightDrivePID.changeGains(shortP, shortI, shortD, 0);
         }
         else if (Math.abs(distGoal) > 30) {
-            leftDrivePID.changePIDGains(longP, longI, longD);
-            rightDrivePID.changePIDGains(longP, longI, longD);
+            leftDrivePID.changeGains(longP, longI, longD, 0);
+            rightDrivePID.changeGains(longP, longI, longD, 0);
         }
         
         driveTrain = DriveTrain.getInstance();
@@ -102,9 +102,12 @@ public class DriveToPosV1TimeOutCommand implements AutonCommand {
         prevTime = currTime;
         prevLeftDist = currLeftDist;
         prevRightDist = currRightDist;
-
-        double leftPIDOutput = MathLogic.limitAbs(leftDrivePID.calcPID(distGoal, currLeftDist), 1);
-        double rightPIDOutput = MathLogic.limitAbs(rightDrivePID.calcPID(distGoal, currRightDist), 1);
+        
+        leftDrivePID.setGoal(distGoal);
+        rightDrivePID.setGoal(distGoal);
+        
+        double leftPIDOutput = MathLogic.limitAbs(leftDrivePID.updateOutput(currLeftDist), 1);
+        double rightPIDOutput = MathLogic.limitAbs(rightDrivePID.updateOutput(currRightDist), 1);
 
         double angleDiff = driveTrain.getGyroAngle() - (angleGoal + initialGyroAngle); 
         double straightGain = angleDiff * gyroGain;
