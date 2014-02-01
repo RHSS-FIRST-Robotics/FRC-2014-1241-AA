@@ -6,7 +6,7 @@
     package theory6.subsystems;
 
     import edu.wpi.first.wpilibj.Encoder;
-    import theory6.utilities.RelativeGyro;
+    import theory6.utilities.TheoryGyro;
     import theory6.main.ElectricalConstants;
     import theory6.utilities.JoystickScaler;
     import edu.wpi.first.wpilibj.Talon;
@@ -24,13 +24,14 @@
         Talon rightDriveBackAndFront;
         Talon rightDriveTop;
         
-        RelativeGyro driveGyro;
+        TheoryGyro driveGyro;
 
         JoystickScaler leftAnalogScaler = new JoystickScaler();
         JoystickScaler rightAnalogScaler = new JoystickScaler();
 
         public DriveTrain()
         {
+            driveGyro = new TheoryGyro(ElectricalConstants.DRIVE_GYRO_PORT);
 
             leftDriveEncoder = new Encoder(ElectricalConstants.LEFT_DRIVE_ENC_A, 
                                            ElectricalConstants.LEFT_DRIVE_ENC_B, 
@@ -53,6 +54,8 @@
             rightDriveBackAndFront = new Talon(ElectricalConstants.FRONT_AND_BACK_RIGHT_DRIVE_PWM);
             rightDriveTop = new Talon(ElectricalConstants.TOP_RIGHT_DRIVE_PWM);
 
+            driveGyro.initGyro();
+            
         }
         public static DriveTrain getInstance() 
         {
@@ -153,7 +156,10 @@
     {
         driveGyro.reset();
     }
-    
-
-
+    public void recalibrateGyro()
+    {
+        driveGyro.initGyro();
+    }
 }
+
+
