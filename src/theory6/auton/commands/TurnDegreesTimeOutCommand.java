@@ -46,12 +46,12 @@ public class TurnDegreesTimeOutCommand implements AutonCommand {
         if (Math.abs (angleGoal) > 150) {
         gyroPID = new PIDController(Constants.getDouble("turnP180"),
                                     Constants.getDouble("turnI180"),
-                                    Constants.getDouble("turnD180")); 
+                                    Constants.getDouble("turnD180"), 0); 
         }
         else {
         gyroPID = new PIDController(Constants.getDouble("turnPLessThan180"),
                         Constants.getDouble("turnILessThan180"),
-                        Constants.getDouble("turnDLessThan180")); 
+                        Constants.getDouble("turnDLessThan180"), 0); 
         }
         driveTrain = DriveTrain.getInstance();
         
@@ -63,14 +63,14 @@ public class TurnDegreesTimeOutCommand implements AutonCommand {
         
         timeOutTimer.reset();
         timeOutTimer.start();
-       
-        gyroPID.resetIntegral();
-        gyroPID.resetDerivative();
     }
     
     public boolean run() {
         double error = angleGoal - driveTrain.getGyroAngle();
-        double speed = maxRatePWM * gyroPID.calcPID(angleGoal, driveTrain.getGyroAngle());
+        
+        gyroPID.setGoal(angleGoal);
+        
+        double speed = maxRatePWM * gyroPID.updateOutput(driveTrain.getGyroAngle());
         
         if(Math.abs(error - lastError) < speedDeadband && Math.abs(error) < angleDeadband) {
             
@@ -100,9 +100,6 @@ public class TurnDegreesTimeOutCommand implements AutonCommand {
         
         timeSinceAlmost.stop();
         timeSinceAlmost.reset();
-        
-        gyroPID.resetIntegral();
-        gyroPID.resetDerivative();
     }
     
 }
