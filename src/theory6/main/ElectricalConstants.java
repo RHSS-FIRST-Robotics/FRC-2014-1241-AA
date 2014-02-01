@@ -41,18 +41,18 @@ public class ElectricalConstants {
     //**************************************************************************
     //*************************** ENCODERS *************************************
     //**************************************************************************
-    
-    public static final int LEFT_DRIVE_ENC_A                    = 2; 
-    public static final int LEFT_DRIVE_ENC_B                    = 1; 
+ 
     public static final int RIGHT_DRIVE_ENC_A                   = 3; 
-    public static final int RIGHT_DRIVE_ENC_B                   = 4; 
-    public static final int SHOOTER_ENC_A                       = 5; 
-    public static final int SHOOTER_ENC_B                       = 6; 
+    public static final int RIGHT_DRIVE_ENC_B                   = 4;     
+    public static final int LEFT_DRIVE_ENC_A                    = 5; 
+    public static final int LEFT_DRIVE_ENC_B                    = 6; 
+
+
     
     //**************************************************************************
     //*************************** Digital Sensors ******************************
     //**************************************************************************
-    public static final int COMPRESSOR_PRESSURE_SENSOR          = 7;
+    public static final int COMPRESSOR_PRESSURE_SENSOR          = 1;
     //public static final int INTAKE_BALL_LIMIT                   = ;
 
     
@@ -78,7 +78,5 @@ public class ElectricalConstants {
    //***************************************************************************
     
     public static final int COMPRESSOR_RELAY                    = 1;
-    public static final int BLUE_LED_RELAY                      = 2;
-    public static final int RED_LED_RELAY                       = 3;
-    public static final int GREEN_LED_RELAY                     = 4;
+
 }

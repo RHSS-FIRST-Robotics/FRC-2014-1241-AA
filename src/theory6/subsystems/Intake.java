@@ -9,8 +9,6 @@ package theory6.subsystems;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.DigitalInput;
 import theory6.main.ElectricalConstants;
-import theory6.pid.PIDController;
-import edu.wpi.first.wpilibj.AnalogChannel;
 import theory6.utilities.ToggleBoolean;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import theory6.utilities.JoystickScaler;
@@ -25,7 +23,12 @@ public class Intake {
     
     Talon leftSide;
     Talon rightSide;
+    
+    Talon leftBottomSide;
+    Talon rightBottomSide;
+    
     DoubleSolenoid intakeAnglePiston;
+    
     DigitalInput intakeLimit;
     ToggleBoolean intakeAngleToggle;
     boolean intakeAngleState = false;
@@ -40,8 +43,13 @@ public class Intake {
 
         leftSide = new Talon(ElectricalConstants.LEFT_SIDE_INTAKE_PWM);
         rightSide = new Talon(ElectricalConstants.RIGHT_SIDE_INTAKE_PWM);
-     //   intakeAnglePiston = new DoubleSolenoid (ElectricalConstants.INTAKE_DOWN, ElectricalConstants.INTAKE_UP);
-       // intakeAngleToggle = new ToggleBoolean();
+        
+        leftBottomSide = new Talon(ElectricalConstants.LEFT_WINCH_PWM);
+        rightBottomSide = new Talon(ElectricalConstants.RIGHT_WINCH_PWM);
+        
+        
+        intakeAnglePiston = new DoubleSolenoid (ElectricalConstants.INTAKE_DOWN, ElectricalConstants.INTAKE_UP);
+        intakeAngleToggle = new ToggleBoolean();
         //intakeLimit = new DigitalInput(ElectricalConstants.INTAKE_BALL_LIMIT);
         
 
@@ -62,6 +70,9 @@ public class Intake {
         }
         leftSide.set(-speed);
         rightSide.set(speed);
+        
+        leftBottomSide.set(-speed);
+        rightBottomSide.set(-speed);
         }
         public void intakeBall(double joy, int scaledPower)
         {
@@ -72,16 +83,16 @@ public class Intake {
         //return !intakeLimit.get();
     //}
     
-//    public void setIntakePosition(boolean intakeAngleToggleButton) {
-//        intakeAngleToggle.set(intakeAngleToggleButton);
-//        if(intakeAngleToggle.get())
-//            intakeAngleState = !intakeAngleState;
-//        
-//        if(intakeAngleState)
-//            intakeAnglePiston.set(DoubleSolenoid.Value.kForward);
-//        else 
-//            intakeAnglePiston.set(DoubleSolenoid.Value.kReverse);
-//    }
+    public void setIntakePosition(boolean intakeAngleToggleButton) {
+        intakeAngleToggle.set(intakeAngleToggleButton);
+        if(intakeAngleToggle.get())
+            intakeAngleState = !intakeAngleState;
+        
+        if(intakeAngleState)
+            intakeAnglePiston.set(DoubleSolenoid.Value.kForward);
+        else 
+            intakeAnglePiston.set(DoubleSolenoid.Value.kReverse);
+    }
     
    
 }

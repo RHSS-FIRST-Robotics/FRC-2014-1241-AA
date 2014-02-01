@@ -8,9 +8,11 @@
 package theory6.main;
 
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Joystick;
+import theory6.subsystems.Catapult;
 import theory6.subsystems.DriveTrain;
 import theory6.subsystems.Intake;
 
@@ -26,15 +28,23 @@ public class AA1241 extends IterativeRobot {
     DriverStationLCD dsLCD;
     DriveTrain driveTrain;
     Intake intake;
+    //Catapult catapult;
+    Compressor compressor;
     
     Joystick drivePad;
     Joystick toolPad;
     
+    int lcdUpdateCycle = 0;
+    
     public void robotInit() 
     {
+        compressor = new Compressor(ElectricalConstants.COMPRESSOR_RELAY,
+                                    ElectricalConstants.COMPRESSOR_PRESSURE_SENSOR);
+      
         dsLCD = DriverStationLCD.getInstance();
         driveTrain = DriveTrain.getInstance();
         intake = Intake.getInstance();
+        //catapult = Catapult.getInstance();
         drivePad = new Joystick(GamepadConstants.DRIVE_USB_PORT);
         toolPad = new Joystick(GamepadConstants.TOOL_USB_PORT);
     }
@@ -43,14 +53,45 @@ public class AA1241 extends IterativeRobot {
     public void autonomousPeriodic() {
 
     }
-
+    public void disabledPeriodic(){
+ 
+        compressor.stop();
+        
+        dsLCD.println(DriverStationLCD.Line.kUser1, 1, "Left Encoder: "
+        + driveTrain.getLeftEncoderDist() + "      ");
+        
+        dsLCD.println(DriverStationLCD.Line.kUser1, 1, "Right Encoder: "
+        + driveTrain.getRightEncoderDist() + "      ");
+        
+        if ((lcdUpdateCycle % 50) == 0) {
+            dsLCD.updateLCD();
+        } 
+        else {
+            lcdUpdateCycle++;
+        }
+    }
 
     public void teleopPeriodic() 
     {
+        compressor.start();
+        
+        dsLCD.println(DriverStationLCD.Line.kUser1, 1, "Left Encoder: "
+        + driveTrain.getLeftEncoderDist() + "      ");
+        
+        dsLCD.println(DriverStationLCD.Line.kUser1, 1, "Right Encoder: "
+        + driveTrain.getRightEncoderDist() + "      ");
+        
+        if ((lcdUpdateCycle % 50) == 0) {
+            dsLCD.updateLCD();
+        } 
+        else {
+            lcdUpdateCycle++;
+        }
+        
         double leftAnalogY = drivePad.getRawAxis(GamepadConstants.LEFT_ANALOG_Y);
         double rightAnalogY = drivePad.getRawAxis(GamepadConstants.RIGHT_ANALOG_Y);
-        double intakeSpeed = toolPad.getRawAxis(GamepadConstants.RIGHT_ANALOG_Y);
-;
+        double intakeSpeed = toolPad.getRawAxis(GamepadConstants.LEFT_ANALOG_Y);
+
         //Drive Code
         if(drivePad.getRawButton(GamepadConstants.RIGHT_BUMPER))
         {
@@ -63,15 +104,17 @@ public class AA1241 extends IterativeRobot {
         
         //Intake Code
 
-            intake.intakeBall(intakeSpeed, 3);
+        intake.intakeBall(intakeSpeed, 3);
+            
+            
+        intake.setIntakePosition(toolPad.getRawButton(GamepadConstants.LEFT_BUMPER));
+        
+        if(toolPad.getRawButton(GamepadConstants.RIGHT_TRIGGER))
+        {
+            
+        }
         
 
-//        intake.setIntakePosition(toolPad.getRawButton(GamepadConstants.LEFT_TRIGGER));
-//        
-//        if(Math.abs(intakeSpeed) > 0.05)
-//            intake.setIntakeSpeed(intakeSpeed);
-//        else 
-//            intake.setIntakeSpeed(0);
     }
     
     public void testPeriodic() {

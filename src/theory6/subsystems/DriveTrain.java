@@ -32,6 +32,21 @@
         public DriveTrain()
         {
 
+            leftDriveEncoder = new Encoder(ElectricalConstants.LEFT_DRIVE_ENC_A, 
+                                           ElectricalConstants.LEFT_DRIVE_ENC_B, 
+                                           ElectricalConstants.leftDriveTrainEncoderReverse, 
+                                           Encoder.EncodingType.k1X);
+            leftDriveEncoder.setDistancePerPulse(ElectricalConstants.driveEncoderDistPerTick);  
+            leftDriveEncoder.start();
+
+            rightDriveEncoder = new Encoder(ElectricalConstants.RIGHT_DRIVE_ENC_A, 
+                                            ElectricalConstants.RIGHT_DRIVE_ENC_B, 
+                                            ElectricalConstants.rightDriveTrainEncoderReverse, 
+                                            Encoder.EncodingType.k1X);        
+            rightDriveEncoder.setDistancePerPulse(ElectricalConstants.driveEncoderDistPerTick); 
+            rightDriveEncoder.start();
+        
+            
             leftDriveBackAndFront = new Talon(ElectricalConstants.FRONT_AND_BACK_LEFT_DRIVE_PWM);
             leftDriveTop = new Talon(ElectricalConstants.TOP_LEFT_DRIVE_PWM);
             
@@ -74,7 +89,7 @@
             setRightSpeed(rightAnalogScaler.scaleJoystick(rightJoy, scaledPower));
         }
 
-
+    
         /************************ENCODER FUNCTIONS************************/
 
         public void setEncoderDistPerPulse(double leftDistPerPulse, double rightDistPerPulse) 
@@ -141,4 +156,4 @@
     
 
 
-    }
+}
