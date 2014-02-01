@@ -49,7 +49,7 @@ public class DriveToPosV2TimeOutCommand implements AutonCommand {
 
         drivePID = new PIDController(Constants.getDouble("driveLongV2P"), 
                                      Constants.getDouble("driveLongV2I"), 
-                                     Constants.getDouble("driveLongV2D"));
+                                     Constants.getDouble("driveLongV2D"), 0);
 
         
         longP = Constants.getDouble("driveLongV2P");
@@ -61,10 +61,10 @@ public class DriveToPosV2TimeOutCommand implements AutonCommand {
         shortD = Constants.getDouble("driveShortV2D");
         
         if (Math.abs(distGoal) <= 30){
-            drivePID.changePIDGains(shortP, shortI, shortD);
+            drivePID.changeGains(shortP, shortI, shortD, 0);
         }
         else if (Math.abs(distGoal) > 30) {
-            drivePID.changePIDGains(longP, longI, longD);
+            drivePID.changeGains(longP, longI, longD, 0);
         }
         
         driveTrain = DriveTrain.getInstance();
@@ -92,8 +92,9 @@ public class DriveToPosV2TimeOutCommand implements AutonCommand {
 
         prevTime = currTime;
         prevAvgDist = currAvgDist;
-
-        double drivePIDOutput = MathLogic.limitAbs(drivePID.calcPID(distGoal, currAvgDist), 1);
+        
+        drivePID.setGoal(distGoal);
+        double drivePIDOutput = MathLogic.limitAbs(drivePID.updateOutput(currAvgDist), 1);
 
         double angleDiff = driveTrain.getGyroAngle() - (angleGoal + initialGyroAngle); 
         double straightGain = angleDiff * gyroGain;
