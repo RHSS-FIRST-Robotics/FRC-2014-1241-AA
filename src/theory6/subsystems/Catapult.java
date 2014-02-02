@@ -52,8 +52,8 @@ public class Catapult {
     }
     
     public void setWinchPWM(double pwm) {
-        rightWinchMotor.set(-pwm);
-        leftWinchMotor.set(-pwm);
+        rightWinchMotor.set(pwm);
+        leftWinchMotor.set(pwm);
     }
     
     public double getWinchPot() {
@@ -70,15 +70,24 @@ public class Catapult {
         setWinchPWM(winchPID.updateOutput(getWinchPot()));
     }
     
+    public void windBackWinch(boolean windBackButton) {
+        if(windBackButton){
+            setWinchPWM(0.5);
+        }
+        else{
+            setWinchPWM(0);
+        }
+    }
+    
     public void toggleWinchPistonPos(boolean winchPistonToggleButton) {
         winchReleaseToggle.set(winchPistonToggleButton);
         if(winchReleaseToggle.get())
             winchPistonState = !winchPistonState;
         
         if(winchPistonState)
-            winchReleasePiston.set(DoubleSolenoid.Value.kReverse);
-        else 
             winchReleasePiston.set(DoubleSolenoid.Value.kForward);
+        else 
+            winchReleasePiston.set(DoubleSolenoid.Value.kReverse);
     }
 
     public void engageWinch() {

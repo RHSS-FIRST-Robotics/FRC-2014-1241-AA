@@ -29,7 +29,7 @@ public class AA1241 extends IterativeRobot {
     DriverStationLCD dsLCD;
     DriveTrain driveTrain;
     Intake intake;
-    //Catapult catapult;
+    Catapult catapult;
     Compressor compressor;
     
     Joystick drivePad;
@@ -44,7 +44,7 @@ public class AA1241 extends IterativeRobot {
         dsLCD = DriverStationLCD.getInstance();
         driveTrain = DriveTrain.getInstance();
         intake = Intake.getInstance();
-        //catapult = Catapult.getInstance();
+        catapult = Catapult.getInstance();
         drivePad = new Joystick(GamepadConstants.DRIVE_USB_PORT);
         toolPad = new Joystick(GamepadConstants.TOOL_USB_PORT);
         
@@ -67,23 +67,28 @@ public class AA1241 extends IterativeRobot {
             
     public void disabledPeriodic(){
  
-        if(drivePad.getRawButton(GamepadConstants.A_BUTTON))
+        if(toolPad.getRawButton(GamepadConstants.A_BUTTON))
             driveTrain.recalibrateGyro();
         
+        if(toolPad.getRawButton(GamepadConstants.B_BUTTON))
+            driveTrain.resetEncoders();
         
-        
-        
+        if(toolPad.getRawButton(GamepadConstants.Y_BUTTON))
+            driveTrain.resetGyro();
+
         compressor.stop();
-        
-        dsLCD.println(DriverStationLCD.Line.kUser1, 1, "R Enc: "
-        + driveTrain.getRightEncoderDist() + " L Enc: "
-        + driveTrain.getLeftEncoderDist() + "  ");
         
         dsLCD.println(DriverStationLCD.Line.kUser1, 1, "R Enc: "
         + driveTrain.getRightEncoderDist());
         
-        dsLCD.println(DriverStationLCD.Line.kUser2, 1, "Gyro: "
+        dsLCD.println(DriverStationLCD.Line.kUser2, 1, "L Enc: "
+        + driveTrain.getLeftEncoderDist());
+        
+        dsLCD.println(DriverStationLCD.Line.kUser3, 1, "Gyro: "
         + driveTrain.getGyroAngle());
+        
+        dsLCD.println(DriverStationLCD.Line.kUser4, 1, "Catapult Pot: "
+        + catapult.getWinchPot());
         
 //        dsLCD.println(DriverStationLCD.Line.kUser3, 1, "Catapult Pot: "
 //        + catapult.getWinchPot());
@@ -110,17 +115,17 @@ public class AA1241 extends IterativeRobot {
     {
         compressor.start();
         
-        dsLCD.println(DriverStationLCD.Line.kUser1, 1, "L Enc: "
-        + driveTrain.getLeftEncoderDist() + "  ");
-        
         dsLCD.println(DriverStationLCD.Line.kUser1, 1, "R Enc: "
         + driveTrain.getRightEncoderDist());
         
-        dsLCD.println(DriverStationLCD.Line.kUser2, 1, "Gyro: "
+        dsLCD.println(DriverStationLCD.Line.kUser2, 1, "L Enc: "
+        + driveTrain.getLeftEncoderDist());
+        
+        dsLCD.println(DriverStationLCD.Line.kUser3, 1, "Gyro: "
         + driveTrain.getGyroAngle());
         
-//        dsLCD.println(DriverStationLCD.Line.kUser3, 1, "Catapult Pot: "
-//        + catapult.getWinchPot());
+        dsLCD.println(DriverStationLCD.Line.kUser4, 1, "Catapult Pot: "
+        + catapult.getWinchPot());
         
 //        dsLCD.println(DriverStationLCD.Line.kUser4, 1, "Limit Switch: "
 //        + intake.ballDetected());
@@ -135,6 +140,7 @@ public class AA1241 extends IterativeRobot {
         double leftAnalogY = drivePad.getRawAxis(GamepadConstants.LEFT_ANALOG_Y);
         double rightAnalogY = drivePad.getRawAxis(GamepadConstants.RIGHT_ANALOG_Y);
         double intakeSpeed = toolPad.getRawAxis(GamepadConstants.LEFT_ANALOG_Y);
+        double winchSpeed = toolPad.getRawAxis(GamepadConstants.RIGHT_ANALOG_Y);
 
         //Drive Code
         if(drivePad.getRawButton(GamepadConstants.RIGHT_BUMPER))
@@ -152,13 +158,12 @@ public class AA1241 extends IterativeRobot {
             
             
         intake.setIntakePosition(toolPad.getRawButton(GamepadConstants.LEFT_BUMPER));
+
         
-        if(toolPad.getRawButton(GamepadConstants.A_BUTTON))
-        {
-            //catapult.setWinchPos();
-            
-        }
-//        if(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER)/* %% intake.ballDetected() */)
+        //catapult.windBackWinch(toolPad.getRawButton(GamepadConstants.A_BUTTON));
+        catapult.toggleWinchPistonPos(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
+        catapult.setWinchPWM(winchSpeed);
+//        if(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER)/* && intake.ballDetected() */)
 //            catapult.disengageWinch();
 
     }

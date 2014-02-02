@@ -36,14 +36,14 @@
             leftDriveEncoder = new Encoder(ElectricalConstants.LEFT_DRIVE_ENC_A, 
                                            ElectricalConstants.LEFT_DRIVE_ENC_B, 
                                            ElectricalConstants.leftDriveTrainEncoderReverse, 
-                                           Encoder.EncodingType.k1X);
+                                           Encoder.EncodingType.k4X);
             leftDriveEncoder.setDistancePerPulse(ElectricalConstants.driveEncoderDistPerTick);  
             leftDriveEncoder.start();
 
             rightDriveEncoder = new Encoder(ElectricalConstants.RIGHT_DRIVE_ENC_A, 
                                             ElectricalConstants.RIGHT_DRIVE_ENC_B, 
                                             ElectricalConstants.rightDriveTrainEncoderReverse, 
-                                            Encoder.EncodingType.k1X);        
+                                            Encoder.EncodingType.k4X);        
             rightDriveEncoder.setDistancePerPulse(ElectricalConstants.driveEncoderDistPerTick); 
             rightDriveEncoder.start();
         
