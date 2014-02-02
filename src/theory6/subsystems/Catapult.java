@@ -33,89 +33,71 @@ public class Catapult {
     
     public Catapult()
     {
-        winchPID = new PIDController(0,0,0);
+        winchPID = new PIDController(0,0,0,0);
         
         winchPot= new AnalogChannel(ElectricalConstants.WINCH_POT);
     
         rightWinchMotor = new Talon(ElectricalConstants.RIGHT_WINCH_PWM);
         leftWinchMotor = new Talon(ElectricalConstants.LEFT_WINCH_PWM);
     
-        winchReleasePiston = new DoubleSolenoid (ElectricalConstants.INTAKE_DOWN, ElectricalConstants.INTAKE_UP);
+        winchReleasePiston = new DoubleSolenoid (ElectricalConstants.WINCH_ENGAGE, ElectricalConstants.WINCH_DISENGAGE);
         winchReleaseToggle = new ToggleBoolean();
-    
-    
-    
     }
-    
-    
-    
+
     public static Catapult getInstance() {
         if(inst == null) {
             inst = new Catapult();
         }
         return inst;
     }
-    public void setWinchSpeed(double pwm) {
+    
+    public void setWinchPWM(double pwm) {
         rightWinchMotor.set(-pwm);
         leftWinchMotor.set(-pwm);
     }
+    
     public double getWinchPot() {
         return winchPot.getAverageValue();
     }
     
-    public void setWinchPID (double p, double i, double d) {
-        winchPID.changePIDGains(p, i, d);
-    }
-    public void setWinchPos(double potVal) {
-        
-        engageWinch();
-        
-        double currentPos = winchPot.getValue();
-        
-        double winchOutput = winchPID.calcPID(potVal, currentPos);
-        
-        setWinchSpeed(winchOutput);
+    public void setWinchPID (double p, double i, double d, double ff) {
+        winchPID.changeGains(p, i, d, ff);
     }
     
-    public void resetPID() {
-        winchPID.resetDerivative();
-        winchPID.resetIntegral();
+    public void setWinchPos(double setpoint) { 
+        engageWinch();
+        winchPID.setGoal(setpoint);
+        setWinchPWM(winchPID.updateOutput(getWinchPot()));
     }
+    
     public void toggleWinchPistonPos(boolean winchPistonToggleButton) {
         winchReleaseToggle.set(winchPistonToggleButton);
         if(winchReleaseToggle.get())
             winchPistonState = !winchPistonState;
         
         if(winchPistonState)
-            winchReleasePiston.set(DoubleSolenoid.Value.kForward);
-        else 
             winchReleasePiston.set(DoubleSolenoid.Value.kReverse);
-    }
-    public void engageWinch()
-    {
-        
-        if(!winchPistonState)
-        {
+        else 
             winchReleasePiston.set(DoubleSolenoid.Value.kForward);
-            winchPistonState = true;
-        }
-        
-        
     }
+
+    public void engageWinch() {
+        
+        if(!winchPistonState){
+            winchReleasePiston.set(DoubleSolenoid.Value.kForward);
+            setWinchPWM(1);
+            winchPistonState = true;   
+        }
+    }
+    
     public void disengageWinch()
     {
-        if(winchPistonState)
-        {
+        if(winchPistonState){
             winchReleasePiston.set(DoubleSolenoid.Value.kReverse);
-            winchPistonState = false;
-            
+            setWinchPWM(0);
+            winchPistonState = false;     
         }
         
-        
     }
-    
-    
-    
-    
-    
+
 }

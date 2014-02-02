@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import theory6.main.ElectricalConstants;
 import theory6.utilities.ToggleBoolean;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Relay;
 import theory6.utilities.JoystickScaler;
 
 /**
@@ -24,8 +25,8 @@ public class Intake {
     Talon leftSide;
     Talon rightSide;
     
-    Talon leftBottomSide;
-    Talon rightBottomSide;
+    Relay leftBottomSide;
+    Relay rightBottomSide;
     
     DoubleSolenoid intakeAnglePiston;
     
@@ -44,8 +45,8 @@ public class Intake {
         leftSide = new Talon(ElectricalConstants.LEFT_SIDE_INTAKE_PWM);
         rightSide = new Talon(ElectricalConstants.RIGHT_SIDE_INTAKE_PWM);
         
-        leftBottomSide = new Talon(ElectricalConstants.LEFT_WINCH_PWM);
-        rightBottomSide = new Talon(ElectricalConstants.RIGHT_WINCH_PWM);
+        leftBottomSide = new Relay(ElectricalConstants.LEFT_SIDE_INTAKE);
+        rightBottomSide = new Relay(ElectricalConstants.RIGHT_SIDE_INTAKE);
         
         
         intakeAnglePiston = new DoubleSolenoid (ElectricalConstants.INTAKE_DOWN, ElectricalConstants.INTAKE_UP);
@@ -64,15 +65,27 @@ public class Intake {
         public void setSpeed(double speed) 
         {
 
-        if (Math.abs(speed) < 0.05 ) 
-        {
-            speed = 0.0;
-        }
-        leftSide.set(-speed);
-        rightSide.set(speed);
+            if (Math.abs(speed) < 0.05 ) 
+            {
+                speed = 0.0;
+            
+                leftSide.set(speed);
+                rightSide.set(speed);
+                
+                leftBottomSide.set(Relay.Value.kOff);
+                rightBottomSide.set(Relay.Value.kOff);
+            
+            }
+            else{
+            
         
-        leftBottomSide.set(-speed);
-        rightBottomSide.set(-speed);
+                leftSide.set(-speed);
+                rightSide.set(speed);
+        
+                leftBottomSide.set(Relay.Value.kReverse);
+                rightBottomSide.set(Relay.Value.kForward);
+        
+            }
         }
         public void intakeBall(double joy, int scaledPower)
         {
@@ -84,14 +97,14 @@ public class Intake {
     //}
     
     public void setIntakePosition(boolean intakeAngleToggleButton) {
-        intakeAngleToggle.set(intakeAngleToggleButton);
-        if(intakeAngleToggle.get())
-            intakeAngleState = !intakeAngleState;
-        
+        //intakeAngleToggle.set(intakeAngleToggleButton);
+        //if(intakeAngleToggle.get())
+            //intakeAngleState = !intakeAngleState;
+        intakeAngleState = intakeAngleToggleButton;
         if(intakeAngleState)
-            intakeAnglePiston.set(DoubleSolenoid.Value.kForward);
-        else 
             intakeAnglePiston.set(DoubleSolenoid.Value.kReverse);
+        else 
+            intakeAnglePiston.set(DoubleSolenoid.Value.kForward);
     }
     
    

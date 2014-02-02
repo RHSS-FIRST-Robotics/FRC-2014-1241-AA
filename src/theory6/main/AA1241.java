@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import theory6.subsystems.Catapult;
 import theory6.subsystems.DriveTrain;
 import theory6.subsystems.Intake;
+import theory6.utilities.Constants;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -38,8 +39,7 @@ public class AA1241 extends IterativeRobot {
     
     public void robotInit() 
     {
-        compressor = new Compressor(ElectricalConstants.COMPRESSOR_RELAY,
-                                    ElectricalConstants.COMPRESSOR_PRESSURE_SENSOR);
+        compressor = new Compressor(ElectricalConstants.COMPRESSOR_PRESSURE_SENSOR,ElectricalConstants.COMPRESSOR_RELAY);
       
         dsLCD = DriverStationLCD.getInstance();
         driveTrain = DriveTrain.getInstance();
@@ -47,21 +47,52 @@ public class AA1241 extends IterativeRobot {
         //catapult = Catapult.getInstance();
         drivePad = new Joystick(GamepadConstants.DRIVE_USB_PORT);
         toolPad = new Joystick(GamepadConstants.TOOL_USB_PORT);
+        
+        Constants.getInstance();
+        Constants.load();
+        
+        
     }
 
-
+    public void autonomousInit(){
+        
+    }
+    
     public void autonomousPeriodic() {
 
     }
+    public void disabledInit(){
+        Constants.load();
+    }
+            
     public void disabledPeriodic(){
  
+        if(drivePad.getRawButton(GamepadConstants.A_BUTTON))
+            driveTrain.recalibrateGyro();
+        
+        
+        
+        
         compressor.stop();
         
-        dsLCD.println(DriverStationLCD.Line.kUser1, 1, "Left Encoder: "
-        + driveTrain.getLeftEncoderDist() + "      ");
+        dsLCD.println(DriverStationLCD.Line.kUser1, 1, "R Enc: "
+        + driveTrain.getRightEncoderDist() + " L Enc: "
+        + driveTrain.getLeftEncoderDist() + "  ");
         
-        dsLCD.println(DriverStationLCD.Line.kUser1, 1, "Right Encoder: "
-        + driveTrain.getRightEncoderDist() + "      ");
+        dsLCD.println(DriverStationLCD.Line.kUser1, 1, "R Enc: "
+        + driveTrain.getRightEncoderDist());
+        
+        dsLCD.println(DriverStationLCD.Line.kUser2, 1, "Gyro: "
+        + driveTrain.getGyroAngle());
+        
+//        dsLCD.println(DriverStationLCD.Line.kUser3, 1, "Catapult Pot: "
+//        + catapult.getWinchPot());
+        
+//        dsLCD.println(DriverStationLCD.Line.kUser4, 1, "Limit Switch: "
+//        + intake.ballDetected());
+        
+        
+        
         
         if ((lcdUpdateCycle % 50) == 0) {
             dsLCD.updateLCD();
@@ -70,16 +101,29 @@ public class AA1241 extends IterativeRobot {
             lcdUpdateCycle++;
         }
     }
+    
+    public void teleopInit(){
+        
+    }
 
     public void teleopPeriodic() 
     {
         compressor.start();
         
-        dsLCD.println(DriverStationLCD.Line.kUser1, 1, "Left Encoder: "
-        + driveTrain.getLeftEncoderDist() + "      ");
+        dsLCD.println(DriverStationLCD.Line.kUser1, 1, "L Enc: "
+        + driveTrain.getLeftEncoderDist() + "  ");
         
-        dsLCD.println(DriverStationLCD.Line.kUser1, 1, "Right Encoder: "
-        + driveTrain.getRightEncoderDist() + "      ");
+        dsLCD.println(DriverStationLCD.Line.kUser1, 1, "R Enc: "
+        + driveTrain.getRightEncoderDist());
+        
+        dsLCD.println(DriverStationLCD.Line.kUser2, 1, "Gyro: "
+        + driveTrain.getGyroAngle());
+        
+//        dsLCD.println(DriverStationLCD.Line.kUser3, 1, "Catapult Pot: "
+//        + catapult.getWinchPot());
+        
+//        dsLCD.println(DriverStationLCD.Line.kUser4, 1, "Limit Switch: "
+//        + intake.ballDetected());
         
         if ((lcdUpdateCycle % 50) == 0) {
             dsLCD.updateLCD();
@@ -95,7 +139,7 @@ public class AA1241 extends IterativeRobot {
         //Drive Code
         if(drivePad.getRawButton(GamepadConstants.RIGHT_BUMPER))
         {
-            driveTrain.tankDrive(-leftAnalogY/2, rightAnalogY/2, 3);
+            driveTrain.tankDrive(-leftAnalogY, rightAnalogY, 1);
         }
         else
         {
@@ -109,15 +153,14 @@ public class AA1241 extends IterativeRobot {
             
         intake.setIntakePosition(toolPad.getRawButton(GamepadConstants.LEFT_BUMPER));
         
-        if(toolPad.getRawButton(GamepadConstants.RIGHT_TRIGGER))
+        if(toolPad.getRawButton(GamepadConstants.A_BUTTON))
         {
+            //catapult.setWinchPos();
             
         }
-        
+//        if(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER)/* %% intake.ballDetected() */)
+//            catapult.disengageWinch();
 
     }
-    
-    public void testPeriodic() {
-    
-    }   
+     
 }

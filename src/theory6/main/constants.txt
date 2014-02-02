@@ -1,0 +1,11 @@
+bWinchPosOne = 
+
+bWinchPosTwo = 
+
+bWinchPosThree = 
+
+aDriveForwardIntakeBallSpeed = 1
+
+aIntakeBallSpeed = 1
+
+aDriveForwardIntakeBallTimeOut

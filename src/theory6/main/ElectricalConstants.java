@@ -42,17 +42,17 @@ public class ElectricalConstants {
     //*************************** ENCODERS *************************************
     //**************************************************************************
  
-    public static final int RIGHT_DRIVE_ENC_A                   = 3; 
-    public static final int RIGHT_DRIVE_ENC_B                   = 4;     
-    public static final int LEFT_DRIVE_ENC_A                    = 5; 
-    public static final int LEFT_DRIVE_ENC_B                    = 6; 
+    public static final int RIGHT_DRIVE_ENC_A                   = 4; 
+    public static final int RIGHT_DRIVE_ENC_B                   = 5;     
+    public static final int LEFT_DRIVE_ENC_A                    = 1; 
+    public static final int LEFT_DRIVE_ENC_B                    = 2; 
 
 
     
     //**************************************************************************
     //*************************** Digital Sensors ******************************
     //**************************************************************************
-    public static final int COMPRESSOR_PRESSURE_SENSOR          = 1;
+    public static final int COMPRESSOR_PRESSURE_SENSOR          = 3;
     //public static final int INTAKE_BALL_LIMIT                   = ;
 
     
@@ -70,6 +70,8 @@ public class ElectricalConstants {
    //***************************************************************************
     public static final int INTAKE_DOWN                         = 1;
     public static final int INTAKE_UP                           = 2;
+    public static final int WINCH_ENGAGE                        = 3;
+    public static final int WINCH_DISENGAGE                     = 4;
          
 
     
@@ -77,6 +79,8 @@ public class ElectricalConstants {
    //*************************** Relays ****************************************
    //***************************************************************************
     
-    public static final int COMPRESSOR_RELAY                    = 1;
+    public static final int LEFT_SIDE_INTAKE                    = 7;
+    public static final int RIGHT_SIDE_INTAKE                   = 8;
+    public static final int COMPRESSOR_RELAY                    = 3;
 
 }
