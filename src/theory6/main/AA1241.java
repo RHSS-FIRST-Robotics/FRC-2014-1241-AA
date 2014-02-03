@@ -159,10 +159,23 @@ public class AA1241 extends IterativeRobot {
             
         intake.setIntakePosition(toolPad.getRawButton(GamepadConstants.LEFT_BUMPER));
 
-        
-        //catapult.windBackWinch(toolPad.getRawButton(GamepadConstants.A_BUTTON));
         catapult.toggleWinchPistonPos(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
-        catapult.setWinchPWM(winchSpeed);
+        
+        if(!(catapult.getWinchPot() == Constants.getDouble(bWinchPosOne))){
+              
+            catapult.toggleWinchPistonPos(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
+            catapult.setWinchPWM(winchSpeed);
+        
+        }
+        else{
+            
+            catapult.setWinchPWM(0);
+            
+            
+            
+        }
+            
+        
 //        if(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER)/* && intake.ballDetected() */)
 //            catapult.disengageWinch();
 
