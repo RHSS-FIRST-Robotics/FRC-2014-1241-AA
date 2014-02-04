@@ -20,13 +20,9 @@ public class Catapult {
     
     Talon rightWinchMotor;
     Talon leftWinchMotor;
-    
     PIDController winchPID;
-    
     DoubleSolenoid winchReleasePiston;
- 
     ToggleBoolean winchReleaseToggle;
-    
     AnalogChannel winchPot;
     
     boolean winchPistonState = false;
@@ -64,19 +60,27 @@ public class Catapult {
         winchPID.changeGains(p, i, d, ff);
     }
     
-    public void setWinchPos(double setpoint) { 
+    public void setWinchPosPID(int setpoint) { 
         engageWinch();
         winchPID.setGoal(setpoint);
         setWinchPWM(winchPID.updateOutput(getWinchPot()));
     }
     
+    public void setWinchPos(int setpoint, int tol) { 
+        engageWinch();
+        if(setpoint - getWinchPot() > tol) 
+            setWinchPWM(-0.7);
+        else if(setpoint - getWinchPot() < tol) 
+            setWinchPWM(0.7);
+        else 
+            setWinchPWM(0);   
+    }
+    
     public void windBackWinch(boolean windBackButton) {
-        if(windBackButton){
+        if(windBackButton)
             setWinchPWM(0.5);
-        }
-        else{
+        else
             setWinchPWM(0);
-        }
     }
     
     public void toggleWinchPistonPos(boolean winchPistonToggleButton) {
@@ -94,7 +98,6 @@ public class Catapult {
         
         if(!winchPistonState){
             winchReleasePiston.set(DoubleSolenoid.Value.kForward);
-            setWinchPWM(1);
             winchPistonState = true;   
         }
     }
@@ -103,10 +106,8 @@ public class Catapult {
     {
         if(winchPistonState){
             winchReleasePiston.set(DoubleSolenoid.Value.kReverse);
-            setWinchPWM(0);
             winchPistonState = false;     
         }
-        
     }
 
 }

@@ -17,61 +17,31 @@ import theory6.utilities.Constants;
  */
 public class ShootBallTimeOutCommand implements AutonCommand{
     
-    Catapult catapult; 
-    
+    Catapult catapult;   
     Timer t = new Timer();
-    
+    int setpoint;
     double timeOutInSecs;
-    
-    
-    
-    
-    public ShootBallTimeOutCommand(double ticks, double timeOut){
-       
-        
-        Catapult.getInstance();
-        
-        this.timeOutInSecs = timeOut;
-        
-        
+   
+    public ShootBallTimeOutCommand(int target, double timeOut){
+        this.setpoint = target;
+        catapult = Catapult.getInstance();
+        this.timeOutInSecs = timeOut;  
     }
-    public void init()
-    {
+    public void init() {
         t.reset();
-        t.start();
-
-        
+        t.start();   
     }
-    public boolean run(){
-        
-        while(!(catapult.getWinchPot() == Constants.getDouble(bWinchPosOne))){
-            
-            catapult.setWinchPWM(0.7);
-            
+    public boolean run() {
+        while(!(catapult.getWinchPot() == setpoint)){         
+            catapult.setWinchPWM(0.7);         
         }
-        
-        catapult.toggleWinchPistonPos(true);
-        
-        
+      
+        catapult.disengageWinch();
 
-        
-        
-        return catapult.getWinchPot() > Constants.getDouble(bWinchPosOne) ||
+        return catapult.getWinchPot() != setpoint ||
                t.get() > timeOutInSecs;
     }
-    public void done(){
-        
-
-        
-    }    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    public void done() {
+        catapult.setWinchPWM(0);
+    }       
 }

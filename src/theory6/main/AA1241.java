@@ -161,7 +161,7 @@ public class AA1241 extends IterativeRobot {
 
         catapult.toggleWinchPistonPos(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
         
-        if(!(catapult.getWinchPot() == Constants.getDouble(bWinchPosOne))){
+        if(!(catapult.getWinchPot() == Constants.getDouble("bWinchPosOne"))){
               
             catapult.toggleWinchPistonPos(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
             catapult.setWinchPWM(winchSpeed);

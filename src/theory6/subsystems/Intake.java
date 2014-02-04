@@ -38,10 +38,6 @@ public class Intake {
     
     
     public Intake(){
-        
-        
-        
-
         leftSide = new Talon(ElectricalConstants.LEFT_SIDE_INTAKE_PWM);
         rightSide = new Talon(ElectricalConstants.RIGHT_SIDE_INTAKE_PWM);
         
@@ -52,8 +48,6 @@ public class Intake {
         intakeAnglePiston = new DoubleSolenoid (ElectricalConstants.INTAKE_DOWN, ElectricalConstants.INTAKE_UP);
         intakeAngleToggle = new ToggleBoolean();
         //intakeLimit = new DigitalInput(ElectricalConstants.INTAKE_BALL_LIMIT);
-        
-
     }
     public static Intake getInstance() {
     
@@ -62,44 +56,36 @@ public class Intake {
         }
         return inst;
     }
-        public void setSpeed(double speed) 
+    public void setSpeed(double speed) 
+    {
+        if (Math.abs(speed) < 0.05 ) 
         {
+            speed = 0.0;
 
-            if (Math.abs(speed) < 0.05 ) 
-            {
-                speed = 0.0;
-            
-                leftSide.set(speed);
-                rightSide.set(speed);
-                
-                leftBottomSide.set(Relay.Value.kOff);
-                rightBottomSide.set(Relay.Value.kOff);
-            
-            }
-            else{
-            
-        
-                leftSide.set(-speed);
-                rightSide.set(speed);
-        
-                leftBottomSide.set(Relay.Value.kReverse);
-                rightBottomSide.set(Relay.Value.kForward);
-        
-            }
+            leftSide.set(speed);
+            rightSide.set(speed);
+
+            leftBottomSide.set(Relay.Value.kOff);
+            rightBottomSide.set(Relay.Value.kOff);
         }
-        public void intakeBall(double joy, int scaledPower)
-        {
-            setSpeed(rightAnalogScaler.scaleJoystick(joy, scaledPower));
-            
+        else{
+            leftSide.set(-speed);
+            rightSide.set(speed);
+
+            leftBottomSide.set(Relay.Value.kReverse);
+            rightBottomSide.set(Relay.Value.kForward);
         }
+    }
+    public void intakeBall(double joy, int scaledPower)
+    {
+        setSpeed(rightAnalogScaler.scaleJoystick(joy, scaledPower)); 
+    }
     //public boolean ballDetected() {
         //return !intakeLimit.get();
     //}
     
+    //Used for tele-op control of intake position
     public void setIntakePosition(boolean intakeAngleToggleButton) {
-        //intakeAngleToggle.set(intakeAngleToggleButton);
-        //if(intakeAngleToggle.get())
-            //intakeAngleState = !intakeAngleState;
         intakeAngleState = intakeAngleToggleButton;
         if(intakeAngleState)
             intakeAnglePiston.set(DoubleSolenoid.Value.kReverse);
@@ -107,5 +93,14 @@ public class Intake {
             intakeAnglePiston.set(DoubleSolenoid.Value.kForward);
     }
     
-   
+    //Used for toggling position in autonomous
+    public void toggleIntakePosAuton(boolean intakeToggle) {
+        intakeAngleToggle.set(intakeToggle);
+        if(intakeAngleToggle.get())
+            intakeAngleState = !intakeAngleState;
+        if(intakeAngleState)
+            intakeAnglePiston.set(DoubleSolenoid.Value.kReverse);
+        else 
+            intakeAnglePiston.set(DoubleSolenoid.Value.kForward);
+    }
 }
