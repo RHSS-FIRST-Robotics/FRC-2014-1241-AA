@@ -25,8 +25,9 @@ public class SetIntakePositionCommand {
     }
 
     public boolean run() {
-        //Use toggleIntakePosAuton function in Intake class
-        //Refer to SetHangerPistons in 2013 code for logic
+        intake.toggleIntakePosAuton(true)
+                
+                intake.toggleIntakePosAuton(true);
         return true;
     }
 
