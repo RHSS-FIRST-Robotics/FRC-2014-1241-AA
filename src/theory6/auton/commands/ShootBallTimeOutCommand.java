@@ -19,10 +19,10 @@ public class ShootBallTimeOutCommand implements AutonCommand{
     
     Catapult catapult;   
     Timer t = new Timer();
-    int setpoint;
+    double setpoint;
     double timeOutInSecs;
    
-    public ShootBallTimeOutCommand(int target, double timeOut){
+    public ShootBallTimeOutCommand(double target, double timeOut){
         this.setpoint = target;
         catapult = Catapult.getInstance();
         this.timeOutInSecs = timeOut;  

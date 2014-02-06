@@ -1,4 +1,4 @@
-//SHARED CONSTANTS WITHIN DIFFERENT AUTONS
+o//SHARED CONSTANTS WITHIN DIFFERENT AUTONS
 
 bWinchPosOne = 
 
@@ -29,8 +29,6 @@ AlliancePartnerAngle =
 
 DistanceToAlliancePartner =
 
-WinchPosTwo = 
-
 DistanceToNewZone =
 
 OtherGoalAngle =
@@ -42,8 +40,6 @@ AlliancePartnerAngleTwo =
 DistanceToAlliancePartnerTwo =
 
 TurnDegreesToGoal =
-
-WinchPosThree =
 
 DriveToNewZone =
 

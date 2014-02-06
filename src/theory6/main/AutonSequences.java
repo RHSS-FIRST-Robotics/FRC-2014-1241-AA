@@ -23,10 +23,11 @@ public class AutonSequences {
         AutonController ac = new AutonController();
         ac.clear();
         
-        ShootBallTimeOutCommand(Constants.getDouble(WinchPosOne),Constants.getDouble(aShootBallTimeOut));
-        DriveToPosV2TimeOutCommand(Constants.getDouble(DriveForwardDistance),
-                                   0,
-                                   aDriveToNewZoneTimeOut);
+        ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("bWinchPosOne"),
+                                                  Constants.getDouble("aShootBallTimeOut")));
+        ac.addCommand(new DriveToPosV2TimeOutCommand(Constants.getDouble("DriveForwardDistance"),
+                                   0.0,
+                                   Constants.getDouble("aDriveToNewZoneTimeOut")));
         
 
         return ac;
@@ -36,17 +37,17 @@ public class AutonSequences {
        AutonController ac = new AutonController();
        ac.clear();
        
-       ShootBallTimeOutCommand(Constants.getDouble(WinchPosOne), 
-                               Constants.getDouble(aShootBallTimeOut));
-       TurnDegreesTimeOutCommand(Constants.getDouble(AlliancePartnerAngle), 
-                                 Constants.getDouble(aTurnDegreesTimeOut));
-       DriveForwardIntakeBallTimeOutCommand(Constants.getDouble(DistanceToAlliancePartner), 
-                                            Constants.getDouble(aDriveForwardTimeOut));
-       ShootBallTimeOutCommand(Constants.getDouble(WinchPosTwo), 
-                               Constants.getDouble(aShootBallTimeOut));
-       DriveToPosV2TimeOutCommand(Constants.getDouble(DistanceToNewZone),
+       ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("bWinchPosOne"), 
+                               Constants.getDouble("aShootBallTimeOut")));
+       ac.addCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("AlliancePartnerAngle"), 
+                                 Constants.getDouble("aTurnDegreesTimeOut")));
+       ac.addCommand(new DriveForwardIntakeBallTimeOutCommand(Constants.getDouble("DistanceToAlliancePartner"), 
+                                            Constants.getDouble("aDriveForwardTimeOut")));
+       ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("bWinchPosTwo"), 
+                               Constants.getDouble("aShootBallTimeOut")));
+       ac.addCommand(new DriveToPosV2TimeOutCommand(Constants.getDouble("DistanceToNewZone"),
                                   0,
-                                  Constants.getDouble(aDriveToNewZoneTimeOut));
+                                  Constants.getDouble("aDriveToNewZoneTimeOut")));
        
        return ac;
        
@@ -56,21 +57,23 @@ public class AutonSequences {
        AutonController ac = new AutonController();
        ac.clear();
        
-       TurnDegreesTimeOutCommand(Constants.getDouble(OtherGoalAngle), 
-                                 Constants.getDouble(aTurnDegreesTimeOut));
-       ShootBallTimeOutCommand(Constants.getDouble(WinchPosOne),
-                               Constants.getDouble(aShootBallTimeOut));
-       TurnDegreesTimeOutCommand(Constants.getDouble(AlliancePartnerAngleTwo), 
-                                 Constants.getDouble(aTurnDegreesTimeOut));
-       DriveForwardIntakeBallCommand(Constants.getDouble(DistanceToAllianceTwo), 
-                                     Constants.getDouble(aDriveForwardTimeOut));
-       TurnDegreesTimeOutCommand(Constants.getDouble(TurnDegreesToGoal), 
-                                 Constants.getDouble(aTurnDegreesTimeOut));
-       ShootBallTimeOutCommand(Constants.getDouble(WinchPosThree), 
-                               Constants.getDouble(aShootBallTimeOut));
-       DriveToPosV2TimeOutCommand(Constants.getDouble(DriveToNewZone), 
+       ac.addCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("OtherGoalAngle"), 
+                                 Constants.getDouble("aTurnDegreesTimeOut")));
+       ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("WinchPosOne"),
+                               Constants.getDouble("aShootBallTimeOut")));
+       ac.addCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("AlliancePartnerAngleTwo"), 
+                                 Constants.getDouble("aTurnDegreesTimeOut")));
+       ac.addCommand(new DriveForwardIntakeBallTimeOutCommand(Constants.getDouble("DistanceToAllianceTwo"), 
+                                     Constants.getDouble("aDriveForwardTimeOut")));
+       ac.addCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("TurnDegreesToGoal"), 
+                                 Constants.getDouble("aTurnDegreesTimeOut")));
+       ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("WinchPosThree"), 
+                               Constants.getDouble("aShootBallTimeOut")));
+       ac.addCommand(new DriveToPosV2TimeOutCommand(Constants.getDouble("DriveToNewZone"), 
                                   0, 
-                                  Constants.getDouble(aDriveToNewZoneTimeOut));
+                                  Constants.getDouble("aDriveToNewZoneTimeOut")));
+       
+       return ac;
        
        
    }

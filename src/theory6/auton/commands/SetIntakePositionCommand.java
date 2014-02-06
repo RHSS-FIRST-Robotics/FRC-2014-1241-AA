@@ -25,10 +25,10 @@ public class SetIntakePositionCommand {
     }
 
     public boolean run() {
-        intake.toggleIntakePosAuton(true)
-                
-                intake.toggleIntakePosAuton(true);
-        return true;
+
+    intake.toggleIntakePosAuton(true);
+    
+        return false;
     }
 
     public void done() {
