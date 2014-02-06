@@ -22,10 +22,13 @@ public class Catapult {
     Talon leftWinchMotor;
     PIDController winchPID;
     DoubleSolenoid winchReleasePiston;
+    DoubleSolenoid trussShotPiston;
+    ToggleBoolean trussShotToggle;
     ToggleBoolean winchReleaseToggle;
     AnalogChannel winchPot;
     
     boolean winchPistonState = false;
+    boolean trussShotState = false;
     
     public Catapult()
     {
@@ -36,8 +39,10 @@ public class Catapult {
         rightWinchMotor = new Talon(ElectricalConstants.RIGHT_WINCH_PWM);
         leftWinchMotor = new Talon(ElectricalConstants.LEFT_WINCH_PWM);
     
-        winchReleasePiston = new DoubleSolenoid (ElectricalConstants.WINCH_ENGAGE, ElectricalConstants.WINCH_DISENGAGE);
-        winchReleaseToggle = new ToggleBoolean();
+        trussShotPiston = new DoubleSolenoid (ElectricalConstants.TRUSS_ENGAGE, ElectricalConstants.TRUSS_DISENGAGE);
+        trussShotToggle = new ToggleBoolean();
+        
+        
     }
 
     public static Catapult getInstance() {
@@ -101,6 +106,22 @@ public class Catapult {
             winchPistonState = true;   
         }
     }
+    public void trussShot(boolean trussToggleButton){
+        
+        trussShotToggle.set(trussToggleButton);
+        if(trussShotToggle.get())
+            trussShotState = !trussShotState;
+        
+        if(trussShotState)
+            trussShotPiston.set(DoubleSolenoid.Value.kForward);
+        else 
+            trussShotPiston.set(DoubleSolenoid.Value.kReverse);
+        
+        
+        
+        
+    }
+
     
     public void disengageWinch()
     {
@@ -109,5 +130,6 @@ public class Catapult {
             winchPistonState = false;     
         }
     }
+
 
 }

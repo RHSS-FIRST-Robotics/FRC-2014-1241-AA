@@ -161,6 +161,8 @@ public class AA1241 extends IterativeRobot {
 
         catapult.toggleWinchPistonPos(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
         
+        catapult.trussShot(toolPad.getRawButton(GamepadConstants.X_BUTTON));
+        
         if(!(catapult.getWinchPot() == Constants.getDouble("bWinchPosOne"))){
               
             catapult.toggleWinchPistonPos(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
@@ -174,6 +176,7 @@ public class AA1241 extends IterativeRobot {
             
             
         }
+        
             
         
 //        if(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER)/* && intake.ballDetected() */)

@@ -72,6 +72,8 @@ public class ElectricalConstants {
     public static final int INTAKE_UP                           = 2;
     public static final int WINCH_ENGAGE                        = 3;
     public static final int WINCH_DISENGAGE                     = 4;
+    public static final int TRUSS_ENGAGE                        = 5;
+    public static final int TRUSS_DISENGAGE                     = 6;
          
 
     
