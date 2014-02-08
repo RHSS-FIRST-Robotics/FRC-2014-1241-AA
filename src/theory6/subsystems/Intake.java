@@ -58,22 +58,32 @@ public class Intake {
     }
     public void setSpeed(double speed) 
     {
-        if (Math.abs(speed) < 0.05 ) 
-        {
+
+        if (speed > 0.05){
+            leftSide.set(-speed);
+            rightSide.set(speed);
+
+            leftBottomSide.set(Relay.Value.kForward);
+            rightBottomSide.set(Relay.Value.kReverse);
+        }
+        else if (speed < -0.05){
+            
+            leftSide.set(-speed);
+            rightSide.set(speed);
+            
+            leftBottomSide.set(Relay.Value.kReverse);
+            rightBottomSide.set(Relay.Value.kForward);
+            
+            
+        }
+        else{
             speed = 0.0;
 
             leftSide.set(speed);
             rightSide.set(speed);
 
             leftBottomSide.set(Relay.Value.kOff);
-            rightBottomSide.set(Relay.Value.kOff);
-        }
-        else{
-            leftSide.set(-speed);
-            rightSide.set(speed);
-
-            leftBottomSide.set(Relay.Value.kReverse);
-            rightBottomSide.set(Relay.Value.kForward);
+            rightBottomSide.set(Relay.Value.kOff);           
         }
     }
     public void intakeBall(double joy, int scaledPower)

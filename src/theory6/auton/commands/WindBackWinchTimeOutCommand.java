@@ -18,10 +18,15 @@ public class WindBackWinchTimeOutCommand {
     Catapult catapult;   
     Timer t = new Timer();
     
+    double winchPos;
     double timeOutInSecs;
    
-    public WindBackWinchTimeOutCommand(int setpoint, double timeOut){ 
+    public WindBackWinchTimeOutCommand(double setpoint, double timeOut){ 
         catapult = Catapult.getInstance();
+        
+        this.winchPos = setpoint;
+            
+        
         this.timeOutInSecs = timeOut;  
     }
     public void init()
@@ -31,12 +36,17 @@ public class WindBackWinchTimeOutCommand {
     }
     public boolean run(){
        
-        //Winch is run until pot reaches setpoint
-        //Use setWinchPos function 
+//        if(!(catapult.getWinchPot() == winchPos))
+            catapult.setWinchPos(winchPos, Constants.getDouble("CatapultPotPosTolerance"));
+//        else
+//            catapult.setWinchPWM(0);
 
-        return t.get() > timeOutInSecs;
+        return t.get() > timeOutInSecs ;
     }
-    public void done(){
+    public void done()
+    {
+            
+            catapult.setWinchPWM(0);
     }       
 
 }

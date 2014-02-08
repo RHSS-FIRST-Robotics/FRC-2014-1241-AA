@@ -41,7 +41,8 @@ public class Catapult {
     
         trussShotPiston = new DoubleSolenoid (ElectricalConstants.TRUSS_ENGAGE, ElectricalConstants.TRUSS_DISENGAGE);
         trussShotToggle = new ToggleBoolean();
-        
+        winchReleasePiston = new DoubleSolenoid (ElectricalConstants.WINCH_ENGAGE, ElectricalConstants.WINCH_DISENGAGE);
+        winchReleaseToggle = new ToggleBoolean();
         
     }
 
@@ -71,7 +72,7 @@ public class Catapult {
         setWinchPWM(winchPID.updateOutput(getWinchPot()));
     }
     
-    public void setWinchPos(int setpoint, int tol) { 
+    public void setWinchPos(double setpoint, double tol) { 
         engageWinch();
         if(setpoint - getWinchPot() > tol) 
             setWinchPWM(-0.7);
@@ -106,21 +107,21 @@ public class Catapult {
             winchPistonState = true;   
         }
     }
-    public void trussShot(boolean trussToggleButton){
-        
-        trussShotToggle.set(trussToggleButton);
-        if(trussShotToggle.get())
-            trussShotState = !trussShotState;
-        
-        if(trussShotState)
-            trussShotPiston.set(DoubleSolenoid.Value.kForward);
-        else 
-            trussShotPiston.set(DoubleSolenoid.Value.kReverse);
-        
-        
-        
-        
-    }
+//    public void trussShot(boolean trussToggleButton){
+//        
+//        trussShotToggle.set(trussToggleButton);
+//        if(trussShotToggle.get())
+//            trussShotState = !trussShotState;
+//        
+//        if(trussShotState)
+//            trussShotPiston.set(DoubleSolenoid.Value.kForward);
+//        else 
+//            trussShotPiston.set(DoubleSolenoid.Value.kReverse);
+//        
+//        
+//        
+//        
+//    }
 
     
     public void disengageWinch()

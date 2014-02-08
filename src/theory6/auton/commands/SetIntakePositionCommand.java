@@ -21,14 +21,14 @@ public class SetIntakePositionCommand {
     }
         
     public void init() {
-        //Use toggleIntakePos function in Intake class
+        intake.toggleIntakePosAuton(false);
     }
 
     public boolean run() {
 
     intake.toggleIntakePosAuton(true);
     
-        return false;
+        return true;
     }
 
     public void done() {
