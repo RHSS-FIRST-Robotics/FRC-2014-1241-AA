@@ -117,34 +117,34 @@ public class Constants {
         }
     }
     
-    public static int getInteger(String constName, int def) {
+    public static int getInteger(String constName) {
         try {
             int val = Integer.parseInt(getString(constName, ""));
             return val;
         } catch (Exception e) {
-            return def;
+            return 0;
         }
     }
     
-    public static long getLong(String constName, long def) {
+    public static long getLong(String constName) {
         try {
             long val = Long.parseLong(getString(constName,""));
             return val;
         } catch(NumberFormatException e){
-            return def;
+            return 0;
         }
     }
     
-    public static boolean getBoolean (String constName, boolean def) {
+    public static boolean getBoolean (String constName) {
         try {
             boolean val = getString(constName, "").toLowerCase().equals("true");
             if(getString(constName, "").toLowerCase().equals("false")){
                 return val;
             }else{
-                return def;
+                return false;
             }
         } catch(NumberFormatException e) {
-            return def;
+            return false;
         }
     }
 }

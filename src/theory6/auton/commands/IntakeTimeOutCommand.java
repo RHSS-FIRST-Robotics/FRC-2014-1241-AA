@@ -32,7 +32,7 @@ public class IntakeTimeOutCommand {
 
     public boolean run() {
         
-        intake.setSpeed(pwmVal);
+       // intake.setSpeed(pwmVal);
         
         return t.get() > timeOutInSecs;
     }

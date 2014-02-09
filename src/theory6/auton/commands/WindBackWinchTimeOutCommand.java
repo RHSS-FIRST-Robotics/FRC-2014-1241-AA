@@ -37,7 +37,7 @@ public class WindBackWinchTimeOutCommand {
     public boolean run(){
        
 //        if(!(catapult.getWinchPot() == winchPos))
-            catapult.setWinchPos(winchPos, Constants.getDouble("CatapultPotPosTolerance"));
+//            catapult.setWinchPos(winchPos, Constants.getDouble("CatapultPotPosTolerance"));
 //        else
 //            catapult.setWinchPWM(0);
 

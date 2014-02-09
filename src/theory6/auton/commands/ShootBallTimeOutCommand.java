@@ -34,7 +34,7 @@ public class ShootBallTimeOutCommand implements AutonCommand{
     public boolean run() {
 
       
-        catapult.disengageWinch();
+//        catapult.disengageWinch();
 
         return t.get() > timeOutInSecs;
     }
