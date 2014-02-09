@@ -7,13 +7,14 @@
 package theory6.auton.commands;
 
 import edu.wpi.first.wpilibj.Timer;
+import theory6.auton.AutonCommand;
 import theory6.subsystems.Intake;
 
 /**
  *
  * @author Shubham
  */
-public class SetIntakePositionCommand {
+public class SetIntakePositionCommand implements AutonCommand{
     Intake intake;   
     
     public SetIntakePositionCommand (){

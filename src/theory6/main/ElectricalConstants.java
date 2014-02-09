@@ -59,7 +59,7 @@ public class ElectricalConstants {
     public static final double driveEncoderPulsePerRot = pulsePerRotation*gearRatio; //pulse per rotation * gear ratio
     public static final double driveEncoderDistPerTick =(Math.PI*2*driveWheelRadius)/driveEncoderPulsePerRot;
     public static final boolean rightDriveTrainEncoderReverse = true; //true on real
-    public static final boolean leftDriveTrainEncoderReverse = false; //true on real
+    public static final boolean leftDriveTrainEncoderReverse = true; //true on real
 
    //***************************************************************************
    //*************************** Pneumatics ************************************

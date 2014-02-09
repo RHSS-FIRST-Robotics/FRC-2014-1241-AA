@@ -12,11 +12,13 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import theory6.auton.AutonController;
 import theory6.subsystems.Catapult;
 import theory6.subsystems.DriveTrain;
 import theory6.subsystems.Intake;
 import theory6.utilities.Constants;
-
+import theory6.utilities.SendableChooser;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -38,7 +40,9 @@ public class AA1241 extends IterativeRobot {
     int lcdUpdateCycle = 0;
     
     boolean b;
-    
+    SendableChooser autonSwitcher;
+    AutonController ac = new AutonController();
+    AutonSequences autonSeq = new AutonSequences();
     public void robotInit() 
     {
         compressor = new Compressor(ElectricalConstants.COMPRESSOR_PRESSURE_SENSOR,
@@ -50,17 +54,34 @@ public class AA1241 extends IterativeRobot {
         catapult = Catapult.getInstance();
         drivePad = new Joystick(GamepadConstants.DRIVE_USB_PORT);
         toolPad = new Joystick(GamepadConstants.TOOL_USB_PORT);
-        
+        autonSwitcher = new SendableChooser();
         Constants.getInstance();
         Constants.load();
     }
 
     public void autonomousInit(){
         compressor.stop();
+        ac.clear();
+
+        driveTrain.resetGyro();
+        driveTrain.resetEncoders();
+        
+         switch(autonSwitcher.getSelected()){
+             case 0:
+                ac = autonSeq.testAutonDriveV1();
+                break;
+            case 1:
+                ac = autonSeq.testAutonDriveV2();
+                break;                
+            case 2:
+                ac = autonSeq.testAutonTurn();
+                break;
+         }
     }
     
     public void autonomousPeriodic() {
-
+        ac.executeCommands();
+        
     }
     public void disabledInit(){
         compressor.stop();
@@ -68,7 +89,7 @@ public class AA1241 extends IterativeRobot {
     }
             
     public void disabledPeriodic(){
- 
+        ac.clear();
         if(toolPad.getRawButton(GamepadConstants.A_BUTTON))
             driveTrain.recalibrateGyro();
         
@@ -102,9 +123,17 @@ public class AA1241 extends IterativeRobot {
         else {
             lcdUpdateCycle++;
         }
+        
+        //autonSwitcher.addDefault("Test", 0);
+        autonSwitcher.addInteger("Test-Drive V1", 0); 
+        autonSwitcher.addInteger("Test-Drive V2", 1);
+        autonSwitcher.addInteger("Test-Turn", 3);
+        SmartDashboard.putData("Auton Selecter", autonSwitcher);  
     }
     
     public void teleopInit(){
+        ac.clear();
+        
         compressor.start();
     }
 

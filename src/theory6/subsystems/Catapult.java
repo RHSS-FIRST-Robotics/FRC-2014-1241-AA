@@ -106,7 +106,9 @@ public class Catapult {
     public void setWinchState(double manualAdjustment, 
             boolean presetOne, boolean presetTwo, boolean disengage){
 
-        if (Math.abs(manualAdjustment) > 0.05){
+        if (Math.abs(manualAdjustment) > 0.1){
+            if (!winchPistonState && !setDisengaged)
+                    engagedState =  SET_ENGAGED;
             switch(engagedState){
             case SET_ENGAGED:
                 setEngaged = engageWinch(true);

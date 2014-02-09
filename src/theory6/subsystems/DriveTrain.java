@@ -68,10 +68,11 @@
         public void setLeftSpeed(double speed) 
         {
 
-        if (Math.abs(speed) < 0.05 ) 
-        {
-            speed = 0.0;
-        }
+            if (Math.abs(speed) < 0.05 ) 
+            {
+                speed = 0.0;
+            }
+            
         leftDriveBackAndFront.set(speed);
         leftDriveTop.set(speed);
         }
@@ -147,7 +148,7 @@
     /************************GYRO FUNCTIONS**************************/
     public double getGyroAngle()
     {
-        return (driveGyro.getAngle() / 168.2)*180.0;
+        return (driveGyro.getAngle() / 180)*180.0;
         
 
     }

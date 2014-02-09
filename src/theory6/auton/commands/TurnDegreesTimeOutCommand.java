@@ -12,6 +12,7 @@ import theory6.utilities.Constants;
 import theory6.utilities.MathLogic;
 import theory6.auton.AutonCommand;
 
+
 /**
  *
  * @author Sagar
@@ -34,6 +35,7 @@ public class TurnDegreesTimeOutCommand implements AutonCommand {
     
     DriveTrain driveTrain;
     PIDController gyroPID;
+
     Timer timeOutTimer = new Timer();
     Timer timeSinceAlmost = new Timer();
     
@@ -46,13 +48,15 @@ public class TurnDegreesTimeOutCommand implements AutonCommand {
         if (Math.abs (angleGoal) > 150) {
         gyroPID = new PIDController(Constants.getDouble("turnP180"),
                                     Constants.getDouble("turnI180"),
-                                    Constants.getDouble("turnD180"), 0); 
+                                    Constants.getDouble("turnD180")); 
         }
-        else {
+        
+        else if (Math.abs (angleGoal) < 150) {
         gyroPID = new PIDController(Constants.getDouble("turnPLessThan180"),
                         Constants.getDouble("turnILessThan180"),
-                        Constants.getDouble("turnDLessThan180"), 0); 
+                        Constants.getDouble("turnDLessThan180")); 
         }
+        
         driveTrain = DriveTrain.getInstance();
         
     }
@@ -63,14 +67,14 @@ public class TurnDegreesTimeOutCommand implements AutonCommand {
         
         timeOutTimer.reset();
         timeOutTimer.start();
+       
+        gyroPID.resetIntegral();
+        gyroPID.resetDerivative();
     }
     
     public boolean run() {
         double error = angleGoal - driveTrain.getGyroAngle();
-        
-        gyroPID.setGoal(angleGoal);
-        
-        double speed = maxRatePWM * gyroPID.updateOutput(driveTrain.getGyroAngle());
+        double speed = maxRatePWM * gyroPID.calcPID(angleGoal, driveTrain.getGyroAngle());
         
         if(Math.abs(error - lastError) < speedDeadband && Math.abs(error) < angleDeadband) {
             
@@ -100,6 +104,9 @@ public class TurnDegreesTimeOutCommand implements AutonCommand {
         
         timeSinceAlmost.stop();
         timeSinceAlmost.reset();
+        
+        gyroPID.resetIntegral();
+        gyroPID.resetDerivative();
     }
     
 }

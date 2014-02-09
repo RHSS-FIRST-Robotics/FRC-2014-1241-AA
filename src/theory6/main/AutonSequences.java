@@ -69,9 +69,47 @@ public class AutonSequences {
                                   Constants.getDouble("aDriveToNewZoneTimeOut")));
        
        return ac;
+   }   
        
+   
        
-   }
+       public AutonController testAutonDriveV1() { //NEW CONSTANTS UPDATE!
+        AutonController ac = new AutonController();
+        ac.clear();
+   
+        Constants.getInstance();   
+//ac.addCommand(new DriveToPosV2TimeOutCommand(Constants.getDouble("testDriveDistV2"), //new
+//                                                     Constants.getDouble("testDriveAngleV2"), //angle goal
+//                                                     Constants.getDouble("testDriveDistTimeoutV2"))); //new
+       ac.addCommand(new SetIntakePositionCommand());
+        return ac;
+    }
+    
+    public AutonController testAutonDriveV2() { 
+        AutonController ac = new AutonController();
+        ac.clear();
+   
+        Constants.getInstance();   
+        
+        ac.addCommand(new DriveToPosV2TimeOutCommand(Constants.getDouble("testDriveDistV2"), //new
+                                                     Constants.getDouble("testDriveAngleV2"), //angle goal
+                                                     Constants.getDouble("testDriveDistTimeoutV2"))); //new
+        ac.addCommand(new WaitCommand(1));
+        ac.addCommand(new ShootBallTimeOutCommand());
+                
+        return ac;
+    }
+    
+    public AutonController testAutonTurn() { 
+        AutonController ac = new AutonController();
+        ac.clear();
+   
+        Constants.getInstance();   
+        
+        ac.addCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("testAngleGoal"), 
+                                                    Constants.getDouble("testAngleTimeout"))); 
+        return ac;
+    } 
  
 }
 

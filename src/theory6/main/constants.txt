@@ -2,7 +2,7 @@
 
 bWinchPosOne = 330
 
-bWinchPosTwo = 300
+bWinchPosTwo = 380
 
 bWinchPosThree = 0
 
@@ -53,3 +53,43 @@ TurnDegreesToGoal = 0
 
 DriveToNewZone = 0
 bWinchShiftTime = 0.1
+
+testDriveDistV1 = 24
+testDriveAngleV1 = 0
+testDriveDistTimeoutV1 = 3
+
+testDriveDistV2 = 68
+testDriveAngleV2 = 0
+testDriveDistTimeoutV2 = 3
+
+testAngleGoal = 90
+testAngleTimeout = 2
+
+
+gyroGainV1 = 0.05
+
+driveLongV1P = 0.035
+driveLongV1I = 0
+driveLongV1D = 0.4
+
+driveShortV1P = 0.15
+driveShortV1I = 0
+driveShortV1D = 0.4
+
+gyroGainV2 = 0.048
+
+driveLongV2P = 0.035
+driveLongV2I = 0
+driveLongV2D = 0.3
+
+driveShortV2P = 0.07
+driveShortV2I = 0
+driveShortV2D = 0.35
+
+turnP180 = 0.1
+turnI180 = 0.0
+turnD180 = 0.5
+
+turnPLessThan180 = 0.0545
+turnILessThan180 = 0
+turnDLessThan180 = 0.35

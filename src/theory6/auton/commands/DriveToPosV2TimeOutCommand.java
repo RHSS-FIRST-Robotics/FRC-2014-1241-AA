@@ -49,7 +49,7 @@ public class DriveToPosV2TimeOutCommand implements AutonCommand {
 
         drivePID = new PIDController(Constants.getDouble("driveLongV2P"), 
                                      Constants.getDouble("driveLongV2I"), 
-                                     Constants.getDouble("driveLongV2D"), 0);
+                                     Constants.getDouble("driveLongV2D"));
 
         
         longP = Constants.getDouble("driveLongV2P");
@@ -61,10 +61,10 @@ public class DriveToPosV2TimeOutCommand implements AutonCommand {
         shortD = Constants.getDouble("driveShortV2D");
         
         if (Math.abs(distGoal) <= 30){
-            drivePID.changeGains(shortP, shortI, shortD, 0);
+            drivePID.changePIDGains(shortP, shortI, shortD);
         }
         else if (Math.abs(distGoal) > 30) {
-            drivePID.changeGains(longP, longI, longD, 0);
+            drivePID.changePIDGains(longP, longI, longD);
         }
         
         driveTrain = DriveTrain.getInstance();
@@ -92,9 +92,8 @@ public class DriveToPosV2TimeOutCommand implements AutonCommand {
 
         prevTime = currTime;
         prevAvgDist = currAvgDist;
-        
-        drivePID.setGoal(distGoal);
-        double drivePIDOutput = MathLogic.limitAbs(drivePID.updateOutput(currAvgDist), 1);
+
+        double drivePIDOutput = MathLogic.limitAbs(drivePID.calcPID(distGoal, currAvgDist), 1);
 
         double angleDiff = driveTrain.getGyroAngle() - (angleGoal + initialGyroAngle); 
         double straightGain = angleDiff * gyroGain;
@@ -106,7 +105,9 @@ public class DriveToPosV2TimeOutCommand implements AutonCommand {
         rightPwr += straightGain;
         
         driveTrain.setLeftSpeed(MathLogic.PWMLimit(leftPwr));
-        driveTrain.setRightSpeed(MathLogic.PWMLimit(rightPwr));
+        driveTrain.setRightSpeed(-MathLogic.PWMLimit(rightPwr));
+        
+        System.out.println(leftPwr);
         
         return (Math.abs(currAvgDist - distGoal) < 3) /*&& (Math.abs(driveVel) < 6)*/ || timeOutTimer.get() > timeout;
     }
