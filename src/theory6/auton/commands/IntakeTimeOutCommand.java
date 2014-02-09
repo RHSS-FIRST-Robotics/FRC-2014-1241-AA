@@ -31,9 +31,12 @@ public class IntakeTimeOutCommand {
     }
 
     public boolean run() {
-        
+
        // intake.setSpeed(pwmVal);
         intake.intakeBall(pwmVal,1);
+        intake.setRollerPWM(pwmVal);
+        intake.setPG71(pwmVal);
+
         return t.get() > timeOutInSecs;
     }
 

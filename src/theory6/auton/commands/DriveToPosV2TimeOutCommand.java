@@ -104,17 +104,16 @@ public class DriveToPosV2TimeOutCommand implements AutonCommand {
         leftPwr -= straightGain;
         rightPwr += straightGain;
         
-        driveTrain.setLeftSpeed(MathLogic.PWMLimit(leftPwr));
-        driveTrain.setRightSpeed(-MathLogic.PWMLimit(rightPwr));
-        
         System.out.println(leftPwr);
-        
+        driveTrain.setLeftPWM(MathLogic.PWMLimit(leftPwr));
+        driveTrain.setRightPWM(-MathLogic.PWMLimit(rightPwr));
+
         return (Math.abs(currAvgDist - distGoal) < 3) /*&& (Math.abs(driveVel) < 6)*/ || timeOutTimer.get() > timeout;
     }
     
     public void done() {
-        driveTrain.setLeftSpeed(0);
-        driveTrain.setRightSpeed(0);
+        driveTrain.setLeftPWM(0);
+        driveTrain.setRightPWM(0);
     }
     
 }

@@ -29,14 +29,14 @@ public class DriveSetSpeedTimeOut implements AutonCommand{
     }
 
     public boolean run() {
-        drivetrain.setLeftSpeed(pwmVal);
-        drivetrain.setRightSpeed(pwmVal);
+        drivetrain.setLeftPWM(pwmVal);
+        drivetrain.setRightPWM(pwmVal);
         
         return t.get() > timeOutInSecs;
     }
 
     public void done() {
-        drivetrain.setLeftSpeed(0);
-        drivetrain.setRightSpeed(0);
+        drivetrain.setLeftPWM(0);
+        drivetrain.setRightPWM(0);
     }  
 }

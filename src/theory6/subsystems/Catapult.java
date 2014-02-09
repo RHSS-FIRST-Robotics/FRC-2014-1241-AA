@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
 import theory6.main.ElectricalConstants;
+
+import theory6.pid.PIDController;
+
 import theory6.utilities.Constants;
 import theory6.utilities.ToggleBoolean;
 
@@ -29,8 +32,11 @@ public class Catapult {
     ToggleBoolean winchShiftToggle;
     AnalogChannel winchPot;
     Timer winchShiftTimer;
+
     public boolean winchPistonState = true;
     public boolean setDisengaged = false;
+
+
     boolean trussShotState = false;
             boolean setEngaged = true;
             
@@ -147,6 +153,17 @@ public class Catapult {
             
     }
     
+    public void setWinchPos(double setpoint, double pwm) { 
+        engageWinch(true);
+        if(setpoint - getWinchPot() > Constants.getInteger("bWinchPosTolerance")) 
+            setWinchPWM(pwm);
+        else if(setpoint - getWinchPot() < Constants.getInteger("bWinchPosTolerance")) 
+            setWinchPWM(-pwm);
+        else 
+            setWinchPWM(0);   
+
+    }
+    
     public void toggleWinchPistonPos(boolean winchPistonToggleButton) {        
         winchReleaseToggle.set(winchPistonToggleButton);
         
@@ -207,6 +224,7 @@ public class Catapult {
     }
 
     public void disengageWinch(boolean button)
+
     {
         if(winchPistonState && button){
             winchReleasePiston.set(DoubleSolenoid.Value.kForward);

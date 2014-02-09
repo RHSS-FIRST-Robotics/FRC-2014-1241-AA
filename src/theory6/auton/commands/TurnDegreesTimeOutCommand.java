@@ -92,15 +92,15 @@ public class TurnDegreesTimeOutCommand implements AutonCommand {
         
         lastError = error;
         
-        driveTrain.setLeftSpeed(speed);
-        driveTrain.setRightSpeed(-speed);
+        driveTrain.setLeftPWM(speed);
+        driveTrain.setRightPWM(-speed);
         
         return timeSinceAlmost.get() > settleTime || timeOutTimer.get() > timeout;
     }
     
     public void done() {
-        driveTrain.setLeftSpeed(0);
-        driveTrain.setRightSpeed(0);
+        driveTrain.setLeftPWM(0);
+        driveTrain.setRightPWM(0);
         
         timeSinceAlmost.stop();
         timeSinceAlmost.reset();

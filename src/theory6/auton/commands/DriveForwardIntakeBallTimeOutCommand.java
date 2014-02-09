@@ -65,8 +65,8 @@ public class DriveForwardIntakeBallTimeOutCommand implements AutonCommand{
     }
     public void done(){
         
-        drivetrain.setLeftSpeed(0);
-        drivetrain.setRightSpeed(0);
+        drivetrain.setLeftPWM(0);
+        drivetrain.setRightPWM(0);
         
     }
     
