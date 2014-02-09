@@ -9,6 +9,8 @@ package theory6.pid;
  * @author Team 1241
  * Simple PID Controller that assumes regular loop intervals 
  */
+
+//may be causing issues
 public class PIDControllerV2 {
     double pGain = 0;
     double iGain = 0;
