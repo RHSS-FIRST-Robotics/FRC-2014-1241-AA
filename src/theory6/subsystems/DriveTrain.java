@@ -65,17 +65,17 @@
             }
             return inst;
         }
-        public void setLeftSpeed(double speed) 
+        
+        public void setLeftPWM(double speed) 
         {
+            if (Math.abs(speed) < 0.05 ) 
+                speed = 0.0;
 
-        if (Math.abs(speed) < 0.05 ) 
-        {
-            speed = 0.0;
+            leftDriveBackAndFront.set(speed);
+            leftDriveTop.set(speed);
         }
-        leftDriveBackAndFront.set(speed);
-        leftDriveTop.set(speed);
-        }
-        public void setRightSpeed(double speed)
+        
+        public void setRightPWM(double speed)
         {
             if (Math.abs(speed) < 0.05 ) 
             {
@@ -88,18 +88,12 @@
 
         public void tankDrive (double leftJoy, double rightJoy, int scaledPower) 
         {
-            setLeftSpeed(leftAnalogScaler.scaleJoystick(leftJoy, scaledPower));
-            setRightSpeed(rightAnalogScaler.scaleJoystick(rightJoy, scaledPower));
+            setLeftPWM(leftAnalogScaler.scaleJoystick(leftJoy, scaledPower));
+            setRightPWM(rightAnalogScaler.scaleJoystick(rightJoy, scaledPower));
         }
 
     
         /************************ENCODER FUNCTIONS************************/
-
-        public void setEncoderDistPerPulse(double leftDistPerPulse, double rightDistPerPulse) 
-        {
-            leftDriveEncoder.setDistancePerPulse(leftDistPerPulse); 
-            rightDriveEncoder.setDistancePerPulse(rightDistPerPulse); 
-        }
 
         public void stopEncoders() 
         {
@@ -137,8 +131,6 @@
             return rightDriveEncoder.getRate(); 
         }
 
-    /************************RESET FUNCTIONS*************************/
-
         public void resetEncoders()
         {
             leftDriveEncoder.reset();
@@ -148,8 +140,6 @@
     public double getGyroAngle()
     {
         return (driveGyro.getAngle() / 168.2)*180.0;
-        
-
     }
     
     public void resetGyro()

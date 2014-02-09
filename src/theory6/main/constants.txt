@@ -1,20 +1,26 @@
-o//SHARED CONSTANTS WITHIN DIFFERENT AUTONS
+//SHARED CONSTANTS WITHIN DIFFERENT AUTONS
 
-bWinchPosOne = 
+bWinchPosOne = 330
 
-bWinchPosTwo = 
+bWinchPosTwo = 0
 
-bWinchPosThree = 
+bWinchPosThree = 0
 
-aShootBallTimeOut =
+bWinchPosTolerance = 5
 
-aTurnDegreesTimeOut =
+aShootBallTimeOut = 0
 
-aDriveForwardTimeOut =
+aTurnDegreesTimeOut = 0
 
-aShootAllianceBallTimeOut =
+aDriveForwardTimeOut = 0
 
-aDriveToNewZoneTimeOut =
+aShootAllianceBallTimeOut = 0
+
+aDriveToNewZoneTimeOut = 0
+
+bWinchShiftSpeed = 1
+
+bWinchWindBackSpeed = 0.7
 
 
 
@@ -23,25 +29,23 @@ aDriveToNewZoneTimeOut =
 
 
 
-DriveForwardDistance = 
+DriveForwardDistance = 0
 
-AlliancePartnerAngle =
+AlliancePartnerAngle = 0
 
-DistanceToAlliancePartner =
+DistanceToAlliancePartner = 0
 
-DistanceToNewZone =
+DistanceToNewZone = 0
 
-OtherGoalAngle =
+OtherGoalAngle = 0
 
-GoalAngleTimeOut =
+GoalAngleTimeOut = 0
 
-AlliancePartnerAngleTwo =
+AlliancePartnerAngleTwo = 0
 
-DistanceToAlliancePartnerTwo =
+DistanceToAlliancePartnerTwo = 0
 
-TurnDegreesToGoal =
+TurnDegreesToGoal = 0
 
-DriveToNewZone =
-
-
-
+DriveToNewZone = 0
+bWinchShiftTime = 2

@@ -37,15 +37,15 @@ public class DriveSetSpeedAndDistanceTimeOutCommand implements AutonCommand{
     }
 
     public boolean run() {
-        drivetrain.setLeftSpeed(pwmVal - (drivetrain.getGyroAngle() * gyroGain));
-        drivetrain.setRightSpeed(pwmVal  + (drivetrain.getGyroAngle() * gyroGain));
+        drivetrain.setLeftPWM(pwmVal - (drivetrain.getGyroAngle() * gyroGain));
+        drivetrain.setRightPWM(pwmVal  + (drivetrain.getGyroAngle() * gyroGain));
         
         return (Math.abs(drivetrain.getLeftEncoderDist()) > Math.abs(encoderTicks) || Math.abs(drivetrain.getRightEncoderDist()) > Math.abs(encoderTicks)) ||t.get() > timeOutInSecs;
     }
 
     public void done() {
-        drivetrain.setLeftSpeed(0);
-        drivetrain.setRightSpeed(0);
+        drivetrain.setLeftPWM(0);
+        drivetrain.setRightPWM(0);
     }  
 }
 

@@ -56,51 +56,51 @@ public class Intake {
         }
         return inst;
     }
-    public void setSpeed(double speed) 
+    public void setRollerPWM(double pwm) 
     {
-
-        if (speed > 0.05){
-            leftSide.set(-speed);
-            rightSide.set(speed);
-
+        if (Math.abs(pwm) < 0.05) 
+        {
+            leftSide.set(0);
+            rightSide.set(0);
+        }
+        else{
+            leftSide.set(-pwm);
+            rightSide.set(pwm);
+        }
+    }
+    public void setPG71(double intakePWM)
+    {
+        if(intakePWM > 0.05){ //intake
+            leftBottomSide.set(Relay.Value.kReverse);
+            rightBottomSide.set(Relay.Value.kForward);
+        }
+        else if (intakePWM < -0.05){ //outake
             leftBottomSide.set(Relay.Value.kForward);
             rightBottomSide.set(Relay.Value.kReverse);
         }
-        else if (speed < -0.05){
-            
-            leftSide.set(-speed);
-            rightSide.set(speed);
-            
-            leftBottomSide.set(Relay.Value.kReverse);
-            rightBottomSide.set(Relay.Value.kForward);
-            
-            
-        }
-        else{
-            speed = 0.0;
-
-            leftSide.set(speed);
-            rightSide.set(speed);
-
+        else  
+        {
             leftBottomSide.set(Relay.Value.kOff);
-            rightBottomSide.set(Relay.Value.kOff);           
+            rightBottomSide.set(Relay.Value.kOff);
         }
     }
+    
+    
     public void intakeBall(double joy, int scaledPower)
     {
-        setSpeed(rightAnalogScaler.scaleJoystick(joy, scaledPower)); 
+        setRollerPWM(rightAnalogScaler.scaleJoystick(joy, scaledPower));
+        setPG71(joy);
     }
     //public boolean ballDetected() {
         //return !intakeLimit.get();
     //}
     
     //Used for tele-op control of intake position
-    public void setIntakePosition(boolean intakeAngleToggleButton) {
-        intakeAngleState = intakeAngleToggleButton;
-        if(intakeAngleState)
-            intakeAnglePiston.set(DoubleSolenoid.Value.kReverse);
-        else 
+    public void setIntakePosTeleop(boolean intakeAngleToggleButton) {
+        if(intakeAngleToggleButton)
             intakeAnglePiston.set(DoubleSolenoid.Value.kForward);
+        else 
+            intakeAnglePiston.set(DoubleSolenoid.Value.kReverse);
     }
     
     //Used for toggling position in autonomous
