@@ -8,13 +8,14 @@ package theory6.auton.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import theory6.subsystems.Catapult;
-import theory6.utilities.Constants;
+import theory6.utilities.Constants; 
+import theory6.auton.AutonCommand;
 
 /**
  *
  * @author Shubham
  */
-public class WindBackWinchTimeOutCommand {
+public class WindBackWinchTimeOutCommand implements AutonCommand {
     Catapult catapult;   
     Timer t = new Timer();
     
@@ -27,7 +28,8 @@ public class WindBackWinchTimeOutCommand {
         this.winchPos = setpoint;
             
         
-        this.timeOutInSecs = timeOut;  
+        this.timeOutInSecs = timeOut; 
+        Constants.getInstance();
     }
     public void init()
     {
@@ -40,13 +42,12 @@ public class WindBackWinchTimeOutCommand {
 //            catapult.setWinchPos(winchPos, Constants.getDouble("CatapultPotPosTolerance"));
 //        else
 //            catapult.setWinchPWM(0);
-
+        catapult.setWinchPos(winchPos);
         return t.get() > timeOutInSecs ;
     }
     public void done()
     {
-            
-            catapult.setWinchPWM(0);
+        catapult.setWinchPWM(0);
     }       
 
 }

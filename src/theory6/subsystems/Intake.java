@@ -97,10 +97,14 @@ public class Intake {
     
     //Used for tele-op control of intake position
     public void setIntakePosTeleop(boolean intakeAngleToggleButton) {
-        if(intakeAngleToggleButton)
+        if(intakeAngleToggleButton) {
             intakeAnglePiston.set(DoubleSolenoid.Value.kForward);
-        else 
+            intakeAngleState = true;
+        }
+        else {
             intakeAnglePiston.set(DoubleSolenoid.Value.kReverse);
+            intakeAngleState = false;
+        }
     }
     
     //Used for toggling position in autonomous
@@ -109,8 +113,8 @@ public class Intake {
         if(intakeAngleToggle.get())
             intakeAngleState = !intakeAngleState;
         if(intakeAngleState)
-            intakeAnglePiston.set(DoubleSolenoid.Value.kReverse);
-        else 
             intakeAnglePiston.set(DoubleSolenoid.Value.kForward);
+        else
+            intakeAnglePiston.set(DoubleSolenoid.Value.kReverse);
     }
 }

@@ -7,13 +7,14 @@
 package theory6.auton.commands;
 
 import edu.wpi.first.wpilibj.Timer;
+import theory6.auton.AutonCommand;
 import theory6.subsystems.Intake;
 
 /**
  *
  * @author Shubham
  */
-public class IntakeTimeOutCommand {
+public class IntakeTimeOutCommand implements AutonCommand{
     Intake intake;   
     Timer t = new Timer();
     double pwmVal;
@@ -34,13 +35,13 @@ public class IntakeTimeOutCommand {
 
        // intake.setSpeed(pwmVal);
         intake.intakeBall(pwmVal,1);
-        intake.setRollerPWM(pwmVal);
-        intake.setPG71(pwmVal);
+        //intake.setRollerPWM(pwmVal);
+        //intake.setPG71(pwmVal);
 
         return t.get() > timeOutInSecs;
     }
 
     public void done() {
-
+        intake.intakeBall(0, 1);
     }  
 }

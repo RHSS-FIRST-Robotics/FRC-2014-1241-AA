@@ -148,7 +148,7 @@ public class Catapult {
         
         setWinchPos(winchSetpoint);
         
-        System.out.println(winchSetpoint);
+        //System.out.println(winchSetpoint);
         }
             
     }

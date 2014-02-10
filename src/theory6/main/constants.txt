@@ -90,6 +90,30 @@ turnP180 = 0.1
 turnI180 = 0.0
 turnD180 = 0.5
 
-turnPLessThan180 = 0.0545
+turnPLessThan180 = 0.05
 turnILessThan180 = 0
 turnDLessThan180 = 0.35
+
+intakeTime = 3
+intakePWM = 1
+
+OBDriveForwardDist = 68
+OBDriveAngle = 0
+OBDriveDistTimeout = 3
+
+//Two Ball Auton
+TBSecondShotWindTimeout = 4
+
+twoBallTurn1 = 90
+twoBallTurnTimeout1 = 2
+
+TBDriveForwardDist1 = 20
+TBDriveAngle1 = 0
+TBDriveDistTimeout1 = 2
+
+twoBallTurn2 = -90
+twoBallTurnTimeout2 = 2;
+
+TBDriveForwardDist2 = -20
+TBDriveAngle2 = 0
+TBDriveDistTimeout2 = 2

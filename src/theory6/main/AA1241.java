@@ -78,6 +78,9 @@ public class AA1241 extends IterativeRobot {
             case 2:
                 ac = autonSeq.testAutonTurn();
                 break;
+            case 3:
+                ac = autonSeq.twoBall();
+                break;
          }
     }
     
@@ -129,7 +132,8 @@ public class AA1241 extends IterativeRobot {
         //autonSwitcher.addDefault("Test", 0);
         autonSwitcher.addInteger("Test-Drive V1", 0); 
         autonSwitcher.addInteger("Test-Drive V2", 1);
-        autonSwitcher.addInteger("Test-Turn", 3);
+        autonSwitcher.addInteger("Test-Turn", 2);
+          autonSwitcher.addInteger("Two Ball", 3);
         SmartDashboard.putData("Auton Selecter", autonSwitcher);  
     }
     
@@ -186,14 +190,14 @@ public class AA1241 extends IterativeRobot {
 //        else {
 //           catapult.setWinchPWM(winchJoy); 
 
-        if(toolPad.getRawButton(GamepadConstants.A_BUTTON))
-                b = true;
-        else {
-            b = false;
-            catapult.toggleWinchPistonPos(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
-        }
+//        if(toolPad.getRawButton(GamepadConstants.A_BUTTON))
+//                b = true;
+//        else {
+//            b = false;
+//            catapult.toggleWinchPistonPos(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
+//        }
 
-        catapult.engageWinch(b);
+        //catapult.engageWinch(b);
         
         catapult.holdTrussPistonPos(toolPad.getRawButton(GamepadConstants.RIGHT_TRIGGER));
         
