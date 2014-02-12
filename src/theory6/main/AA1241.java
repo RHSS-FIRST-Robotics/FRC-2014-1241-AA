@@ -39,7 +39,6 @@ public class AA1241 extends IterativeRobot {
     
     int lcdUpdateCycle = 0;
     
-    boolean b;
     SendableChooser autonSwitcher;
     AutonController ac = new AutonController();
     AutonSequences autonSeq = new AutonSequences();
@@ -56,8 +55,9 @@ public class AA1241 extends IterativeRobot {
         drivePad = new Joystick(GamepadConstants.DRIVE_USB_PORT);
         toolPad = new Joystick(GamepadConstants.TOOL_USB_PORT);
         autonSwitcher = new SendableChooser();
+        
         Constants.getInstance();
-        Constants.load();
+        //Constants.load();
     }
 
     public void autonomousInit(){
@@ -86,7 +86,7 @@ public class AA1241 extends IterativeRobot {
     
     public void autonomousPeriodic() {
         ac.executeCommands();
-        
+        updateDSLCD();
     }
     public void disabledInit(){
         compressor.stop();
@@ -103,28 +103,8 @@ public class AA1241 extends IterativeRobot {
         
         if(toolPad.getRawButton(GamepadConstants.Y_BUTTON))
             driveTrain.resetGyro();
-
-        dsLCD.println(DriverStationLCD.Line.kUser1, 1, "R Enc: "
-        + driveTrain.getRightEncoderDist());
         
-        dsLCD.println(DriverStationLCD.Line.kUser2, 1, "L Enc: "
-        + driveTrain.getLeftEncoderDist());
-        
-        dsLCD.println(DriverStationLCD.Line.kUser3, 1, "Gyro: "
-        + driveTrain.getGyroAngle());
-        
-        dsLCD.println(DriverStationLCD.Line.kUser4, 1, "Catapult Pot: "
-        + catapult.getWinchPot());
-        
-//        dsLCD.println(DriverStationLCD.Line.kUser6, 1, "Limit Switch: "
-//        + intake.ballDetected());
-
-        if ((lcdUpdateCycle % 50) == 0) {
-            dsLCD.updateLCD();
-        } 
-        else {
-            lcdUpdateCycle++;
-        }
+        updateDSLCD();
         
         //autonSwitcher.addDefault("Test", 0);
         autonSwitcher.addInteger("Test-Drive V1", 0); 
@@ -153,7 +133,6 @@ public class AA1241 extends IterativeRobot {
         else
             driveTrain.tankDrive(-leftAnalogY, rightAnalogY, 3);
 
-        
         //Intake Code
         intake.intakeBall(intakeJoy, 3);
 
@@ -168,21 +147,22 @@ public class AA1241 extends IterativeRobot {
         
         catapult.disengageWinch(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
         
-        catapult.holdTrussPistonPos(toolPad.getRawButton(GamepadConstants.RIGHT_TRIGGER));
+        updateDSLCD();
+    }
+    
+    private void updateDSLCD() {
         
-        dsLCD.println(DriverStationLCD.Line.kUser1, 1, "R Enc: "
-        + driveTrain.getRightEncoderDist());
+        dsLCD.println(DriverStationLCD.Line.kUser1, 1, "LEnc: "
+        + (Math.floor(driveTrain.getLeftEncoderDist()*10) / 10.0) + " REnc: " 
+        + (Math.floor(driveTrain.getRightEncoderDist()*10) / 10.0));
         
-        dsLCD.println(DriverStationLCD.Line.kUser2, 1, "L Enc: "
-        + driveTrain.getLeftEncoderDist());
+        dsLCD.println(DriverStationLCD.Line.kUser2, 1, "Gyro: "
+        + Math.floor(driveTrain.getGyroAngle() * 100) / 100);
         
-        dsLCD.println(DriverStationLCD.Line.kUser3, 1, "Gyro: "
-        + driveTrain.getGyroAngle());
-        
-        dsLCD.println(DriverStationLCD.Line.kUser4, 1, "Catapult Pot: "
+        dsLCD.println(DriverStationLCD.Line.kUser3, 1, "Catapult Pot: "
         + catapult.getWinchPot());
         
-//        dsLCD.println(DriverStationLCD.Line.kUser6, 1, "Limit Switch: "
+//        dsLCD.println(DriverStationLCD.Line.kUser4, 1, "Limit Switch: "
 //        + intake.ballDetected());
         
         if ((lcdUpdateCycle % 50) == 0) {
