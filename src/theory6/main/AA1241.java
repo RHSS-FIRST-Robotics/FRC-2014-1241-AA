@@ -148,14 +148,11 @@ public class AA1241 extends IterativeRobot {
         double winchJoy = toolPad.getRawAxis(GamepadConstants.RIGHT_ANALOG_Y);
 
         //Drive Code
-        if(drivePad.getRawButton(GamepadConstants.RIGHT_BUMPER))
-        {
-            driveTrain.tankDrive(-leftAnalogY, rightAnalogY, 1);
-        }
+        if(drivePad.getRawButton(GamepadConstants.RIGHT_BUMPER)) //rightBumper is half speed button for driver!
+            driveTrain.tankDrive(-leftAnalogY/2, rightAnalogY/2, 1);
         else
-        {
             driveTrain.tankDrive(-leftAnalogY, rightAnalogY, 3);
-        }
+
         
         //Intake Code
         intake.intakeBall(intakeJoy, 3);
