@@ -24,7 +24,7 @@ public class AutonSequences {
         ac.clear();
         
         ac.addCommand(new ShootBallTimeOutCommand());
-        ac.addCommand(new DriveToPosV2TimeOutCommand(Constants.getDouble("DriveForwardDistance"),
+        ac.addCommand(new DriveToPosTimeOutCommand(Constants.getDouble("DriveForwardDistance"),
                                    0.0,
                                    Constants.getDouble("aDriveToNewZoneTimeOut")));
         
@@ -37,12 +37,12 @@ public class AutonSequences {
        ac.clear();
        
        ac.addCommand(new ShootBallTimeOutCommand());
-       ac.addCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("AlliancePartnerAngle"), 
+       ac.addCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("aAlliancePartnerAngle"), 
                                  Constants.getDouble("aTurnDegreesTimeOut")));
-       ac.addCommand(new DriveForwardIntakeBallTimeOutCommand(Constants.getDouble("DistanceToAlliancePartner"), 
-                                            Constants.getDouble("aDriveForwardTimeOut")));
+       //ac.addCommand(new DriveForwardIntakeBallTimeOutCommand(Constants.getDouble("aDistanceToAlliancePartner"), 
+                                            //Constants.getDouble("aDriveForwardTimeOut")));
        ac.addCommand(new ShootBallTimeOutCommand());
-       ac.addCommand(new DriveToPosV2TimeOutCommand(Constants.getDouble("DistanceToNewZone"),
+       ac.addCommand(new DriveToPosTimeOutCommand(Constants.getDouble("aDistanceToNewZone"),
                                   0,
                                   Constants.getDouble("aDriveToNewZoneTimeOut")));
        
@@ -54,17 +54,18 @@ public class AutonSequences {
        AutonController ac = new AutonController();
        ac.clear();
        
-       ac.addCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("OtherGoalAngle"), 
+       ac.addCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("aOtherGoalAngle"), 
                                  Constants.getDouble("aTurnDegreesTimeOut")));
        ac.addCommand(new ShootBallTimeOutCommand());
-       ac.addCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("AlliancePartnerAngleTwo"), 
+       ac.addCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("aAlliancePartnerAngleTwo"), 
                                  Constants.getDouble("aTurnDegreesTimeOut")));
-       ac.addCommand(new DriveForwardIntakeBallTimeOutCommand(Constants.getDouble("DistanceToAllianceTwo"), 
-                                     Constants.getDouble("aDriveForwardTimeOut")));
-       ac.addCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("TurnDegreesToGoal"), 
+       //ac.addCommand(new DriveForwardIntakeBallTimeOutCommand(Constants.getDouble("aDistanceToAllianceTwo"), 
+                                     //Constants.getDouble("aDriveForwardTimeOut")));
+       
+       ac.addCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("aTurnDegreesToGoal"), 
                                  Constants.getDouble("aTurnDegreesTimeOut")));
        ac.addCommand(new ShootBallTimeOutCommand());
-       ac.addCommand(new DriveToPosV2TimeOutCommand(Constants.getDouble("DriveToNewZone"), 
+       ac.addCommand(new DriveToPosTimeOutCommand(Constants.getDouble("aDriveToNewZone"), 
                                   0, 
                                   Constants.getDouble("aDriveToNewZoneTimeOut")));
        
@@ -78,7 +79,7 @@ public class AutonSequences {
         ac.clear();
    
         Constants.getInstance();   
-//ac.addCommand(new DriveToPosV2TimeOutCommand(Constants.getDouble("testDriveDistV2"), //new
+//ac.addCommand(new DriveToPosTimeOutCommand(Constants.getDouble("testDriveDistV2"), //new
 //                                                   Constants.getDouble("testDriveAngleV2"), //angle goal
 //                                                     Constants.getDouble("testDriveDistTimeoutV2"))); //new
        ac.addCommand(new SetIntakePositionCommand());
@@ -92,7 +93,7 @@ public class AutonSequences {
    
         Constants.getInstance();   
         
-        ac.addCommand(new DriveToPosV2TimeOutCommand(Constants.getDouble("testDriveDistV2"), //new
+        ac.addCommand(new DriveToPosTimeOutCommand(Constants.getDouble("testDriveDistV2"), //new
                                                      Constants.getDouble("testDriveAngleV2"), //angle goal
                                                      Constants.getDouble("testDriveDistTimeoutV2"))); //new
         ac.addCommand(new WaitCommand(1));
@@ -105,7 +106,7 @@ public class AutonSequences {
         AutonController ac = new AutonController();
         ac.clear();
         Constants.getInstance();
-        ac.addCommand(new DriveToPosV2TimeOutCommand(Constants.getDouble("OBDriveForwardDist"), //new
+        ac.addCommand(new DriveToPosTimeOutCommand(Constants.getDouble("OBDriveForwardDist"), //new
                                                      Constants.getDouble("OBDriveAngle"), //angle goal
                                                      Constants.getDouble("OBDriveDistTimeout"))); //new
         return ac;
@@ -120,12 +121,12 @@ public class AutonSequences {
         //ac.addCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("twoBallTurn1"),Constants.getDouble("twoBallTurnTimeout1")));
 //        ac.addCommand(new SetIntakePositionCommand());
 //        ac.addCommand(new TwoParallelMotionsCommand((new IntakeTimeOutCommand(Constants.getDouble("intakePWM"),Constants.getDouble("intakeTime"))),0,
-//                new DriveToPosV2TimeOutCommand(Constants.getDouble("TBDriveForwardDist1"), //new
+//                new DriveToPosTimeOutCommand(Constants.getDouble("TBDriveForwardDist1"), //new
 //                                                     Constants.getDouble("TBDriveAngle1"), //angle goal
 //                                                     Constants.getDouble("TBDriveDistTimeout1")))); //new)))
 //        ac.addCommand(new SetIntakePositionCommand());
 //        ac.addCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("twoBallTurn2"),Constants.getDouble("twoBallTurnTimeout2")));
-//                ac.addCommand(new DriveToPosV2TimeOutCommand(Constants.getDouble("TBDriveForwardDist2"), //new
+//                ac.addCommand(new DriveToPosTimeOutCommand(Constants.getDouble("TBDriveForwardDist2"), //new
 //                                                     Constants.getDouble("TBDriveAngle2"), //angle goal
 //                                                     Constants.getDouble("TBDriveDistTimeout2"))); //new
 //        ac.addCommand(new ShootBallTimeOutCommand());

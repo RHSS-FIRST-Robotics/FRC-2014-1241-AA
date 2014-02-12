@@ -33,25 +33,26 @@ bWinchDecrement = 2
 
 
 
-DriveForwardDistance = 0
+aDriveForwardDistance = 0
 
-AlliancePartnerAngle = 0
+aAlliancePartnerAngle = 0
 
-DistanceToAlliancePartner = 0
+aDistanceToAlliancePartner = 0
 
-DistanceToNewZone = 0
+aDistanceToNewZone = 0
 
-OtherGoalAngle = 0
+aOtherGoalAngle = 0
 
-GoalAngleTimeOut = 0
+aGoalAngleTimeOut = 0
 
-AlliancePartnerAngleTwo = 0
+aAlliancePartnerAngleTwo = 0
 
-DistanceToAlliancePartnerTwo = 0
+aDistanceToAlliancePartnerTwo = 0
 
-TurnDegreesToGoal = 0
+aTurnDegreesToGoal = 0
 
-DriveToNewZone = 0
+aDriveToNewZone = 0
+
 bWinchShiftTime = 0.1
 
 testDriveDistV1 = 24

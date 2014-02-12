@@ -16,7 +16,7 @@ import theory6.utilities.MathLogic;
  *
  * @author Sagar and Het
  */
-public class DriveToPosV2TimeOutCommand implements AutonCommand {
+public class DriveToPosTimeOutCommand implements AutonCommand {
     
     double angleGoal = 0;
     double distGoal = 0;
@@ -40,7 +40,7 @@ public class DriveToPosV2TimeOutCommand implements AutonCommand {
     
     DriveTrain driveTrain;
     
-    public DriveToPosV2TimeOutCommand(double distance, double angle, double timeOutSecs) {
+    public DriveToPosTimeOutCommand(double distance, double angle, double timeOutSecs) {
         Constants.getInstance();
         this.angleGoal = -angle;
         this.distGoal = distance;

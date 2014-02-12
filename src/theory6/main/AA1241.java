@@ -116,9 +116,6 @@ public class AA1241 extends IterativeRobot {
         dsLCD.println(DriverStationLCD.Line.kUser4, 1, "Catapult Pot: "
         + catapult.getWinchPot());
         
-//        dsLCD.println(DriverStationLCD.Line.kUser5, 1, "Winch State "
-//        + catapult.winchPistonState);
-        
 //        dsLCD.println(DriverStationLCD.Line.kUser6, 1, "Limit Switch: "
 //        + intake.ballDetected());
 
@@ -133,14 +130,12 @@ public class AA1241 extends IterativeRobot {
         autonSwitcher.addInteger("Test-Drive V1", 0); 
         autonSwitcher.addInteger("Test-Drive V2", 1);
         autonSwitcher.addInteger("Test-Turn", 2);
-          autonSwitcher.addInteger("Two Ball", 3);
+        autonSwitcher.addInteger("Two Ball", 3);
         SmartDashboard.putData("Auton Selecter", autonSwitcher);  
     }
     
     public void teleopInit(){
-
-        ac.clear();
-        
+        ac.clear();  
         compressor.start();
     }
 
@@ -167,69 +162,17 @@ public class AA1241 extends IterativeRobot {
 
         intake.setIntakePosTeleop(toolPad.getRawButton(GamepadConstants.LEFT_BUMPER));
         
-                
-////        if(toolPad.getRawButton(GamepadConstants.A_BUTTON))
-////                b = true;
-////        else {
-////            b = false;
-////            catapult.toggleWinchPistonPos(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
-////        }
-
-        //catapult.engageWinch(b);
-        
+        //Truss Piston
         catapult.holdTrussPistonPos(toolPad.getRawButton(GamepadConstants.RIGHT_TRIGGER));
         
-        catapult.setWinchState(winchJoy, toolPad.getRawButton(GamepadConstants.B_BUTTON), 
-                               toolPad.getRawButton(GamepadConstants.A_BUTTON),
-                               toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
+        //Winch code
+        catapult.windWinch(winchJoy, toolPad.getRawButton(GamepadConstants.B_BUTTON), //preset one
+                                     toolPad.getRawButton(GamepadConstants.A_BUTTON)); //preset two
         
         catapult.disengageWinch(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
-//        if(toolPad.getRawButton(GamepadConstants.B_BUTTON)) {
-//            catapult.setWinchPos(Constants.getDouble("bWinchPosOne"), Constants.getDouble("bWinchWindBackSpeed"));
-//        }
-//        else {
-//           catapult.setWinchPWM(winchJoy); 
-
-//        if(toolPad.getRawButton(GamepadConstants.A_BUTTON))
-//                b = true;
-//        else {
-//            b = false;
-//            catapult.toggleWinchPistonPos(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
-//        }
-
-        //catapult.engageWinch(b);
         
         catapult.holdTrussPistonPos(toolPad.getRawButton(GamepadConstants.RIGHT_TRIGGER));
         
-        if(toolPad.getRawButton(GamepadConstants.B_BUTTON)) {
-            catapult.setWinchPos(Constants.getDouble("bWinchPosOne"), Constants.getDouble("bWinchWindBackSpeed"));
-        }
-        else {
-           catapult.setWinchPWM(winchJoy); 
-       // catapult.trussShot(toolPad.getRawButton(GamepadConstants.X_BUTTON));
-        
-//        if(!(catapult.getWinchPot() == Constants.getDouble("bWinchPosOne"))){
-//              
-//            catapult.toggleWinchPistonPos(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
-//            catapult.setWinchPWM(winchSpeed);
-//        
-//        }
-//        else{
-//            
-//            catapult.setWinchPWM(0);
-//            
-//            
-//            
-//        }
-        
-            
-        
-//        if(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER)/* && intake.ballDetected() */)
-//            catapult.disengageWinch();
-
-//    }
-        
-        
         dsLCD.println(DriverStationLCD.Line.kUser1, 1, "R Enc: "
         + driveTrain.getRightEncoderDist());
         
@@ -241,27 +184,6 @@ public class AA1241 extends IterativeRobot {
         
         dsLCD.println(DriverStationLCD.Line.kUser4, 1, "Catapult Pot: "
         + catapult.getWinchPot());
-        dsLCD.println(DriverStationLCD.Line.kUser5, 1, "WinchSet:"
-        + catapult.winchSetpoint);
-
-    }
-        
-        
-        dsLCD.println(DriverStationLCD.Line.kUser1, 1, "R Enc: "
-        + driveTrain.getRightEncoderDist());
-        
-        dsLCD.println(DriverStationLCD.Line.kUser2, 1, "L Enc: "
-        + driveTrain.getLeftEncoderDist());
-        
-        dsLCD.println(DriverStationLCD.Line.kUser3, 1, "Gyro: "
-        + driveTrain.getGyroAngle());
-        
-        dsLCD.println(DriverStationLCD.Line.kUser4, 1, "Catapult Pot: "
-        + catapult.getWinchPot());
-
-        
-//        dsLCD.println(DriverStationLCD.Line.kUser5, 1, "Winch State "
-//        + catapult.winchPistonState);
         
 //        dsLCD.println(DriverStationLCD.Line.kUser6, 1, "Limit Switch: "
 //        + intake.ballDetected());

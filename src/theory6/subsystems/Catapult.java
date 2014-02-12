@@ -27,24 +27,33 @@ public class Catapult {
     
     DoubleSolenoid winchReleasePiston;
     DoubleSolenoid trussShotPiston;
+    
     ToggleBoolean trussShotToggle;
-    ToggleBoolean winchReleaseToggle;
+    ToggleBoolean winchStateToggle;
     ToggleBoolean winchShiftToggle;
+    
     AnalogChannel winchPot;
+    
     Timer winchShiftTimer;
 
-    public boolean winchPistonState = true;
-    public boolean setDisengaged = false;
+    final boolean ENGAGED = true;
+    final boolean DISENGAGED = false;
+    boolean winchPistonState = DISENGAGED; //piston assumed to be engaged in gearbox in default state when robot is turned on
 
-
-    boolean trussShotState = false;
-            boolean setEngaged = true;
+    final boolean EXTENDED = true;
+    final boolean RETRACTED = false;
+    boolean trussPistonState = RETRACTED; //piston assumed to be retracted in default state when robot is turned on
             
-    public double winchSetpoint;
+    double winchSetpoint;
     
-    final int SET_ENGAGED = 0;
-    final int WIND_WINCH = 1;
-    int engagedState = 1;
+    final int ENGAGE = 0;
+    final int FULLY_ENGAGED = 1;   
+    int setEngaged = ENGAGE;
+    
+    final int WIND_WINCH = 2;
+    int setWinchPosSeq = WIND_WINCH;
+    
+    boolean firstRun = true; //used in disengageWinch
     
     public Catapult()
     {
@@ -55,13 +64,14 @@ public class Catapult {
         leftWinchMotor = new Talon(ElectricalConstants.LEFT_WINCH_PWM);
         
         trussShotPiston = new DoubleSolenoid (ElectricalConstants.TRUSS_ENGAGE, ElectricalConstants.TRUSS_DISENGAGE);
-        trussShotToggle = new ToggleBoolean();
-        winchReleaseToggle = new ToggleBoolean();
         winchReleasePiston = new DoubleSolenoid ( ElectricalConstants.WINCH_ENGAGE, ElectricalConstants.WINCH_DISENGAGE);
+        
+        trussShotToggle = new ToggleBoolean();
+        winchStateToggle = new ToggleBoolean();
+        winchShiftToggle = new ToggleBoolean();
+        
         winchShiftTimer = new Timer();
         winchShiftTimer.start();
-        
-        winchShiftToggle = new ToggleBoolean();
         
         Constants.getInstance();
     }
@@ -83,13 +93,18 @@ public class Catapult {
     }
     
     public void setWinchPos(double setpoint) { 
-
-        switch(engagedState){
-            case SET_ENGAGED:
-                setEngaged = engageWinch(true);
-                if (setEngaged == true)
-                    engagedState = WIND_WINCH;
-                break;
+        
+        if (winchPistonState == DISENGAGED)
+            setWinchPosSeq = ENGAGE;
+        else
+            setWinchPosSeq = WIND_WINCH;
+        
+        switch(setWinchPosSeq){
+            case ENGAGE:
+                engageWinch(true);
+                if (winchPistonState == ENGAGED)
+                    setWinchPosSeq = WIND_WINCH;
+                break;    
             case WIND_WINCH:
                 if (setpoint == getWinchPot())
                     setWinchPWM(0);
@@ -98,79 +113,39 @@ public class Catapult {
                 else if(setpoint - getWinchPot() < Constants.getInteger("bWinchPosTolerance")) 
                     setWinchPWM(-Constants.getDouble("bWinchWindBackSpeed"));
                 else 
-                    setWinchPWM(0);   
-                
-                if (!winchPistonState && !setDisengaged)
-                    engagedState =  SET_ENGAGED;
-
+                    setWinchPWM(0);  
                 break;
         }
-
-        
     }
     
-    public void setWinchState(double manualAdjustment, 
-            boolean presetOne, boolean presetTwo, boolean disengage){
-
-        if (Math.abs(manualAdjustment) > 0.1){
-            if (!winchPistonState && !setDisengaged)
-                    engagedState =  SET_ENGAGED;
-            switch(engagedState){
-            case SET_ENGAGED:
-                setEngaged = engageWinch(true);
-                if (setEngaged == true)
-                    engagedState = WIND_WINCH;
-                break;
-            case WIND_WINCH:
-                setWinchPWM(manualAdjustment);  
-                if (!winchPistonState && !setDisengaged)
-                    engagedState =  SET_ENGAGED;
-                break;
-            }         
-        }
-        else {
-        if (presetOne){
-                winchSetpoint = Constants.getDouble("bWinchPosOne");
-                setDisengaged = false;
-        }
-        else if (presetTwo){
-                winchSetpoint = Constants.getDouble("bWinchPosTwo");
-                setDisengaged = false;
-            }
-        else if(disengage){
-            winchSetpoint = getWinchPot();
-            setDisengaged = true;
-        }
-        else { 
-            winchSetpoint = getWinchPot();  
-            //setDisengaged = true;
-        }
-        
-        setWinchPos(winchSetpoint);
-        
-        //System.out.println(winchSetpoint);
-        }
+    public void windWinch(double manualAdjustment, 
+            boolean presetOne, boolean presetTwo){
             
+            if (Math.abs(manualAdjustment) > 0.1) {
+                if (winchPistonState == DISENGAGED)
+                    engageWinch(true);
+                else
+                    setWinchPWM(manualAdjustment);
+            }
+            else {
+                if (presetOne)
+                    winchSetpoint = Constants.getDouble("bWinchPosOne");
+                else if (presetTwo)
+                    winchSetpoint = Constants.getDouble("bWinchPosTwo");
+                else
+                    winchSetpoint = getWinchPot();
+                
+                setWinchPos(winchSetpoint);
+            }  
     }
     
-    public void setWinchPos(double setpoint, double pwm) { 
-        engageWinch(true);
-        if(setpoint - getWinchPot() > Constants.getInteger("bWinchPosTolerance")) 
-            setWinchPWM(pwm);
-        else if(setpoint - getWinchPot() < Constants.getInteger("bWinchPosTolerance")) 
-            setWinchPWM(-pwm);
-        else 
-            setWinchPWM(0);   
-
-    }
-    
-    public void toggleWinchPistonPos(boolean winchPistonToggleButton) {        
-        winchReleaseToggle.set(winchPistonToggleButton);
+    public void toggleWinchPiston(boolean winchPistonToggleButton) {        
+        winchStateToggle.set(winchPistonToggleButton);
         
-        if(winchReleaseToggle.get())
+        if(winchStateToggle.get())
             winchPistonState = !winchPistonState;
         
-        if(!winchPistonState)
+        if(winchPistonState == DISENGAGED) 
             winchReleasePiston.set(DoubleSolenoid.Value.kForward);
         else 
             winchReleasePiston.set(DoubleSolenoid.Value.kReverse);
@@ -180,56 +155,62 @@ public class Catapult {
         trussShotToggle.set(trussPistonToggleButton);
         
         if(trussShotToggle.get())
-            trussShotState = !trussShotState;
+            trussPistonState = !trussPistonState;
         
-        if(trussShotState)
+        if(trussPistonState) 
             trussShotPiston.set(DoubleSolenoid.Value.kForward);
         else 
             trussShotPiston.set(DoubleSolenoid.Value.kReverse);
     }
     
-    public void holdTrussPistonPos(boolean trussPistonToggleButton) {
-        if(trussPistonToggleButton)
+    public void holdTrussPistonPos(boolean trussPistonButton) {
+        if(trussPistonButton) {
             trussShotPiston.set(DoubleSolenoid.Value.kForward);
-        else 
-            trussShotPiston.set(DoubleSolenoid.Value.kReverse);
-    }
-
-    public boolean engageWinch(boolean winchShiftToggleButton) {
-        boolean returnVar = false;
-        winchShiftToggle.set(winchShiftToggleButton);
-        if(winchShiftToggleButton){
-
-            if(winchShiftToggle.get()){
-                winchShiftTimer.reset();
-            }
-            //System.out.println(winchShiftToggle.get());
-
-            if(!winchPistonState){
-                setWinchPWM(Constants.getDouble("bWinchShiftSpeed")); 
-                winchReleasePiston.set(DoubleSolenoid.Value.kReverse);
-                System.out.println(winchShiftTimer.get());
-                if(winchShiftTimer.get() > Constants.getDouble("bWinchShiftTime")) { 
-                    setWinchPWM(0); 
-                    winchPistonState = true;
-                    winchShiftToggle.set(false);
-                    setDisengaged = false;
-                    returnVar = true;
-                    
-                }
-            }
-        
+            trussPistonState = EXTENDED;
         }
-        return returnVar;
+        else {
+            trussShotPiston.set(DoubleSolenoid.Value.kReverse);
+            trussPistonState = RETRACTED;
+        }
     }
 
-    public void disengageWinch(boolean button)
+    public void engageWinch(boolean winchShift) {
+        winchShiftToggle.set(winchShift);
+        
+        if(winchPistonState == DISENGAGED && winchShiftToggle.get()){
+            setEngaged = ENGAGE;
+            winchShiftTimer.reset();
+        }
+        else
+            setEngaged = FULLY_ENGAGED;
+        
+        switch (setEngaged){
+            case ENGAGE:
+                setWinchPWM(Constants.getDouble("bWinchShiftSpeed"));
+                winchReleasePiston.set(DoubleSolenoid.Value.kForward);
+                
+                if (winchShiftTimer.get() > Constants.getDouble("bWinchShiftTime"))
+                    setEngaged = FULLY_ENGAGED;
+                break;
+            case FULLY_ENGAGED:
+                setWinchPWM(0);
+                winchShiftToggle.set(false);
+                winchPistonState = ENGAGED;
+                break;
+        }
+        
+        winchPistonState = true; 
+    }
 
-    {
-        if(winchPistonState && button){
+    public void disengageWinch(boolean disengage) {
+        if(firstRun) {
+            winchPistonState = ENGAGED;
+            firstRun = false;
+        }
+        
+        if(winchPistonState && disengage){
             winchReleasePiston.set(DoubleSolenoid.Value.kForward);
-            winchPistonState = false;  
-            setDisengaged = true;
+            winchPistonState = DISENGAGED;  
         }
     }
 
