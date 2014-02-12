@@ -2,11 +2,11 @@
 
 bWinchPosOne = 330
 
-bWinchPosTwo = 380
+bWinchPosTwo = 370
 
 bWinchPosThree = 0
 
-bWinchPosTolerance = 5
+bWinchPosTolerance = 3
 
 aShootBallTimeOut = 0
 
@@ -26,6 +26,7 @@ bWinchIncrement = 2
 
 bWinchDecrement = 2
 
+bWinchDeltaErrorTolerance = 1
 
 
 //RESPECTIVE CONSTANTS

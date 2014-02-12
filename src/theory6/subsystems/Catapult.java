@@ -55,6 +55,11 @@ public class Catapult {
     
     boolean firstRun = true; //used in disengageWinch
     
+    double error;
+    double lastError;
+    double deltaError;
+    double lastDeltaError;
+    
     public Catapult()
     {
         
@@ -126,6 +131,8 @@ public class Catapult {
                     engageWinch(true);
                 else
                     setWinchPWM(manualAdjustment);
+                
+                winchSetpoint = getWinchPot();
             }
             else {
                 if (presetOne)
@@ -139,6 +146,18 @@ public class Catapult {
             }  
     }
     
+    public boolean winchOnTarget() {
+        error = winchSetpoint - getWinchPot();
+        
+        boolean done = (Math.abs(error) < Constants.getInteger("bWinchPosTolerance")) &&
+                       (Math.abs(lastDeltaError) < Constants.getInteger("bWinchDeltaErrorTolerance"));
+        
+        deltaError = error - lastError;
+        lastError = error;
+        lastDeltaError = deltaError;
+        
+        return done;
+    }
     public void toggleWinchPiston(boolean winchPistonToggleButton) {        
         winchStateToggle.set(winchPistonToggleButton);
         

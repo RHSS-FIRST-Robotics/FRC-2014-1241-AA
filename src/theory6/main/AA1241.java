@@ -159,8 +159,8 @@ public class AA1241 extends IterativeRobot {
         dsLCD.println(DriverStationLCD.Line.kUser2, 1, "Gyro: "
         + Math.floor(driveTrain.getGyroAngle() * 100) / 100);
         
-        dsLCD.println(DriverStationLCD.Line.kUser3, 1, "Catapult Pot: "
-        + catapult.getWinchPot());
+        dsLCD.println(DriverStationLCD.Line.kUser3, 1, "?: " + (catapult.winchOnTarget() ? 1 : 0) 
+                                                      + " Catapult Pot: "+ catapult.getWinchPot());
         
 //        dsLCD.println(DriverStationLCD.Line.kUser4, 1, "Limit Switch: "
 //        + intake.ballDetected());
