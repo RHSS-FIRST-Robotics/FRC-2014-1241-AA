@@ -1,5 +1,3 @@
-//SHARED CONSTANTS WITHIN DIFFERENT AUTONS
-
 bWinchPosOne = 330
 
 bWinchPosTwo = 414

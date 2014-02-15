@@ -153,7 +153,8 @@ public class AA1241 extends IterativeRobot {
        
         //catapult.engageWinch(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
         //catapult.setWinchPWM(winchJoy);
-        //.toggleWinchPiston(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
+        //catapult.toggleWinchPiston(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
+        
         updateDSLCD();
         updateSmartDashboard();
         
@@ -166,23 +167,18 @@ public class AA1241 extends IterativeRobot {
     
     private void updateDSLCD() {
         
-        dsLCD.println(DriverStationLCD.Line.kUser1, 1, "LEnc: "
-        + (Math.floor(driveTrain.getLeftEncoderDist()*10) / 10.0) + " REnc: " 
+        dsLCD.println(DriverStationLCD.Line.kUser1, 1, "L: "
+        + (Math.floor(driveTrain.getLeftEncoderDist()*10) / 10.0) + " R: " 
         + (Math.floor(driveTrain.getRightEncoderDist()*10) / 10.0));
         
         dsLCD.println(DriverStationLCD.Line.kUser2, 1, "Gyro: "
         + Math.floor(driveTrain.getGyroAngle() * 100) / 100);
         
         dsLCD.println(DriverStationLCD.Line.kUser3, 1, "?:" + (catapult.winchOnTarget() ? 1 : 0) 
-                                                      + " Catapult Pot: "+ catapult.getWinchPot());
+                                                      + " Winch Pot: "+ catapult.getWinchPot());
         
-        dsLCD.println(DriverStationLCD.Line.kUser4, 1, "WEng?: " + (catapult.isEngaged() ? 1 : 0) + " TP?: " + (catapult.isTrussPistonExtended() ? 1 : 0));
-
-        dsLCD.println(DriverStationLCD.Line.kUser5, 1, "WinchJoy: "
-        + Math.floor(toolPad.getRawAxis(GamepadConstants.RIGHT_ANALOG_Y) * 100) / 100);
-        
-//        dsLCD.println(DriverStationLCD.Line.kUser4, 1, "Limit Switch: "
-//        + intake.ballDetected());
+        dsLCD.println(DriverStationLCD.Line.kUser4, 1, "WEng?: " + (catapult.isEngaged() ? 1 : 0) + 
+                " TP?: " + (catapult.isTrussPistonExtended() ? 1 : 0));
         
         if ((lcdUpdateCycle % 50) == 0) {
             dsLCD.updateLCD();
