@@ -99,9 +99,9 @@ public class Constants {
     
     public static String getString(String constName, String def) {
         Object val = constants.get(constName);
-        System.out.println("Reading String From Hash: " + val);
+        //System.out.println("Reading String From Hash: " + val);
         if (val == null){
-            System.out.println("Failed to return constant: " + constName);
+            //System.out.println("Failed to return constant: " + constName);
             return def;
         }else{
             return (String) val;

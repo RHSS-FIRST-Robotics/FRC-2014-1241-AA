@@ -2,11 +2,11 @@
 
 bWinchPosOne = 330
 
-bWinchPosTwo = 370
+bWinchPosTwo = 414
 
 bWinchPosThree = 0
 
-bWinchPosTolerance = 3
+bWinchPosTolerance = 10
 
 aShootBallTimeOut = 0
 
@@ -20,17 +20,13 @@ aDriveToNewZoneTimeOut = 0
 
 bWinchShiftSpeed = 1
 
-bWinchWindBackSpeed = 0.7
+bWinchWindBackSpeed = 1
 
 bWinchIncrement = 2
 
 bWinchDecrement = 2
 
 bWinchDeltaErrorTolerance = 1
-
-
-//RESPECTIVE CONSTANTS
-
 
 
 
@@ -54,7 +50,7 @@ aTurnDegreesToGoal = 0
 
 aDriveToNewZone = 0
 
-bWinchShiftTime = 0.1
+bWinchShiftTime = 0.25
 
 testDriveDistV1 = 24
 testDriveAngleV1 = 0
@@ -114,7 +110,7 @@ TBDriveAngle1 = 0
 TBDriveDistTimeout1 = 2
 
 twoBallTurn2 = -90
-twoBallTurnTimeout2 = 2;
+twoBallTurnTimeout2 = 2
 
 TBDriveForwardDist2 = -20
 TBDriveAngle2 = 0

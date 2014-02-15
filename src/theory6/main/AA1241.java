@@ -64,6 +64,7 @@ public class AA1241 extends IterativeRobot {
         compressor.stop();
 
         ac.clear();
+        catapult.firstRun = true;
 
         driveTrain.resetGyro();
         driveTrain.resetEncoders();
@@ -87,6 +88,7 @@ public class AA1241 extends IterativeRobot {
     public void autonomousPeriodic() {
         ac.executeCommands();
         updateDSLCD();
+        updateSmartDashboard();
     }
     public void disabledInit(){
         compressor.stop();
@@ -105,6 +107,7 @@ public class AA1241 extends IterativeRobot {
             driveTrain.resetGyro();
         
         updateDSLCD();
+        updateSmartDashboard();
         
         //autonSwitcher.addDefault("Test", 0);
         autonSwitcher.addInteger("Test-Drive V1", 0); 
@@ -116,6 +119,7 @@ public class AA1241 extends IterativeRobot {
     
     public void teleopInit(){
         ac.clear();  
+        catapult.firstRun = false;
         compressor.start();
     }
 
@@ -146,8 +150,18 @@ public class AA1241 extends IterativeRobot {
                                      toolPad.getRawButton(GamepadConstants.A_BUTTON)); //preset two
         
         catapult.disengageWinch(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
-        
+       
+        //catapult.engageWinch(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
+        //catapult.setWinchPWM(winchJoy);
+        //.toggleWinchPiston(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
         updateDSLCD();
+        updateSmartDashboard();
+        
+    }
+    
+    private void updateSmartDashboard() {
+        //SmartDashboard.getString("Left Target");
+        //SmartDashboard.getString("Right Target");
     }
     
     private void updateDSLCD() {
@@ -159,8 +173,13 @@ public class AA1241 extends IterativeRobot {
         dsLCD.println(DriverStationLCD.Line.kUser2, 1, "Gyro: "
         + Math.floor(driveTrain.getGyroAngle() * 100) / 100);
         
-        dsLCD.println(DriverStationLCD.Line.kUser3, 1, "?: " + (catapult.winchOnTarget() ? 1 : 0) 
+        dsLCD.println(DriverStationLCD.Line.kUser3, 1, "?:" + (catapult.winchOnTarget() ? 1 : 0) 
                                                       + " Catapult Pot: "+ catapult.getWinchPot());
+        
+        dsLCD.println(DriverStationLCD.Line.kUser4, 1, "WEng?: " + (catapult.isEngaged() ? 1 : 0) + " TP?: " + (catapult.isTrussPistonExtended() ? 1 : 0));
+
+        dsLCD.println(DriverStationLCD.Line.kUser5, 1, "WinchJoy: "
+        + Math.floor(toolPad.getRawAxis(GamepadConstants.RIGHT_ANALOG_Y) * 100) / 100);
         
 //        dsLCD.println(DriverStationLCD.Line.kUser4, 1, "Limit Switch: "
 //        + intake.ballDetected());
