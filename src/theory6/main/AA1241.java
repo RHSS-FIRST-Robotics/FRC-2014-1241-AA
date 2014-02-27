@@ -9,6 +9,7 @@ package theory6.main;
 
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Joystick;
@@ -37,7 +38,7 @@ public class AA1241 extends IterativeRobot {
     Joystick drivePad;
     Joystick toolPad;
     
-    int lcdUpdateCycle = 0;
+    double lcdUpdateCycle = 0;
     
     SendableChooser autonSwitcher;
     AutonController ac = new AutonController();
@@ -71,16 +72,22 @@ public class AA1241 extends IterativeRobot {
         
          switch(autonSwitcher.getSelected()){
              case 0:
-                ac = autonSeq.testAutonDriveV1();
+                ac = autonSeq.oneBallDriveForward();
                 break;
             case 1:
-                ac = autonSeq.testAutonDriveV2();
+                ac = autonSeq.oneBallHotDriveForward();
                 break;                
             case 2:
-                ac = autonSeq.testAutonTurn();
+                ac = autonSeq.twoBallDriveForward();
                 break;
             case 3:
-                ac = autonSeq.twoBall();
+                ac = autonSeq.twoBallHotDriveForward();
+                break;
+            case 4:
+                ac = autonSeq.testDrive();
+                break;
+            case 5:
+                ac = autonSeq.testTurn();
                 break;
          }
     }
@@ -91,35 +98,42 @@ public class AA1241 extends IterativeRobot {
         updateSmartDashboard();
     }
     public void disabledInit(){
+        log("Entered disabledInit... reloading constants...");
         compressor.stop();
         Constants.load();
     }
             
     public void disabledPeriodic(){
         ac.clear();
-        if(toolPad.getRawButton(GamepadConstants.A_BUTTON))
+        if(toolPad.getRawButton(GamepadConstants.A_BUTTON)){
+            log("About to recalibrate gyro");
             driveTrain.recalibrateGyro();
-        
-        if(toolPad.getRawButton(GamepadConstants.B_BUTTON))
-            driveTrain.resetEncoders();
-        
-        if(toolPad.getRawButton(GamepadConstants.Y_BUTTON))
             driveTrain.resetGyro();
-        
+            log("Finished recalibrating Gyro");
+        }
+        if(toolPad.getRawButton(GamepadConstants.B_BUTTON)){
+            driveTrain.resetEncoders();
+            log("Reset Encoders");
+        }
+        if(toolPad.getRawButton(GamepadConstants.Y_BUTTON)){
+            driveTrain.resetGyro();
+            log("Reset Gyro");
+        }
         updateDSLCD();
         updateSmartDashboard();
         
         //autonSwitcher.addDefault("Test", 0);
-        autonSwitcher.addInteger("Test-Drive V1", 0); 
-        autonSwitcher.addInteger("Test-Drive V2", 1);
-        autonSwitcher.addInteger("Test-Turn", 2);
-        autonSwitcher.addInteger("Two Ball", 3);
-        SmartDashboard.putData("Auton Selecter", autonSwitcher);  
+        autonSwitcher.addInteger("One Ball", 0); 
+        autonSwitcher.addInteger("One Ball Hot", 1);
+        autonSwitcher.addInteger("Two Ball", 2);
+        autonSwitcher.addInteger("Two Ball Hot", 3);
+        autonSwitcher.addInteger("Test-Drive", 4);
+        autonSwitcher.addInteger("Test-Turn", 5);
+        SmartDashboard.putData("Autonomous Mode", autonSwitcher);  
     }
     
     public void teleopInit(){
-        ac.clear();  
-        catapult.firstRun = false;
+
         compressor.start();
     }
 
@@ -139,9 +153,17 @@ public class AA1241 extends IterativeRobot {
 
         //Intake Code
         intake.intakeBall(intakeJoy, 3);
-
-        intake.setIntakePosTeleop(toolPad.getRawButton(GamepadConstants.LEFT_BUMPER));
-        
+       intake.setIntakePosTeleop(toolPad.getRawButton(GamepadConstants.LEFT_BUMPER));
+//        if(drivePad.getRawButton(GamepadConstants.RIGHT_BUMPER)){
+//        intake.setIntakePosTeleop(drivePad.getRawButton(GamepadConstants.RIGHT_BUMPER));            
+//        }
+//        else if(drivePad.getRawButton(GamepadConstants.LEFT_BUMPER)){
+//        intake.setOuttakePosTeleop(drivePad.getRawButton(GamepadConstants.LEFT_BUMPER));             
+//        }
+//        else {
+//            intake.intakeAnglePiston.set(DoubleSolenoid.Value.kReverse);
+//            intake.intakeBall(0,1);
+//        }
         //Truss Piston
         catapult.holdTrussPistonPos(toolPad.getRawButton(GamepadConstants.RIGHT_TRIGGER));
         
@@ -161,8 +183,9 @@ public class AA1241 extends IterativeRobot {
     }
     
     private void updateSmartDashboard() {
-        //SmartDashboard.getString("Left Target");
-        //SmartDashboard.getString("Right Target");
+        
+        SmartDashboard.putString("Left Target", SmartDashboard.getString("Left Target", "No Connection"));
+        SmartDashboard.putString("Right Target", SmartDashboard.getString("Right Target", "No Connection"));
     }
     
     private void updateDSLCD() {
@@ -187,5 +210,10 @@ public class AA1241 extends IterativeRobot {
             lcdUpdateCycle++;
         }
      
+    }
+    private void log(Object aObject){
+        
+        System.out.println(String.valueOf(aObject));
+        
     }
 }

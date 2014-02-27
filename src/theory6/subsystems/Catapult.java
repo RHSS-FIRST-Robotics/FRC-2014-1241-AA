@@ -42,7 +42,7 @@ public class Catapult {
     final boolean RETRACTED = false;
     boolean trussPistonState = RETRACTED; //piston assumed to be retracted in default state when robot is turned on
             
-    double winchSetpoint;
+    public double winchSetpoint;
     
     final int ENGAGE = 0;
     final int FULLY_ENGAGED = 1;  
@@ -90,7 +90,7 @@ public class Catapult {
     public void setWinchPWM(double pwm) {
         rightWinchMotor.set(pwm);
         leftWinchMotor.set(pwm);
-    }
+    }                                                                                    
     
     public double getWinchPot() {
         return winchPot.getAverageValue();
@@ -123,7 +123,7 @@ public class Catapult {
             boolean presetOne, boolean presetTwo){
         
         ToggleBoolean engageFirst = new ToggleBoolean();
-        engageFirst.set(Math.abs(manualAdjustment) > 0.5 || presetOne || presetTwo);
+        engageFirst.set(Math.abs(manualAdjustment) > 0.1 || presetOne || presetTwo);
         
         if (winchPistonState == DISENGAGED && engageFirst.get())
             engageFlag = true;
@@ -131,6 +131,11 @@ public class Catapult {
         else if(engageFlag == true) 
             engageWinch(true);
             
+        if (presetOne)
+            winchSetpoint = Constants.getDouble("bWinchPosOne");
+        else if (presetTwo) 
+            winchSetpoint = Constants.getDouble("bWinchPosTwo");
+                
         else if(winchPistonState == ENGAGED) {
 //            if (Math.abs(manualAdjustment) > 0.5) {
 //                setWinchPWM(manualAdjustment);
@@ -138,24 +143,42 @@ public class Catapult {
 //                winchSetpoint = getWinchPot();
 //            }
           //  else {
+                //engageFirst.set(Math.abs(manualAdjustment) > 0.1 || presetOne || presetTwo);
+                //if(presetOne || presetTwo) {
 
-                if (presetOne)
-                    winchSetpoint = Constants.getDouble("bWinchPosOne");
-                else if (presetTwo) 
-                    winchSetpoint = Constants.getDouble("bWinchPosTwo");
                 //else
                   //  winchSetpoint = getWinchPot();
+                   
                 
-                else if (Math.abs(manualAdjustment) > 0.5) {
-                    setWinchPWM(manualAdjustment);
-                    log("in manual");
-                    winchSetpoint = getWinchPot();
+//                else if (Math.abs(manualAdjustment) > 0.7) {
+//                    //setWinchPWM(manualAdjustment);
+//                    log("in manual");
+////                    if(manualAdjustment > 0.7) {
+////                        winchSetpoint = winchSetpoint - 1;
+////                    }
+////                    else if(manualAdjustment < 0.7){
+////                        winchSetpoint = winchSetpoint + 1;
+////                    }
+//                    setWinchPWM
+//                }
+                
+                if(Math.abs(manualAdjustment) > 0.1) {
+                   setWinchPWM(manualAdjustment); 
+                   winchSetpoint = getWinchPot();
                 }
+                else 
+                    setWinchPos(winchSetpoint);
+                //else {
+                    //winchSetpoint = getWinchPot();
+                //}
 
+                
                 log("in preset" + winchSetpoint);
-                setWinchPos(winchSetpoint);
+                
+             
            // }  
         }
+        
     }
     
     public boolean winchOnTarget() {
@@ -265,6 +288,7 @@ public class Catapult {
         
         if(winchPistonState && disengage){
             winchReleasePiston.set(DoubleSolenoid.Value.kForward);
+            winchSetpoint = getWinchPot();
             winchPistonState = DISENGAGED;
         }
         

@@ -13,6 +13,7 @@ import theory6.utilities.ToggleBoolean;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Relay;
 import theory6.utilities.JoystickScaler;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  *
@@ -28,14 +29,14 @@ public class Intake {
     Relay leftBottomSide;
     Relay rightBottomSide;
     
-    DoubleSolenoid intakeAnglePiston;
+    public DoubleSolenoid intakeAnglePiston;
     
     DigitalInput intakeLimit;
     ToggleBoolean intakeAngleToggle;
     boolean intakeAngleState = false;
     
     JoystickScaler rightAnalogScaler = new JoystickScaler();
-    
+    Timer outtakeTimer;
     
     public Intake(){
         leftSide = new Talon(ElectricalConstants.LEFT_SIDE_INTAKE_PWM);
@@ -43,7 +44,8 @@ public class Intake {
         
         leftBottomSide = new Relay(ElectricalConstants.LEFT_SIDE_INTAKE);
         rightBottomSide = new Relay(ElectricalConstants.RIGHT_SIDE_INTAKE);
-        
+        outtakeTimer = new Timer();
+        outtakeTimer.start();
         
         intakeAnglePiston = new DoubleSolenoid (ElectricalConstants.INTAKE_DOWN, ElectricalConstants.INTAKE_UP);
         intakeAngleToggle = new ToggleBoolean();
@@ -100,13 +102,30 @@ public class Intake {
         if(intakeAngleToggleButton) {
             intakeAnglePiston.set(DoubleSolenoid.Value.kForward);
             intakeAngleState = true;
+            //intakeBall(1, 1);
+            
+            
         }
         else {
             intakeAnglePiston.set(DoubleSolenoid.Value.kReverse);
             intakeAngleState = false;
+           // intakeBall(0,1);
         }
     }
-    
+    public void setOuttakePosTeleop(boolean outtakeAngleToggleButton) {
+        if(outtakeAngleToggleButton) {
+            intakeAnglePiston.set(DoubleSolenoid.Value.kForward);
+            intakeAngleState = true;
+            //outtakeTimer.reset();
+            //if(outtakeTimer.get() > 0.3)
+                intakeBall(-0.5, 1);
+        }
+        else {
+            intakeAnglePiston.set(DoubleSolenoid.Value.kReverse);
+            intakeAngleState = false;
+            intakeBall(0, 1);
+        }
+    }    
     //Used for toggling position in autonomous
     public void toggleIntakePosAuton(boolean intakeToggle) {
         intakeAngleToggle.set(intakeToggle);
