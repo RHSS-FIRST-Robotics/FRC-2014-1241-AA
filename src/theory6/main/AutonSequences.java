@@ -100,7 +100,13 @@ public class AutonSequences {
         ac.clear();
         Constants.getInstance();
         
+        ac.addCommand(new DriveToPosTimeOutCommand(Constants.getDouble("TBAdjustmentDriveForward"), 0, Constants.getDouble("TBAdjustmentDriveForwardTimeOut")));
+        
         ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("TBWinchDisengageTimeout")));
+        
+        ac.addCommand(new DriveToPosTimeOutCommand(Constants.getDouble("TBAdjustmentDriveBackward"), 0, Constants.getDouble("TBAdjustmentDriveBackwardTimeOut")));
+        
+        
         ac.addCommand(new EngageWinchCommand(Constants.getDouble("bWinchShiftTime")));
         //ac.addCommand(new WindBackWinchTimeOutCommand(Constants.getDouble("bWinchPosTwo"),Constants.getDouble("TBSecondShotWindTimeout")));
         ac.addCommand(new TwoParallelMotionsCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("twoBallTurn1"),Constants.getDouble("twoBallTurnTimeout1")),
@@ -121,19 +127,20 @@ public class AutonSequences {
                  0, 
                  new WindBackWinchTimeOutCommand(Constants.getDouble("TBWinchSetpoint"),Constants.getDouble("TBSecondShotWindTimeout"))));
          
-         ac.addCommand(new TwoParallelMotionsCommand(new WindBackWinchTimeOutCommand(Constants.getDouble("TBWinchSetpoint"),Constants.getDouble("TBSecondShotWindTimeout")),
+         ac.addCommand(new TwoParallelMotionsCommand(new WindBackWinchTimeOutCommand(Constants.getDouble("TBWinchSetpointTwo"),Constants.getDouble("TBSecondShotWindTimeout")),
                  0,
                  new TwoParallelMotionsCommand(new SetIntakePositionCommand(),
                  0,
                  new IntakeTimeOutCommand(Constants.getDouble("intakePWM"),Constants.getDouble("intakeTime")))));
          
-         ac.addCommand(new IntakeTimeOutCommand(0,0.1));
+         ac.addCommand(new IntakeTimeOutCommand(0,0.05));
          ac.addCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("twoBallTurn2"),Constants.getDouble("twoBallTurnTimeout2")));
          ac.addCommand(new WaitCommand(Constants.getDouble("SecondWait")));
-         ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("TBWinchDisengageTimeout")));
          ac.addCommand(new DriveToPosTimeOutCommand(Constants.getDouble("TBDriveForwardDist2"), 
                                                     Constants.getDouble("TBDriveAngle2"), 
                                                     Constants.getDouble("TBDriveDistTimeout2")));
+         ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("TBWinchDisengageTimeout")));
+
 //        ac.addCommand(new SetIntakePositionCommand());
 //        ac.addCommand(new TwoParallelMotionsCommand((new IntakeTimeOutCommand(Constants.getDouble("intakePWM"),Constants.getDouble("intakeTime"))),0,
 //                new DriveToPosTimeOutCommand(Constants.getDouble("TBDriveForwardDist1"), 
@@ -215,7 +222,7 @@ public class AutonSequences {
         
         ac.addCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("TBHTurnToShoot"),Constants.getDouble("TBHTurnToShootTimeout")));
         
-        ac.addCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("TBHTurnToShoot"),Constants.getDouble("TBHTurnToShootTimeout"))); 
+       
         
         ac.addCommand(new WaitCommand(Constants.getDouble("TBHFinalWait")));
         ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("TBWinchDisengageTimeout")));

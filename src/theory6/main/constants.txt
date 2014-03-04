@@ -8,4 +8,6 @@ bWinchPosOne = 330
 bWinchPosTwo = 390
 
 bWinchShiftSpeed = 1
-bWinchShiftTime = 0.3
+bWinchShiftTime = 0.3driveP = 0.05
+driveI = 0.001
+driveD = 0.4

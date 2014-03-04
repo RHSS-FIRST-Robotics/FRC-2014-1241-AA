@@ -89,6 +89,8 @@ public class AA1241 extends IterativeRobot {
             case 5:
                 ac = autonSeq.testTurn();
                 break;
+            case 6:
+                ac = autonSeq.driveForwardOneBall();
          }
     }
     
@@ -105,12 +107,12 @@ public class AA1241 extends IterativeRobot {
             
     public void disabledPeriodic(){
         ac.clear();
-        if(toolPad.getRawButton(GamepadConstants.A_BUTTON)){
+        /*if(toolPad.getRawButton(GamepadConstants.A_BUTTON)){
             log("About to recalibrate gyro");
             driveTrain.recalibrateGyro();
             driveTrain.resetGyro();
             log("Finished recalibrating Gyro");
-        }
+        }*/
         if(toolPad.getRawButton(GamepadConstants.B_BUTTON)){
             driveTrain.resetEncoders();
             log("Reset Encoders");
@@ -129,11 +131,12 @@ public class AA1241 extends IterativeRobot {
         autonSwitcher.addInteger("Two Ball Hot", 3);
         autonSwitcher.addInteger("Test-Drive", 4);
         autonSwitcher.addInteger("Test-Turn", 5);
+        autonSwitcher.addInteger("Drive Forward One Ball", 6);
         SmartDashboard.putData("Autonomous Mode", autonSwitcher);  
     }
     
     public void teleopInit(){
-
+        ac.clear();
         compressor.start();
     }
 
