@@ -87,10 +87,13 @@ public class AA1241 extends IterativeRobot {
                 ac = autonSeq.testDrive();
                 break;
             case 5:
-                ac = autonSeq.testTurn();
+                ac = autonSeq.testOne();
                 break;
             case 6:
                 ac = autonSeq.driveForwardOneBall();
+                break;
+
+            
          }
     }
     
@@ -130,8 +133,9 @@ public class AA1241 extends IterativeRobot {
         autonSwitcher.addInteger("Two Ball", 2);
         autonSwitcher.addInteger("Two Ball Hot", 3);
         autonSwitcher.addInteger("Test-Drive", 4);
-        autonSwitcher.addInteger("Test-Turn", 5);
+        autonSwitcher.addInteger("Test-One", 5);
         autonSwitcher.addInteger("Drive Forward One Ball", 6);
+
         SmartDashboard.putData("Autonomous Mode", autonSwitcher);  
     }
     
@@ -168,8 +172,12 @@ public class AA1241 extends IterativeRobot {
 //            intake.intakeBall(0,1);
 //        }
         //Truss Piston
-        catapult.holdTrussPistonPos(toolPad.getRawButton(GamepadConstants.RIGHT_TRIGGER));
+     /*  if(toolPad.getRawButton(GamepadConstants.LEFT_TRIGGER)) 
+           catapult.holdBall();
+       else 
+           catapult.releaseBall();*/
         
+                
         //Winch code
         catapult.windWinch(winchJoy, toolPad.getRawButton(GamepadConstants.B_BUTTON), //preset one
                                      toolPad.getRawButton(GamepadConstants.A_BUTTON)); //preset two

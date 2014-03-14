@@ -26,13 +26,20 @@ public class Catapult {
     DoubleSolenoid winchReleasePiston;
     DoubleSolenoid trussShotPiston;
     
+    DoubleSolenoid holdBall;
+
     ToggleBoolean trussShotToggle;
     ToggleBoolean winchStateToggle;
     ToggleBoolean winchShiftToggle;
     
+    ToggleBoolean holderStateToggle;
+    
+    
     AnalogChannel winchPot;
     
     Timer winchShiftTimer;
+    
+    boolean holdState = false;
 
     final boolean ENGAGED = true;
     final boolean DISENGAGED = false;
@@ -69,10 +76,13 @@ public class Catapult {
         
         trussShotPiston = new DoubleSolenoid (ElectricalConstants.TRUSS_ENGAGE, ElectricalConstants.TRUSS_DISENGAGE);
         winchReleasePiston = new DoubleSolenoid ( ElectricalConstants.WINCH_ENGAGE, ElectricalConstants.WINCH_DISENGAGE);
+        holdBall = new DoubleSolenoid(ElectricalConstants.HOLD_ENGAGE, ElectricalConstants.HOLD_DISENGAGE);
         
         trussShotToggle = new ToggleBoolean();
         winchStateToggle = new ToggleBoolean();
         winchShiftToggle = new ToggleBoolean();
+        
+        holderStateToggle = new ToggleBoolean();
         
         winchShiftTimer = new Timer();
         winchShiftTimer.start();
@@ -91,10 +101,23 @@ public class Catapult {
         rightWinchMotor.set(pwm);
         leftWinchMotor.set(pwm);
     }                                                                                    
+    public void holdBall(){
+        
+        holdBall.set(DoubleSolenoid.Value.kForward);
+        
+        
+    }
+    public void releaseBall(){
+        
+        holdBall.set(DoubleSolenoid.Value.kReverse);
+        
+    }
+    
     
     public double getWinchPot() {
         return winchPot.getAverageValue();
     }
+    
     
     public void setWinchPos(double setpoint) {
         error = setpoint - getWinchPot();
@@ -118,7 +141,14 @@ public class Catapult {
         else 
             setWinchPWM(0);     
     }
-    
+    public void popShot(){
+        
+        
+        
+        
+        
+        
+    }
     public void windWinch(double manualAdjustment, 
             boolean presetOne, boolean presetTwo){
         
@@ -306,5 +336,13 @@ public class Catapult {
         System.out.println(String.valueOf(aObject));
     }
 
-
+    public void toggleHoldPos(boolean holdToggle) {
+          holderStateToggle.set(holdToggle);      
+        if(holderStateToggle.get())
+            holdState  = !holdState;
+        if(holdState)
+            holdBall.set(DoubleSolenoid.Value.kForward);
+        else
+            holdBall.set(DoubleSolenoid.Value.kReverse);
+    }
 }
