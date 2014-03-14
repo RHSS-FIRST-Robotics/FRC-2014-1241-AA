@@ -82,5 +82,6 @@ public class ElectricalConstants {
     public static final int COMPRESSOR_RELAY                    = 1;
     public static final int LEFT_SIDE_INTAKE                    = 2;
     public static final int RIGHT_SIDE_INTAKE                   = 3;
+    public static final int HOLDER_RELAY                        = 4;
 
 }

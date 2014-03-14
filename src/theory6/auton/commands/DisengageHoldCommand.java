@@ -21,17 +21,19 @@ public class DisengageHoldCommand implements AutonCommand{
     }
         
     public void init() {
-        catapult.releaseBall();
+        catapult.toggleHoldPos(false);
     }
 
     public boolean run() {
 
-        catapult.releaseBall();
+        catapult.toggleHoldPos(true);
     
         return true;
     }
 
     public void done() {
+        
+        
 
     } 
 }

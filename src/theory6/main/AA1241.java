@@ -171,11 +171,8 @@ public class AA1241 extends IterativeRobot {
 //            intake.intakeAnglePiston.set(DoubleSolenoid.Value.kReverse);
 //            intake.intakeBall(0,1);
 //        }
-        //Truss Piston
-     /*  if(toolPad.getRawButton(GamepadConstants.LEFT_TRIGGER)) 
-           catapult.holdBall();
-       else 
-           catapult.releaseBall();*/
+        //Holder Piston
+        catapult.toggleHoldPos(toolPad.getRawButton(GamepadConstants.LEFT_TRIGGER));
         
                 
         //Winch code
@@ -208,11 +205,13 @@ public class AA1241 extends IterativeRobot {
         dsLCD.println(DriverStationLCD.Line.kUser2, 1, "Gyro: "
         + Math.floor(driveTrain.getGyroAngle() * 100) / 100);
         
-        dsLCD.println(DriverStationLCD.Line.kUser3, 1, "?:" + (catapult.winchOnTarget() ? 1 : 0) 
-                                                      + " Winch Pot: "+ catapult.getWinchPot());
+        dsLCD.println(DriverStationLCD.Line.kUser3, 1, /* "?:" + (catapult.winchOnTarget() ? 1 : 0)*/ 
+                                                       " Winch Pot: " + catapult.getWinchPot());
         
-        dsLCD.println(DriverStationLCD.Line.kUser4, 1, "WEng?: " + (catapult.isEngaged() ? 1 : 0) + 
-                " TP?: " + (catapult.isTrussPistonExtended() ? 1 : 0));
+        dsLCD.println(DriverStationLCD.Line.kUser4, 1, "Limit Switch: " + catapult.getLimitSwitch());
+        
+        /*dsLCD.println(DriverStationLCD.Line.kUser5, 1, "WEng?: " + (catapult.isEngaged() ? 1 : 0) + 
+                " TP?: " + (catapult.isTrussPistonExtended() ? 1 : 0)); */
         
         if ((lcdUpdateCycle % 50) == 0) {
             dsLCD.updateLCD();

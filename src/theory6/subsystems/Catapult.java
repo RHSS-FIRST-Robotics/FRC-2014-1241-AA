@@ -106,33 +106,23 @@ public class Catapult {
         rightWinchMotor.set(pwm);
         leftWinchMotor.set(pwm);
     }                                                                                    
-    public void holdBall(){
-        
-        holdBall.set(DoubleSolenoid.Value.kForward);
-        
-        
-    }
-    public void releaseBall(){
-        
-        holdBall.set(DoubleSolenoid.Value.kReverse);
-        
-    }
     
     
     public double getWinchPot() {
         return winchPot.getAverageValue();
     }
-    
+    public boolean getLimitSwitch(){
+        return catapultLimit.get();
+    }
     
     public void setWinchPos(double setpoint) {
         
-        
-        
         error = setpoint - getWinchPot();
         
-        
-        if((Math.abs(error) > Constants.getDouble("bWinchPosTolerance")) && catapultLimit.get())
+        if((Math.abs(error) > Constants.getDouble("bWinchPosTolerance")) && catapultLimit.get()){
             setpoint = getWinchPot();
+            setWinchPWM(0);
+        }
         
         else if (error == 0 && catapultLimit.get()){
             setWinchPWM(0);
@@ -152,14 +142,6 @@ public class Catapult {
         
         else 
             setWinchPWM(0);     
-    }
-    public void popShot(){
-        
-        
-        
-        
-        
-        
     }
     public void windWinch(double manualAdjustment, 
             boolean presetOne, boolean presetTwo){
@@ -227,7 +209,8 @@ public class Catapult {
         error = winchSetpoint - getWinchPot();
         
         boolean done = (Math.abs(error) < Constants.getDouble("bWinchPosTolerance")) &&
-                       (Math.abs(lastDeltaError) < Constants.getDouble("bWinchDeltaErrorTolerance"));
+                       (Math.abs(lastDeltaError) < Constants.getDouble("bWinchDeltaErrorTolerance")) &&
+                        catapultLimit.get();
         
         deltaError = error - lastError;
         lastError = error;

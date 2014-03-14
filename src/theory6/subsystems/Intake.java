@@ -29,6 +29,8 @@ public class Intake {
     Relay leftBottomSide;
     Relay rightBottomSide;
     
+    Relay holder;
+            
     public DoubleSolenoid intakeAnglePiston;
     
     DigitalInput intakeLimit;
@@ -42,6 +44,8 @@ public class Intake {
         leftSide = new Talon(ElectricalConstants.LEFT_SIDE_INTAKE_PWM);
         rightSide = new Talon(ElectricalConstants.RIGHT_SIDE_INTAKE_PWM);
         
+        
+        holder = new Relay(ElectricalConstants.HOLDER_RELAY);
         leftBottomSide = new Relay(ElectricalConstants.LEFT_SIDE_INTAKE);
         rightBottomSide = new Relay(ElectricalConstants.RIGHT_SIDE_INTAKE);
         outtakeTimer = new Timer();
@@ -64,34 +68,37 @@ public class Intake {
         {
             leftSide.set(0);
             rightSide.set(0);
+            
         }
         else{
             leftSide.set(pwm);
             rightSide.set(-pwm);
+            
         }
     }
-    public void setPG71(double intakePWM)
+    public void setHolder(double intakePWM)
     {
         if(intakePWM > 0.05){ //intake
-            leftBottomSide.set(Relay.Value.kReverse);
-            rightBottomSide.set(Relay.Value.kForward);
+           holder.set(Relay.Value.kReverse);
+            
         }
         else if (intakePWM < -0.05){ //outake
-            leftBottomSide.set(Relay.Value.kForward);
-            rightBottomSide.set(Relay.Value.kReverse);
+           holder.set(Relay.Value.kForward);
+            
         }
         else  
         {
-            leftBottomSide.set(Relay.Value.kOff);
-            rightBottomSide.set(Relay.Value.kOff);
+           holder.set(Relay.Value.kOff);
+            
         }
     }
+    
     
     
     public void intakeBall(double joy, int scaledPower)
     {
         setRollerPWM(rightAnalogScaler.scaleJoystick(joy, scaledPower));
-        setPG71(joy);
+        setHolder(joy);
     }
     //public boolean ballDetected() {
         //return !intakeLimit.get();
