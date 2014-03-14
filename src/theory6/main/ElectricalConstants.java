@@ -48,8 +48,9 @@ public class ElectricalConstants {
     //**************************************************************************
     //*************************** Digital Sensors ******************************
     //**************************************************************************
-    
+  
     public static final int COMPRESSOR_PRESSURE_SENSOR          = 5;
+    public static final int LIMIT_SWITCH                        = 6;
     //public static final int INTAKE_BALL_LIMIT                   = ;
 
     //******************UPDATE THESE CONSTANTS WITH REAL ROBOT******************

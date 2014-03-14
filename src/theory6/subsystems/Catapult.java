@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
 import theory6.main.ElectricalConstants;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 import theory6.utilities.Constants;
 import theory6.utilities.ToggleBoolean;
@@ -22,6 +23,8 @@ public class Catapult {
     
     Talon rightWinchMotor;
     Talon leftWinchMotor;
+    
+    DigitalInput catapultLimit;
     
     DoubleSolenoid winchReleasePiston;
     DoubleSolenoid trussShotPiston;
@@ -82,6 +85,8 @@ public class Catapult {
         winchStateToggle = new ToggleBoolean();
         winchShiftToggle = new ToggleBoolean();
         
+        catapultLimit = new DigitalInput(ElectricalConstants.LIMIT_SWITCH);
+        
         holderStateToggle = new ToggleBoolean();
         
         winchShiftTimer = new Timer();
@@ -120,14 +125,21 @@ public class Catapult {
     
     
     public void setWinchPos(double setpoint) {
+        
+        
+        
         error = setpoint - getWinchPot();
         
-        if (error == 0){
+        
+        if((Math.abs(error) > Constants.getDouble("bWinchPosTolerance")) && catapultLimit.get())
+            setpoint = getWinchPot();
+        
+        else if (error == 0 && catapultLimit.get()){
             setWinchPWM(0);
         log("in setpoint == winchPot");
         }
         
-        else if (Math.abs(error) > Constants.getDouble("bWinchPosTolerance")) {
+        else if (Math.abs(error) > Constants.getDouble("bWinchPosTolerance") && !catapultLimit.get()) {
             if(error > 0) {
                 setWinchPWM(Constants.getDouble("bWinchWindBackSpeed"));
                 log("in first");
