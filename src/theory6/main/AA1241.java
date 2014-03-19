@@ -174,7 +174,10 @@ public class AA1241 extends IterativeRobot {
         intake.setIntakePosTeleop(toolPad.getRawButton(GamepadConstants.LEFT_BUMPER));
         
         //Ball Holder
-        catapult.toggleBallSettler(toolPad.getRawButton(GamepadConstants.LEFT_TRIGGER));
+        //catapult.toggleBallSettler(toolPad.getRawButton(GamepadConstants.LEFT_TRIGGER));
+        catapult.autoBallSettler(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER), 
+                                 toolPad.getRawButton(GamepadConstants.LEFT_BUMPER), 
+                                 toolPad.getRawButton(GamepadConstants.START_BUTTON));
         
                 
         //Winch code

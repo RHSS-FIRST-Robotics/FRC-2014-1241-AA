@@ -14,6 +14,7 @@ import theory6.main.ElectricalConstants;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 import theory6.utilities.Constants;
+import theory6.utilities.LogicalNotToggleBoolean;
 import theory6.utilities.ToggleBoolean;
 
 
@@ -67,6 +68,17 @@ public class Catapult {
     double deltaError;
     double lastDeltaError;
     
+    LogicalNotToggleBoolean ballSettlerHold = new LogicalNotToggleBoolean();
+    ToggleBoolean ballSettlerHoldManual = new ToggleBoolean();
+
+    Timer settlerTimer; 
+    
+    final boolean RETRACT = false;
+    final boolean HOLD	= true;
+
+    boolean ballSettlerHoldState = RETRACTED;
+
+    
     public Catapult()
     {   
         winchPot= new AnalogChannel(ElectricalConstants.WINCH_POT);
@@ -86,6 +98,9 @@ public class Catapult {
         
         winchShiftTimer = new Timer();
         winchShiftTimer.start();
+        
+        settlerTimer = new Timer();
+        settlerTimer.start();
         
         Constants.getInstance();
     }
@@ -277,6 +292,37 @@ public class Catapult {
         else
             ballHolder.set(DoubleSolenoid.Value.kReverse);
     }
+    
+    
+    public void autoBallSettler(boolean shootButton, boolean intakeButton, boolean manualButton) {
+
+            ballSettlerHold.set(intakeButton);
+            ballSettlerHoldManual.set(manualButton);
+
+            if(ballSettlerHold.get()) {
+                ballSettlerHoldState = HOLD;
+                settlerTimer.reset();		
+            }
+            else if (shootButton) {
+                ballSettlerHoldState = RETRACT;
+                settlerTimer.reset();
+            }
+            else if(ballSettlerHoldManual.get()) {
+                ballSettlerHoldState = !ballSettlerHoldState;
+            }
+
+            if(ballSettlerHoldState == HOLD && settlerTimer.get() > Constants.getDouble("holdTime")) { //0.5s
+                    ballHolder.set(DoubleSolenoid.Value.kForward);
+            }
+            else if(ballSettlerHoldState == RETRACTED && settlerTimer.get() > Constants.getDouble("retractTime")) { //0.1s
+                    ballHolder.set(DoubleSolenoid.Value.kReverse);
+            }
+    }
+
+    public boolean getBallSettlerState() {
+            return ballSettlerHoldState;
+    }
+
     
     private void log(Object aObject){
         System.out.println(String.valueOf(aObject));
