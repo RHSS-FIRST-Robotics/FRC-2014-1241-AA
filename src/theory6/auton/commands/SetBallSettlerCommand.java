@@ -4,38 +4,35 @@
  * and open the template in the editor.
  */
 
-
 package theory6.auton.commands;
 
-import theory6.subsystems.Catapult;
+import edu.wpi.first.wpilibj.Timer;
 import theory6.auton.AutonCommand;
+import theory6.subsystems.Catapult;
+
 /**
  *
- * @author Robotics
+ * @author Shubham
  */
-public class DisengageHoldCommand implements AutonCommand{
-     Catapult catapult;   
+public class SetBallSettlerCommand implements AutonCommand{
+    Catapult catapult;   
     
-    public DisengageHoldCommand (){
+    public SetBallSettlerCommand (){
         catapult = catapult.getInstance();
     }
         
     public void init() {
-        catapult.toggleHoldPos(false);
+        catapult.toggleBallSettler(false);
     }
 
     public boolean run() {
 
-        catapult.toggleHoldPos(true);
+        catapult.toggleBallSettler(true);
     
         return true;
     }
 
     public void done() {
-        
-        
 
     } 
 }
-
-

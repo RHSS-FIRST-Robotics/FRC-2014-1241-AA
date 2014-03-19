@@ -75,25 +75,29 @@ public class AA1241 extends IterativeRobot {
                 ac = autonSeq.oneBallDriveForward();
                 break;
             case 1:
-                ac = autonSeq.oneBallHotDriveForward();
+                ac = autonSeq.driveForwardOneBall();
                 break;                
             case 2:
-                ac = autonSeq.twoBallDriveForward();
+                ac = autonSeq.twoBallDriveForwardV1GTREast();
                 break;
             case 3:
-                ac = autonSeq.twoBallHotDriveForward();
+                ac = autonSeq.twoBallDriveForwardV2();
                 break;
             case 4:
-                ac = autonSeq.testDrive();
+                ac = autonSeq.twoBallDriveForwardV3();
                 break;
             case 5:
-                ac = autonSeq.testOne();
+                ac = autonSeq.twoBallHotDriveForward();
                 break;
             case 6:
-                ac = autonSeq.driveForwardOneBall();
+                ac = autonSeq.testDrive();
                 break;
-
-            
+            case 7:
+                ac = autonSeq.testTurn();
+                break;
+            case 8:
+                ac = autonSeq.test();
+                break;
          }
     }
     
@@ -124,19 +128,26 @@ public class AA1241 extends IterativeRobot {
             driveTrain.resetGyro();
             log("Reset Gyro");
         }
+        if (toolPad.getRawButton(GamepadConstants.START_BUTTON)){
+            Constants.load();
+            log("Reloading Constants in disabled periodic");
+        }
+
+        //autonSwitcher.addDefault("Test", 0);
+        autonSwitcher.addInteger("One Ball - Drive Forward", 0); 
+        autonSwitcher.addInteger("Drive Forward - One Ball", 1);
+        autonSwitcher.addInteger("Two Ball V1 GTR East", 2);
+        autonSwitcher.addInteger("Two Ball V2", 3);
+        autonSwitcher.addInteger("Two Ball V3", 4);
+        autonSwitcher.addInteger("Two Ball Hot", 5);
+        autonSwitcher.addInteger("Test-Drive", 6);
+        autonSwitcher.addInteger("Test-Turn", 7);
+        autonSwitcher.addInteger("Test", 8);
+        
+        SmartDashboard.putData("Autonomous Mode", autonSwitcher);  
+        
         updateDSLCD();
         updateSmartDashboard();
-        
-        //autonSwitcher.addDefault("Test", 0);
-        autonSwitcher.addInteger("One Ball", 0); 
-        autonSwitcher.addInteger("One Ball Hot", 1);
-        autonSwitcher.addInteger("Two Ball", 2);
-        autonSwitcher.addInteger("Two Ball Hot", 3);
-        autonSwitcher.addInteger("Test-Drive", 4);
-        autonSwitcher.addInteger("Test-One", 5);
-        autonSwitcher.addInteger("Drive Forward One Ball", 6);
-
-        SmartDashboard.putData("Autonomous Mode", autonSwitcher);  
     }
     
     public void teleopInit(){
@@ -160,19 +171,10 @@ public class AA1241 extends IterativeRobot {
 
         //Intake Code
         intake.intakeBall(intakeJoy, 3);
-       intake.setIntakePosTeleop(toolPad.getRawButton(GamepadConstants.LEFT_BUMPER));
-//        if(drivePad.getRawButton(GamepadConstants.RIGHT_BUMPER)){
-//        intake.setIntakePosTeleop(drivePad.getRawButton(GamepadConstants.RIGHT_BUMPER));            
-//        }
-//        else if(drivePad.getRawButton(GamepadConstants.LEFT_BUMPER)){
-//        intake.setOuttakePosTeleop(drivePad.getRawButton(GamepadConstants.LEFT_BUMPER));             
-//        }
-//        else {
-//            intake.intakeAnglePiston.set(DoubleSolenoid.Value.kReverse);
-//            intake.intakeBall(0,1);
-//        }
-        //Holder Piston
-        catapult.toggleHoldPos(toolPad.getRawButton(GamepadConstants.LEFT_TRIGGER));
+        intake.setIntakePosTeleop(toolPad.getRawButton(GamepadConstants.LEFT_BUMPER));
+        
+        //Ball Holder
+        catapult.toggleBallSettler(toolPad.getRawButton(GamepadConstants.LEFT_TRIGGER));
         
                 
         //Winch code
@@ -183,7 +185,6 @@ public class AA1241 extends IterativeRobot {
        
         //catapult.engageWinch(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
         //catapult.setWinchPWM(winchJoy);
-        //catapult.toggleWinchPiston(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
         
         updateDSLCD();
         updateSmartDashboard();
@@ -205,14 +206,13 @@ public class AA1241 extends IterativeRobot {
         dsLCD.println(DriverStationLCD.Line.kUser2, 1, "Gyro: "
         + Math.floor(driveTrain.getGyroAngle() * 100) / 100);
         
-        dsLCD.println(DriverStationLCD.Line.kUser3, 1, /* "?:" + (catapult.winchOnTarget() ? 1 : 0)*/ 
+        dsLCD.println(DriverStationLCD.Line.kUser3, 1,  "?:" + (catapult.winchOnTarget() ? 1 : 0) + 
                                                        " Winch Pot: " + catapult.getWinchPot());
         
-        dsLCD.println(DriverStationLCD.Line.kUser4, 1, "Limit Switch: " + catapult.getLimitSwitch());
+        //dsLCD.println(DriverStationLCD.Line.kUser4, 1, "Limit Switch: " + catapult.getLimitSwitch());
         
-        /*dsLCD.println(DriverStationLCD.Line.kUser5, 1, "WEng?: " + (catapult.isEngaged() ? 1 : 0) + 
-                " TP?: " + (catapult.isTrussPistonExtended() ? 1 : 0)); */
-        
+        dsLCD.println(DriverStationLCD.Line.kUser5, 1, "WEngaged?: " + (catapult.isEngaged() ? 1 : 0));
+
         if ((lcdUpdateCycle % 50) == 0) {
             dsLCD.updateLCD();
         } 
