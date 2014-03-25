@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import theory6.auton.AutonController;
 import theory6.subsystems.Catapult;
@@ -20,6 +21,7 @@ import theory6.subsystems.DriveTrain;
 import theory6.subsystems.Intake;
 import theory6.utilities.Constants;
 import theory6.utilities.SendableChooser;
+import theory6.utilities.ToggleBoolean;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -43,6 +45,9 @@ public class AA1241 extends IterativeRobot {
     SendableChooser autonSwitcher;
     AutonController ac = new AutonController();
     AutonSequences autonSeq = new AutonSequences();
+    
+    ToggleBoolean shootDelay = new ToggleBoolean();
+    Timer settlerTimer;
 
     public void robotInit() 
     {
@@ -57,6 +62,8 @@ public class AA1241 extends IterativeRobot {
         toolPad = new Joystick(GamepadConstants.TOOL_USB_PORT);
         autonSwitcher = new SendableChooser();
         
+        settlerTimer = new Timer();
+        settlerTimer.stop();
         Constants.getInstance();
         //Constants.load();
     }
@@ -69,6 +76,7 @@ public class AA1241 extends IterativeRobot {
 
         driveTrain.resetGyro();
         driveTrain.resetEncoders();
+        catapult.ballHolder.set(DoubleSolenoid.Value.kReverse);
         
          switch(autonSwitcher.getSelected()){
              case 0:
@@ -140,7 +148,7 @@ public class AA1241 extends IterativeRobot {
         autonSwitcher.addInteger("Two Ball V2", 3);
         autonSwitcher.addInteger("Two Ball V3", 4);
         autonSwitcher.addInteger("Two Ball Hot", 5);
-        autonSwitcher.addInteger("Test-Drive", 6);
+        autonSwitcher.addInteger("Drive Up", 6);
         autonSwitcher.addInteger("Test-Turn", 7);
         autonSwitcher.addInteger("Test", 8);
         
@@ -174,20 +182,44 @@ public class AA1241 extends IterativeRobot {
         intake.setIntakePosTeleop(toolPad.getRawButton(GamepadConstants.LEFT_BUMPER));
         
         //Ball Holder
-        //catapult.toggleBallSettler(toolPad.getRawButton(GamepadConstants.LEFT_TRIGGER));
-        catapult.autoBallSettler(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER), 
+       
+    
+    
+    
+    
+    
+    
+    
+    
+    
+       //catapult.toggleBallSettler(toolPad.getRawButton(GamepadConstants.LEFT_TRIGGER));
+       /* catapult.autoBallSettler(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER), 
                                  toolPad.getRawButton(GamepadConstants.LEFT_BUMPER), 
-                                 toolPad.getRawButton(GamepadConstants.START_BUTTON));
+                                 toolPad.getRawButton(GamepadConstants.LEFT_TRIGGER));*/
         
                 
         //Winch code
         catapult.windWinch(winchJoy, toolPad.getRawButton(GamepadConstants.B_BUTTON), //preset one
                                      toolPad.getRawButton(GamepadConstants.A_BUTTON)); //preset two
         
-        catapult.disengageWinch(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
+        shootDelay.set(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
+                
+        if(shootDelay.get()){
+            settlerTimer.start();
+            settlerTimer.reset();
+        }
+        
+        if(settlerTimer.get() > Constants.getDouble("ShooterWaitTime")) {
+            catapult.disengageWinch(true);
+            settlerTimer.reset();
+            settlerTimer.stop();
+        }
+        
+        System.out.println(settlerTimer.get());
        
-        //catapult.engageWinch(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
+        //catapult.engageWinch(toolPad.getRawButton(GamepadConstants.RIGHT_TRIGGER));
         //catapult.setWinchPWM(winchJoy);
+        catapult.holdBallSettler(toolPad.getRawButton(GamepadConstants.LEFT_TRIGGER), toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
         
         updateDSLCD();
         updateSmartDashboard();

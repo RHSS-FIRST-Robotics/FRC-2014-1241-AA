@@ -39,16 +39,9 @@ public class AutonSequences {
         
         ac.addCommand(new WaitCommand(Constants.getDouble("camTrackTime")));
             
-        if((SmartDashboard.getString("Left Target", "No Connection") == "Hot")) {
-           ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("winchDisengageTimeout")));
-        }
-        else if((SmartDashboard.getString("Right Target", "No Connection") == "Hot")) {
-            ac.addCommand(new WaitCommand(Constants.getDouble("OBWaitForHot")));
-            ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("winchDisengageTimeout")));
-        }
-        else {
-            ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("winchDisengageTimeout")));
-        }
+        
+        ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("winchDisengageTimeout")));
+        
         
         ac.addCommand(new DriveToPosTimeOutCommand(Constants.getDouble("OBDriveForwardDist"),
                                    Constants.getDouble("OBDriveAngle"),
@@ -63,22 +56,31 @@ public class AutonSequences {
         ac.clear();
         Constants.getInstance();
         
+        ac.addCommand(new WindBackWinchTimeOutCommand(Constants.getDouble("DOBWinchSetpoint"),Constants.getDouble("OBWindTimeout")));
+                
+        ac.addCommand(new WaitCommand(Constants.getDouble("camTrackTime")));
+        ac.addCommand(new SetBallSettlerCommand());
+        
+        
         ac.addCommand(new DriveToPosTimeOutCommand(Constants.getDouble("OBV1DriveForwardDist"), 
                                                    Constants.getDouble("OBV1DriveAngle"), 
                                                    Constants.getDouble("OBV1DriveDistTimeout"))); 
         
         ac.addCommand(new WaitCommand(Constants.getDouble("camTrackTime")));
+        
+        ac.addCommand(new SetBallSettlerCommand());
             
-        if((SmartDashboard.getString("Left Target", "No Connection") == "Hot")) {
+        ac.addCommand(new WaitCommand(Constants.getDouble("camTrackTime")));
+        /*if((SmartDashboard.getString("Left Target", "No Connection") == "Hot")) {
            ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("winchDisengageTimeout")));
         }
         else if((SmartDashboard.getString("Right Target", "No Connection") == "Hot")) {
             ac.addCommand(new WaitCommand(Constants.getDouble("OBV1WaitForHot")));
             ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("winchDisengageTimeout")));
         }
-        else {
-            ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("winchDisengageTimeout")));
-        }
+        else {}*/
+        ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("winchDisengageTimeout")));
+        
         
         return ac;
     }
@@ -93,6 +95,7 @@ public class AutonSequences {
 //        ac.addCommand(new DriveToPosTimeOutCommand(Constants.getDouble("TBAdjustmentDriveForward"), 0, Constants.getDouble("TBAdjustmentDriveForwardTimeOut")));
         
         ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("TBWinchDisengageTimeout")));
+        
         
 //        ac.addCommand(new DriveToPosTimeOutCommand(Constants.getDouble("TBAdjustmentDriveBackward"), 0, Constants.getDouble("TBAdjustmentDriveBackwardTimeOut")));
         
@@ -160,31 +163,66 @@ public class AutonSequences {
         ac.clear();
         Constants.getInstance();   
         
-        ac.addCommand(new TwoParallelMotionsCommand(new WindBackWinchTimeOutCommand(Constants.getDouble("TBV3WinchSetpoint"),
-                                                                                    Constants.getDouble("TBV3FirstShotWindTimeout")), 
-                                                                                    0, new SetIntakePositionCommand())); //intake up
+        ac.addCommand(new WindBackWinchTimeOutCommand(Constants.getDouble("TBV3WinchSetpoint"),
+                                                       Constants.getDouble("TBV3FirstShotWindTimeout")));
         
-        ac.addCommand(new TwoParallelMotionsCommand(new DriveToPosTimeOutCommand(Constants.getDouble("TBV3DriveForwardDist"), 
-                                                                                 Constants.getDouble("TBV3DriveAngle"), 
-                                                                                 Constants.getDouble("TBV3DriveDistTimeout")),
-                                                        0, 
-                                                        new IntakeTimeOutCommand(Constants.getDouble("TBV3IntakePWM1"),
-                                                                                 Constants.getDouble("TBV3IntakeTime1"))));
+        ac.addCommand(new WaitCommand(Constants.getDouble("TBV3SmallDelay")));
         
+        ac.addCommand(new SetBallSettlerCommand());
+        
+        ac.addCommand(new SetIntakePositionCommand());
+        
+        ac.addCommand(new WaitCommand(Constants.getDouble("TBV3SmallDelay")));
+        
+        ac.addCommand(new TwoParallelMotionsCommand(new DriveToPosTimeOutCommand(Constants.getDouble("TBV3DriveForwardDist1"), //Drive forward to set point  //
+                                                                                 Constants.getDouble("TBV3DriveAngle1"),                                     //
+                                                                                 Constants.getDouble("TBV3DriveDistTimeout1")),                              //This is all in one Sequence
+                                                        0,                                                                                                  //
+                                                        new IntakeTimeOutCommand(Constants.getDouble("TBV3IntakePWM1"), //Setpoint for intake speed         //
+                                                                                 Constants.getDouble("TBV3IntakeTime1"))));       
+        
+        ac.addCommand(new TwoParallelMotionsCommand(new DriveToPosTimeOutCommand(Constants.getDouble("TBV3DriveForwardDist2"), //Drive forward to set point  //
+                                                                                 Constants.getDouble("TBV3DriveAngle2"),                                     //
+                                                                                 Constants.getDouble("TBV3DriveDistTimeout2")),                              //This is all in one Sequence
+                                                        0,                                                                                                  //
+                                                        new IntakeTimeOutCommand(Constants.getDouble("TBV3Outake"), //Setpoint for intake speed         //
+                                                                                 Constants.getDouble("TBV3OutakeTime1"))));                               //
+//        
+//        ac.addCommand(new TwoParallelMotionsCommand(new DriveToPosTimeOutCommand(Constants.getDouble("TBV3DriveForwardDist"), 
+//                                                                                 Constants.getDouble("TBV3DriveAngle"), 
+//                                                                                 Constants.getDouble("TBV3DriveDistTimeout")),
+//                                                        0, 
+//                                                        new IntakeTimeOutCommand(Constants.getDouble("TBV3IntakePWM1"),
+//                                                                                 Constants.getDouble("TBV3IntakeTime1"))));
+//        
         ac.addCommand(new IntakeTimeOutCommand(Constants.getDouble("TBV3OutakePWM"), 
                                                Constants.getDouble("TBV3OutakeTime")));
         
+        ac.addCommand(new SetBallSettlerCommand());
+        
         ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("winchDisengageTimeout")));
         
-        ac.addCommand(new TwoParallelMotionsCommand(new WindBackWinchTimeOutCommand(Constants.getDouble("TBV3WinchSetpoint"),
-                                                                                    Constants.getDouble("TBV3FirstShotWindTimeout")), 0,
-                                                                                    new IntakeTimeOutCommand(Constants.getDouble("TBV3IntakePWM2"),
-                                               Constants.getDouble("TBV3IntakeTime2"))));
+        ac.addCommand(new EngageWinchCommand(Constants.getDouble("bWinchShiftTime")));
         
-        ac.addCommand(new TwoParallelMotionsCommand(new SetIntakePositionCommand(),
+        //ac.addCommand(new IntakeOnCommand(Constants.getDouble("TBV3IntakePWM")));
+        
+        ac.addCommand(new TwoParallelMotionsCommand(new IntakeTimeOutCommand(Constants.getDouble("TBV3IntakePWM3"), 
+                                               Constants.getDouble("TBV3IntakeTime3")), 0, 
+                new WindBackWinchTimeOutCommand(Constants.getDouble("TBV3WinchSetpoint"), Constants.getDouble("TBV3FirstShotWindTimeout"))));
+        
+   
+                
+        ac.addCommand(new TwoParallelMotionsCommand(new WindBackWinchTimeOutCommand(Constants.getDouble("TBV3WinchSetpoint"),
+                                                                                    Constants.getDouble("TBV3FirstShotWindTimeout")),
+                                                                                    Constants.getDouble("InBetweenTime"), new TwoParallelMotionsCommand(new SetIntakePositionCommand(),
                  0,
                  new IntakeTimeOutCommand(Constants.getDouble("TBV3IntakePWM2"),
-                                          Constants.getDouble("TBV3IntakeTime2"))));
+                                          Constants.getDouble("TBV3IntakeTime2")))));
+        
+//        ac.addCommand(new TwoParallelMotionsCommand(new SetIntakePositionCommand(),
+//                 0,
+//                 new IntakeTimeOutCommand(Constants.getDouble("TBV3IntakePWM2"),
+//                                          Constants.getDouble("TBV3IntakeTime2"))));
         
         ac.addCommand(new IntakeTimeOutCommand(0,0.05));
         
@@ -280,7 +318,10 @@ public class AutonSequences {
         ac.clear();
         Constants.getInstance();   
         
+        
         //Delete testDriveDistV2, testDriveAngleV2, testDriveDistTimeoutV2
+        
+        ac.addCommand(new WaitCommand(Constants.getDouble("WaitBeforeDrive")));
         
         ac.addCommand(new DriveToPosTimeOutCommand(Constants.getDouble("testDriveDist"), //new
                                                    Constants.getDouble("testDriveAngle"), //angle goal

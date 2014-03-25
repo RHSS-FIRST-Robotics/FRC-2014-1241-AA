@@ -1,13 +1,262 @@
+/****************************************Shooter Presets****************************/
+//B
+bWinchPosOne = 787
+
+//A
+bWinchPosTwo = 853
+
+bWinchPosThree = 0
+
+//Auton Shot Presets
+
+//s-7
+TBWinchSetpoint = 846
+
+//S -4
+TBWinchSetpointTwo = 849
+
+DOBWinchSetpoint = 849
+
+OBWinchSetpoint = 849
+
+TBV3WinchSetpoint = 849
+
+TBHWinchSetpoint = 197
+
+
+
+
+/****************************************TimeOuts****************************/
+
+
+aGoalAngleTimeOut = 0
+
+aShootBallTimeOut = 0
+
+aTurnDegreesTimeOut = 0
+
+aDriveForwardTimeOut = 0
+
+aShootAllianceBallTimeOut = 0
+
+aDriveToNewZoneTimeOut = 0
+
+TBWinchDisengageTimeout = 0.75
+
+ShooterWaitTime = 0.3
+
+HoldWaitTime = 1.5
+
+TBSecondShotWindTimeout = 4
+
+twoBallTurnTimeout1 = 1.5
+
+TBDriveDistTimeout1 = 1
+
+twoBallTurnTimeout2 = 1.25
+
+TBDriveDistTimeout2 = 2
+
+testAngleTimeout = 0.38
+
+intakeTime = 3
+
+SecondWait = 0.1
+ 
+OBHTurnLeftTimeout1 = 2
+
+OBHTurnRightTimeout1 = 2
+
+OBV1DriveDistTimeout = 3
+
+OBDriveDistTimeout = 3
+
+OBWindTimeout = 5
+
+camTrackTime = 1
+
+winchDisengageTimeout = 0.3
+
+TBV3SmallDelay = 0.25
+
+TBV3FirstShotWindTimeout = 4
+
+TBV3DriveDistTimeout1 = 2.75
+
+TBV3DriveDistTimeout2 = 2.75
+
+TBV3IntakeTime1 = 0.5
+
+TBV3OutakeTime = 0.4
+
+TBV3OutakeTime1 = 0.6
+
+TBV3IntakeTime2 = 0.75
+
+TBV3WaitBeforeSecondShot = 0.75
+
+TBV3IntakeTime3 = 0.5
+
+testDriveDistTimeout = 2
+
+holdTime = 0.5
+
+retractTime = 0.1
+
+InBetweenTime = 2
+
+TBHTurnLeftTimeout1 = 0.4
+
+TBHTurnRightTimeout1 = 0.4
+
+TBHTurnTimeoutLeft2 = 2
+
+TBHTurnTimeoutRight2 = 2
+
+TBHDriveDistTimeout1 = 2
+
+TBHSecondShotWindTimeout = 5
+
+TBHintakeTime = 2
+
+TBHTurnToShootTimeout = 2
+
+TBHFinalWait = 0.2
+
+TBHDriveDistTimeout2 = 2
+
+TBAdjustmentDriveForwardTimeOut = 2
+
+TBAdjustmentDriveBackwardTimeOut = 2
+
+
+/****************************************Utilities****************************/
+
 tIntakeJoyScaler = 3
+
 tDriveJoyScaler = 3
 
-bWinchPosTolerance = 3
-bWinchWindBackSpeed = 1
-
-bWinchPosOne = 330
-bWinchPosTwo = 390
+bWinchPosTolerance = 1
 
 bWinchShiftSpeed = 1
-bWinchShiftTime = 0.3driveP = 0.05
-driveI = 0.001
-driveD = 0.4
+
+bWinchWindBackSpeed = 1
+
+bWinchIncrement = 2
+
+bWinchDecrement = 2
+
+bWinchDeltaErrorTolerance = 1
+
+bWinchShiftTime = 0.25
+
+gyroGainV1 = 0.05
+
+driveLongV1P = 0.035
+driveLongV1I = 0
+driveLongV1D = 0.4
+
+driveShortV1P = 0.15
+driveShortV1I = 0
+driveShortV1D = 0.4
+
+gyroGainV2 = 0.048
+
+driveDistTolerance = 4
+
+driveLongV2P = 0.035
+driveLongV2I = 0
+driveLongV2D = 0.3
+
+driveShortV2P = 0.07
+driveShortV2I = 0
+driveShortV2D = 0.35
+
+turnP180 = 0.1
+turnI180 = 0.0
+turnD180 = 0.5
+
+turnPLessThan180 = 0.05
+turnILessThan180 = 0
+turnDLessThan180 = 0.30
+
+/****************************************Respective Autons****************************/
+
+
+testAngleGoal = -10
+
+intakePWM = 1
+
+twoBallTurn1 = 90
+
+TBDriveForwardDist1 = 20
+
+TBDriveAngle1 = 0
+
+twoBallTurn2 = -90
+
+TBDriveForwardDist2 = 40
+
+TBDriveAngle2 = 0
+
+OBHTurnLeft1 = -20
+
+OBHTurnRight1 = 20
+
+OBV1DriveForwardDist = 75
+
+OBV1DriveAngle = 0
+
+OBDriveForwardDist = 60
+
+OBDriveAngle = 0
+
+TBV3DriveForwardDist1 = 70
+
+TBV3DriveAngle1 = 0
+
+TBV3DriveForwardDist2 = 30
+
+TBV3DriveAngle2 = 0
+
+TBV3IntakePWM1 = 0.8
+
+TBV3Outake = -0.25
+
+TBV3IntakePWM2 = 1
+
+TBV3OutakePWM = -0.5
+
+TBV3IntakePWM3 = 1
+
+testDriveDist = 30
+
+testDriveAngle = 0
+
+TBHTurnLeft1 = -10
+
+TBHTurnRight1 = 10
+
+TBHLeftTurnLeft2 = -80
+
+TBHRightTurnLeft2 = 100
+
+TBHDriveForwardDist1 = 17
+
+TBHDriveAngle1 = 0
+
+TBHWinchSetpoint = 197
+
+TBHintakePWM = 1
+
+TBHTurnToShoot = 90
+
+TBHDriveForwardDist2 = 70
+
+TBHDriveAngle2 = 0
+
+TBAdjustmentDriveForward = 18
+
+TBAdjustmentDriveBackward = -16
+
+

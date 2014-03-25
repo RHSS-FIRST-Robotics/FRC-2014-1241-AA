@@ -29,7 +29,7 @@ public class Catapult {
     
     DoubleSolenoid winchReleasePiston;
     
-    DoubleSolenoid ballHolder;
+    public DoubleSolenoid ballHolder;
 
     ToggleBoolean winchStateToggle;
     ToggleBoolean winchShiftToggle;
@@ -39,6 +39,7 @@ public class Catapult {
     
     AnalogChannel winchPot;
     
+    Timer shooterTimer;
     Timer winchShiftTimer;
     
     boolean holdState = false;
@@ -99,6 +100,9 @@ public class Catapult {
         winchShiftTimer = new Timer();
         winchShiftTimer.start();
         
+        shooterTimer = new Timer();
+        shooterTimer.start();
+        
         settlerTimer = new Timer();
         settlerTimer.start();
         
@@ -129,17 +133,18 @@ public class Catapult {
         
         error = setpoint - getWinchPot();
         
-        if((Math.abs(error) > Constants.getDouble("bWinchPosTolerance")) && catapultLimit.get()){
+        if((Math.abs(error) < Constants.getDouble("bWinchPosTolerance")) && catapultLimit.get()){
             setpoint = getWinchPot();
             setWinchPWM(0);
+            System.out.println("END ONE");
         }
         
-        else if (error == 0 && catapultLimit.get()){
+        if (error == 0 && catapultLimit.get()){
             setWinchPWM(0);
         log("in setpoint == winchPot");
         }
         
-        else if (Math.abs(error) > Constants.getDouble("bWinchPosTolerance") && !catapultLimit.get()) {
+        else if (Math.abs(error) > Constants.getDouble("bWinchPosTolerance")) {
             if(error > 0) {
                 setWinchPWM(Constants.getDouble("bWinchWindBackSpeed"));
                 log("in first");
@@ -150,8 +155,7 @@ public class Catapult {
             }
         }
         
-        else 
-            setWinchPWM(0);     
+            
     }
     public void windWinch(double manualAdjustment, 
             boolean presetOne, boolean presetTwo){
@@ -200,8 +204,10 @@ public class Catapult {
                    setWinchPWM(manualAdjustment); 
                    winchSetpoint = getWinchPot();
                 }
-                else 
+                else {
                     setWinchPos(winchSetpoint);
+                
+                }
                 //else {
                     //winchSetpoint = getWinchPot();
                 //}
@@ -268,7 +274,7 @@ public class Catapult {
             winchPistonState = ENGAGED;
             firstRun = false;
         }
-        
+
         if(winchPistonState && disengage){
             winchReleasePiston.set(DoubleSolenoid.Value.kForward);
             winchSetpoint = getWinchPot();
@@ -282,6 +288,7 @@ public class Catapult {
     }
     
     public void toggleBallSettler(boolean holdToggle) {
+               
         holderStateToggle.set(holdToggle);
         
         if(holderStateToggle.get())
@@ -291,6 +298,24 @@ public class Catapult {
             ballHolder.set(DoubleSolenoid.Value.kForward);
         else
             ballHolder.set(DoubleSolenoid.Value.kReverse);
+    }
+    
+    public void holdBallSettler(boolean holdToggle, boolean shooterButton) { 
+        
+        ballSettlerHold.set(shooterButton);
+        
+        if(ballSettlerHold.get())
+            settlerTimer.reset();
+        
+
+        
+        if(holdToggle)
+            ballHolder.set(DoubleSolenoid.Value.kReverse);
+        else if (!holdToggle && settlerTimer.get() > Constants.getDouble("HoldWaitTime"))
+            ballHolder.set(DoubleSolenoid.Value.kForward);
+        else
+            ballHolder.set(DoubleSolenoid.Value.kReverse);
+ 
     }
     
     
