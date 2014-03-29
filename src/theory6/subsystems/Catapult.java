@@ -72,7 +72,7 @@ public class Catapult {
 
     boolean ballSettlerHoldState = RETRACTED;
 
-    Timer settlerTimer;
+    Timer ballHolderTimer;
     
     public Catapult()
     {   
@@ -97,8 +97,8 @@ public class Catapult {
         shooterTimer = new Timer();
         shooterTimer.start();
         
-        settlerTimer = new Timer();
-        settlerTimer.start();
+        ballHolderTimer = new Timer();
+        ballHolderTimer.start();
         
         Constants.getInstance();
     }
@@ -261,11 +261,11 @@ public class Catapult {
         ballSettlerHold.set(shooterButton);
         
         if(ballSettlerHold.get())
-            settlerTimer.reset();
+            ballHolderTimer.reset();
 
         if(holdToggle)
             ballHolder.set(DoubleSolenoid.Value.kReverse);
-        else if (!holdToggle && settlerTimer.get() > Constants.getDouble("HoldWaitTime"))
+        else if (!holdToggle && ballHolderTimer.get() > Constants.getDouble("HoldWaitTime"))
             ballHolder.set(DoubleSolenoid.Value.kForward);
         else
             ballHolder.set(DoubleSolenoid.Value.kReverse);
@@ -282,20 +282,20 @@ public class Catapult {
 
             if(ballSettlerHold.get()) {
                 ballSettlerHoldState = HOLD;
-                settlerTimer.reset();		
+                ballHolderTimer.reset();		
             }
             else if (shootButton) {
                 ballSettlerHoldState = RETRACT;
-                settlerTimer.reset();
+                ballHolderTimer.reset();
             }
             else if(ballSettlerHoldManual.get()) {
                 ballSettlerHoldState = !ballSettlerHoldState;
             }
 
-            if(ballSettlerHoldState == HOLD && settlerTimer.get() > Constants.getDouble("holdTime")) { //0.5s
+            if(ballSettlerHoldState == HOLD && ballHolderTimer.get() > Constants.getDouble("holdTime")) { //0.5s
                     ballHolder.set(DoubleSolenoid.Value.kForward);
             }
-            else if(ballSettlerHoldState == RETRACTED && settlerTimer.get() > Constants.getDouble("retractTime")) { //0.1s
+            else if(ballSettlerHoldState == RETRACTED && ballHolderTimer.get() > Constants.getDouble("retractTime")) { //0.1s
                     ballHolder.set(DoubleSolenoid.Value.kReverse);
             }
     }
