@@ -53,9 +53,6 @@
             
             rightDriveBackAndFront = new Talon(ElectricalConstants.FRONT_AND_BACK_RIGHT_DRIVE_PWM);
             rightDriveTop = new Talon(ElectricalConstants.TOP_RIGHT_DRIVE_PWM);
-
-            driveGyro.initGyro();
-            
         }
         public static DriveTrain getInstance() 
         {
