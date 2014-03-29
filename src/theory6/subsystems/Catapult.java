@@ -26,16 +26,14 @@ public class Catapult {
     Talon leftWinchMotor;
     
     DigitalInput catapultLimit;
-    
+   
     DoubleSolenoid winchReleasePiston;
     
     public DoubleSolenoid ballHolder;
 
     ToggleBoolean winchStateToggle;
     ToggleBoolean winchShiftToggle;
-    
     ToggleBoolean holderStateToggle;
-    
     
     AnalogChannel winchPot;
     
@@ -69,16 +67,12 @@ public class Catapult {
     double deltaError;
     double lastDeltaError;
     
-    LogicalNotToggleBoolean ballSettlerHold = new LogicalNotToggleBoolean();
-    ToggleBoolean ballSettlerHoldManual = new ToggleBoolean();
-
-    Timer settlerTimer; 
-    
     final boolean RETRACT = false;
     final boolean HOLD	= true;
 
     boolean ballSettlerHoldState = RETRACTED;
 
+    Timer settlerTimer;
     
     public Catapult()
     {   
@@ -93,7 +87,7 @@ public class Catapult {
         winchStateToggle = new ToggleBoolean();
         winchShiftToggle = new ToggleBoolean();
         
-        catapultLimit = new DigitalInput(ElectricalConstants.LIMIT_SWITCH);
+        catapultLimit = new DigitalInput(ElectricalConstants.CATAPULT_LIMIT_SWITCH);
         
         holderStateToggle = new ToggleBoolean();
         
@@ -121,10 +115,10 @@ public class Catapult {
         leftWinchMotor.set(pwm);
     }                                                                                    
     
-    
     public double getWinchPot() {
         return winchPot.getAverageValue();
     }
+    
     public boolean getLimitSwitch(){
         return catapultLimit.get();
     }
@@ -136,29 +130,24 @@ public class Catapult {
         if((Math.abs(error) < Constants.getDouble("bWinchPosTolerance")) && catapultLimit.get()){
             setpoint = getWinchPot();
             setWinchPWM(0);
-            System.out.println("END ONE");
         }
         
         if (error == 0 && catapultLimit.get()){
             setWinchPWM(0);
-        log("in setpoint == winchPot");
         }
         
         else if (Math.abs(error) > Constants.getDouble("bWinchPosTolerance")) {
             if(error > 0) {
                 setWinchPWM(Constants.getDouble("bWinchWindBackSpeed"));
-                log("in first");
             }
             else if(error < 0) {
                 setWinchPWM(-Constants.getDouble("bWinchWindBackSpeed"));
-                log("in second");
             }
-        }
-        
-            
+        }        
     }
+    
     public void windWinch(double manualAdjustment, 
-            boolean presetOne, boolean presetTwo){
+                          boolean presetOne, boolean presetTwo){
         
         ToggleBoolean engageFirst = new ToggleBoolean();
         engageFirst.set(Math.abs(manualAdjustment) > 0.1 || presetOne || presetTwo);
@@ -174,49 +163,15 @@ public class Catapult {
         else if (presetTwo) 
             winchSetpoint = Constants.getDouble("bWinchPosTwo");
                 
-        else if(winchPistonState == ENGAGED) {
-//            if (Math.abs(manualAdjustment) > 0.5) {
-//                setWinchPWM(manualAdjustment);
-//                log("in manual");
-//                winchSetpoint = getWinchPot();
-//            }
-          //  else {
-                //engageFirst.set(Math.abs(manualAdjustment) > 0.1 || presetOne || presetTwo);
-                //if(presetOne || presetTwo) {
+        else if(winchPistonState == ENGAGED) {           
+            if(Math.abs(manualAdjustment) > 0.1) {
+               setWinchPWM(manualAdjustment); 
+               winchSetpoint = getWinchPot();
+            }
+            else {
+                setWinchPos(winchSetpoint);
 
-                //else
-                  //  winchSetpoint = getWinchPot();
-                   
-                
-//                else if (Math.abs(manualAdjustment) > 0.7) {
-//                    //setWinchPWM(manualAdjustment);
-//                    log("in manual");
-////                    if(manualAdjustment > 0.7) {
-////                        winchSetpoint = winchSetpoint - 1;
-////                    }
-////                    else if(manualAdjustment < 0.7){
-////                        winchSetpoint = winchSetpoint + 1;
-////                    }
-//                    setWinchPWM
-//                }
-                
-                if(Math.abs(manualAdjustment) > 0.1) {
-                   setWinchPWM(manualAdjustment); 
-                   winchSetpoint = getWinchPot();
-                }
-                else {
-                    setWinchPos(winchSetpoint);
-                
-                }
-                //else {
-                    //winchSetpoint = getWinchPot();
-                //}
-
-                
-                log("in preset" + winchSetpoint);
-                
-             
-           // }  
+            }
         }
         
     }
@@ -247,7 +202,7 @@ public class Catapult {
             winchReleasePiston.set(DoubleSolenoid.Value.kReverse);
     }
     
-  public void engageWinch(boolean winchShiftToggleButton) {
+    public void engageWinch(boolean winchShiftToggleButton) {
         winchShiftToggle.set(winchShiftToggleButton);
         
         if(winchShiftToggleButton){
@@ -300,15 +255,14 @@ public class Catapult {
             ballHolder.set(DoubleSolenoid.Value.kReverse);
     }
     
-    public void holdBallSettler(boolean holdToggle, boolean shooterButton) { 
+    public void holdBallSettler(boolean holdToggle, boolean shooterButton) {   
         
+        LogicalNotToggleBoolean ballSettlerHold = new LogicalNotToggleBoolean();
         ballSettlerHold.set(shooterButton);
         
         if(ballSettlerHold.get())
             settlerTimer.reset();
-        
 
-        
         if(holdToggle)
             ballHolder.set(DoubleSolenoid.Value.kReverse);
         else if (!holdToggle && settlerTimer.get() > Constants.getDouble("HoldWaitTime"))
@@ -317,10 +271,12 @@ public class Catapult {
             ballHolder.set(DoubleSolenoid.Value.kReverse);
  
     }
-    
-    
+        
     public void autoBallSettler(boolean shootButton, boolean intakeButton, boolean manualButton) {
 
+            LogicalNotToggleBoolean ballSettlerHold = new LogicalNotToggleBoolean();
+            ToggleBoolean ballSettlerHoldManual = new ToggleBoolean();
+            
             ballSettlerHold.set(intakeButton);
             ballSettlerHoldManual.set(manualButton);
 
@@ -348,7 +304,6 @@ public class Catapult {
             return ballSettlerHoldState;
     }
 
-    
     private void log(Object aObject){
         System.out.println(String.valueOf(aObject));
     }

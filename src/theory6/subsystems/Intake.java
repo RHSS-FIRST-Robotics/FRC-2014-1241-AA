@@ -25,38 +25,22 @@ public class Intake {
     
     Talon leftSide;
     Talon rightSide;
-    
-    Relay leftBottomSide;
-    Relay rightBottomSide;
-    
-    Relay holder;
             
     public DoubleSolenoid intakeAnglePiston;
-    
-    DigitalInput intakeLimit;
+
     ToggleBoolean intakeAngleToggle;
-    boolean intakeAngleState = false;
+    boolean intakeAngleState = false; //false is down, true is up
     
     JoystickScaler rightAnalogScaler = new JoystickScaler();
-    Timer outtakeTimer;
     
     public Intake(){
         leftSide = new Talon(ElectricalConstants.LEFT_SIDE_INTAKE_PWM);
         rightSide = new Talon(ElectricalConstants.RIGHT_SIDE_INTAKE_PWM);
         
-        
-        holder = new Relay(ElectricalConstants.HOLDER_RELAY);
-        leftBottomSide = new Relay(ElectricalConstants.LEFT_SIDE_INTAKE);
-        rightBottomSide = new Relay(ElectricalConstants.RIGHT_SIDE_INTAKE);
-        outtakeTimer = new Timer();
-        outtakeTimer.start();
-        
         intakeAnglePiston = new DoubleSolenoid (ElectricalConstants.INTAKE_DOWN, ElectricalConstants.INTAKE_UP);
         intakeAngleToggle = new ToggleBoolean();
-        //intakeLimit = new DigitalInput(ElectricalConstants.INTAKE_BALL_LIMIT);
     }
     public static Intake getInstance() {
-    
         if(inst == null) {
             inst = new Intake();
         }
@@ -64,54 +48,27 @@ public class Intake {
     }
     public void setRollerPWM(double pwm) 
     {
-        if (Math.abs(pwm) < 0.05) 
-        {
+        if (Math.abs(pwm) < 0.05) {
             leftSide.set(0);
             rightSide.set(0);
-            
         }
         else{
             leftSide.set(pwm);
             rightSide.set(-pwm);
-            
         }
     }
-    public void setHolder(double intakePWM)
-    {
-        if(intakePWM > 0.05){ //intake
-           holder.set(Relay.Value.kReverse);
-            
-        }
-        else if (intakePWM < -0.05){ //outake
-           holder.set(Relay.Value.kForward);
-            
-        }
-        else  
-        {
-           holder.set(Relay.Value.kOff);
-            
-        }
-    }
-    
-    
-    
+
     public void intakeBall(double joy, int scaledPower)
     {
         setRollerPWM(rightAnalogScaler.scaleJoystick(joy, scaledPower));
-        setHolder(joy);
     }
-    //public boolean ballDetected() {
-        //return !intakeLimit.get();
-    //}
     
     //Used for tele-op control of intake position
     public void setIntakePosTeleop(boolean intakeAngleToggleButton) {
         if(intakeAngleToggleButton) {
             intakeAnglePiston.set(DoubleSolenoid.Value.kForward);
             intakeAngleState = true;
-            //intakeBall(1, 1);
-            
-            
+            //intakeBall(1, 1); 
         }
         else {
             intakeAnglePiston.set(DoubleSolenoid.Value.kReverse);
@@ -119,20 +76,7 @@ public class Intake {
            // intakeBall(0,1);
         }
     }
-    public void setOuttakePosTeleop(boolean outtakeAngleToggleButton) {
-        if(outtakeAngleToggleButton) {
-            intakeAnglePiston.set(DoubleSolenoid.Value.kForward);
-            intakeAngleState = true;
-            //outtakeTimer.reset();
-            //if(outtakeTimer.get() > 0.3)
-                intakeBall(-0.5, 1);
-        }
-        else {
-            intakeAnglePiston.set(DoubleSolenoid.Value.kReverse);
-            intakeAngleState = false;
-            intakeBall(0, 1);
-        }
-    }    
+    
     //Used for toggling position in autonomous
     public void toggleIntakePosAuton(boolean intakeToggle) {
         intakeAngleToggle.set(intakeToggle);

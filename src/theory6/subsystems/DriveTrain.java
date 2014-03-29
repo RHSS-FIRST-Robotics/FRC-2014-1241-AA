@@ -140,7 +140,8 @@
             leftDriveEncoder.reset();
             rightDriveEncoder.reset();
         }
-    /************************GYRO FUNCTIONS**************************/
+    /************************GYRO FUNCTION************************/
+        
     public double getGyroAngle()
     {
         return (driveGyro.getAngle() / 180)*180.0;

@@ -7,7 +7,6 @@
 
 package theory6.main;
 
-
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -65,7 +64,6 @@ public class AA1241 extends IterativeRobot {
         settlerTimer = new Timer();
         settlerTimer.stop();
         Constants.getInstance();
-        //Constants.load();
     }
 
     public void autonomousInit(){
@@ -132,16 +130,17 @@ public class AA1241 extends IterativeRobot {
             driveTrain.resetEncoders();
             log("Reset Encoders");
         }
-        if(toolPad.getRawButton(GamepadConstants.Y_BUTTON)){
+        else if(toolPad.getRawButton(GamepadConstants.Y_BUTTON)){
             driveTrain.resetGyro();
             log("Reset Gyro");
         }
-        if (toolPad.getRawButton(GamepadConstants.START_BUTTON)){
+        else if (toolPad.getRawButton(GamepadConstants.START_BUTTON)){
             Constants.load();
             log("Reloading Constants in disabled periodic");
         }
 
-        //autonSwitcher.addDefault("Test", 0);
+        autonSwitcher.addDefault("Drive Forward - One Ball", 1);
+        
         autonSwitcher.addInteger("One Ball - Drive Forward", 0); 
         autonSwitcher.addInteger("Drive Forward - One Ball", 1);
         autonSwitcher.addInteger("Two Ball V1 GTR East", 2);
@@ -165,7 +164,6 @@ public class AA1241 extends IterativeRobot {
 
     public void teleopPeriodic() 
     {
-
         double leftAnalogY = drivePad.getRawAxis(GamepadConstants.LEFT_ANALOG_Y);
         double rightAnalogY = drivePad.getRawAxis(GamepadConstants.RIGHT_ANALOG_Y);
         double intakeJoy = toolPad.getRawAxis(GamepadConstants.LEFT_ANALOG_Y);
@@ -181,27 +179,16 @@ public class AA1241 extends IterativeRobot {
         intake.intakeBall(intakeJoy, 3);
         intake.setIntakePosTeleop(toolPad.getRawButton(GamepadConstants.LEFT_BUMPER));
         
-        //Ball Holder
-       
-    
-    
-    
-    
-    
-    
-    
-    
-    
-       //catapult.toggleBallSettler(toolPad.getRawButton(GamepadConstants.LEFT_TRIGGER));
-       /* catapult.autoBallSettler(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER), 
-                                 toolPad.getRawButton(GamepadConstants.LEFT_BUMPER), 
-                                 toolPad.getRawButton(GamepadConstants.LEFT_TRIGGER));*/
         
-                
+                    
         //Winch code
         catapult.windWinch(winchJoy, toolPad.getRawButton(GamepadConstants.B_BUTTON), //preset one
                                      toolPad.getRawButton(GamepadConstants.A_BUTTON)); //preset two
+               
+        //catapult.engageWinch(toolPad.getRawButton(GamepadConstants.RIGHT_TRIGGER));
+        //catapult.setWinchPWM(winchJoy);
         
+        //Ball Holder
         shootDelay.set(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
                 
         if(shootDelay.get()){
@@ -215,12 +202,9 @@ public class AA1241 extends IterativeRobot {
             settlerTimer.stop();
         }
         
-        System.out.println(settlerTimer.get());
-       
-        //catapult.engageWinch(toolPad.getRawButton(GamepadConstants.RIGHT_TRIGGER));
-        //catapult.setWinchPWM(winchJoy);
         catapult.holdBallSettler(toolPad.getRawButton(GamepadConstants.LEFT_TRIGGER), toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
         
+        //DSLCD and SmartDashboard Output
         updateDSLCD();
         updateSmartDashboard();
         
@@ -243,10 +227,10 @@ public class AA1241 extends IterativeRobot {
         
         dsLCD.println(DriverStationLCD.Line.kUser3, 1,  "?:" + (catapult.winchOnTarget() ? 1 : 0) + 
                                                        " Winch Pot: " + catapult.getWinchPot());
-        
-        //dsLCD.println(DriverStationLCD.Line.kUser4, 1, "Limit Switch: " + catapult.getLimitSwitch());
-        
-        dsLCD.println(DriverStationLCD.Line.kUser5, 1, "WEngaged?: " + (catapult.isEngaged() ? 1 : 0));
+
+        dsLCD.println(DriverStationLCD.Line.kUser4, 1, "WEngaged?: " + (catapult.isEngaged() ? 1 : 0));
+                
+        dsLCD.println(DriverStationLCD.Line.kUser5, 1, "Limit Switch: " + catapult.getLimitSwitch());
 
         if ((lcdUpdateCycle % 50) == 0) {
             dsLCD.updateLCD();
@@ -256,6 +240,7 @@ public class AA1241 extends IterativeRobot {
         }
      
     }
+    
     private void log(Object aObject){
         
         System.out.println(String.valueOf(aObject));
