@@ -92,10 +92,10 @@ public class AA1241 extends IterativeRobot {
                 ac = autonSeq.twoBallDriveForwardV2();
                 break;
             case 4:
-                ac = autonSeq.twoBallDriveForwardV3();
+                ac = autonSeq.twoBallHotDriveForwardV1();
                 break;
             case 5:
-                ac = autonSeq.twoBallHotDriveForward();
+                ac = autonSeq.twoBallHotDriveForwardV2();
                 break;
             case 6:
                 ac = autonSeq.testDrive();
@@ -146,8 +146,8 @@ public class AA1241 extends IterativeRobot {
         autonSwitcher.addInteger("Drive Forward - One Ball", 1);
         autonSwitcher.addInteger("Two Ball V1 GTR East", 2);
         autonSwitcher.addInteger("Two Ball V2", 3);
-        autonSwitcher.addInteger("Two Ball V3", 4);
-        autonSwitcher.addInteger("Two Ball Hot", 5);
+        autonSwitcher.addInteger("Two Ball Hot V1", 4);
+        autonSwitcher.addInteger("Two Ball Hot v2", 5);
         autonSwitcher.addInteger("Drive Up", 6);
         autonSwitcher.addInteger("Test-Turn", 7);
         autonSwitcher.addInteger("Test", 8);
