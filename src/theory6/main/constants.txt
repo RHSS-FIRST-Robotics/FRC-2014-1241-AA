@@ -1,14 +1,18 @@
-/****************************************Shooter Presets****************************/
+/********************************Catapult Presets******************************/
+
+---------------------Tele-Op-------------
 //B
 bWinchPosOne = 884
-
-
 //A
 bWinchPosTwo = 948
 
 bWinchPosThree = 0
 
-//Auton Shot Presets
+---------------------Tele-Op-------------
+
+
+
+---------------------Auton Shot Presets-------------------
 
 //s-1
 TBWinchSetpoint = 947
@@ -17,159 +21,40 @@ TBWinchSetpoint = 947
 TBWinchSetpointTwo = 949
 
 //S-4
-DOBWinchSetpoint = 944
-
 OBWinchSetpoint = 944
+
 //-1
 TBV3WinchSetpoint = 947
 //-2
 TBV3WinchSetpointTwo = 946
 
-//TBHWinchSetpoint = 640
-
-//TBHV2WinchSetpoint = 640
-
-//TBHV2SecondWinchSetpoint = 631
+---------------------Auton Shot Presets-------------------
 
 
-
-/****************************************TimeOuts****************************/
-
-
-aGoalAngleTimeOut = 0
-
-aShootBallTimeOut = 0
-
-aTurnDegreesTimeOut = 0
-
-aDriveForwardTimeOut = 0
-
-aShootAllianceBallTimeOut = 0
-
-aDriveToNewZoneTimeOut = 0
-
-TBWinchDisengageTimeout = 0.75
-
-ShooterWaitTime = 0.25
-
-HoldWaitTime = 1
-
-TBSecondShotWindTimeout = 4
-
-twoBallTurnTimeout1 = 1.5
-
-TBDriveDistTimeout1 = 1
-
-twoBallTurnTimeout2 = 1.25
-
-TBDriveDistTimeout2 = 2
-
-testAngleTimeout = 0.38
-
-intakeTime = 3
-
-SecondWait = 0.1
- 
-OBHTurnLeftTimeout1 = 2
-
-OBHTurnRightTimeout1 = 2
-
-OBV1DriveDistTimeout = 3
-
-OBDriveDistTimeout = 3
-
-OBWindTimeout = 5
-
-camTrackTime = 0.25
-
-winchDisengageTimeout = 0.3
-
-TBV3SmallDelay = 0.1
-
-TBV3FirstShotWindTimeout = 4
-
-TBV3DriveDistTimeout1 = 2.75
-
-TBV3DriveDistTimeout2 = 2.75
-
-TBV3IntakeTime1 = 0.4
-
-TBV3OutakeTime = 0.4
-
-TBV3OutakeTime1 = 0.28
-
-TBV3IntakeTime2 = 0.4
-
-TBV3WaitBeforeSecondShot = 0.5
-
-TBV3IntakeTime3 = 0.5
-
-testDriveDistTimeout = 2
-
-holdTime = 0.5
-
-retractTime = 0.1
-
-InBetweenTime = 2
-
-TBHTurnLeftTimeout1 = 0.4
-
-TBHTurnRightTimeout1 = 0.4
-
-TBHTurnTimeoutLeft2 = 2
-
-TBHTurnTimeoutRight2 = 2
-
-TBHDriveDistTimeout1 = 2
-
-TBHSecondShotWindTimeout = 5
-
-TBHintakeTime = 2
-
-TBHTurnToShootTimeout = 2
-
-TBHFinalWait = 0.2
-
-TBHDriveDistTimeout2 = 2
-
-TBAdjustmentDriveForwardTimeOut = 2
-
-TBAdjustmentDriveBackwardTimeOut = 2
+/********************************Catapult Presets******************************/
 
 
-/****************************************Utilities****************************/
+--------------------------------------------------------------------------------
 
-tIntakeJoyScaler = 3
 
-tDriveJoyScaler = 3
-
-bWinchPosTolerance = 1
-
-bWinchShiftSpeed = 1
+/*********************************PID Gains and Misc***************************/
 
 bWinchWindBackSpeed = 1
 
-bWinchIncrement = 2
-
-bWinchDecrement = 2
-
+bWinchPosTolerance = 1
 bWinchDeltaErrorTolerance = 1
 
+bWinchShiftSpeed = 1
 bWinchShiftTime = 0.25
 
-gyroGainV1 = 0.05
+winchDisengageTimeout = 0.3
 
-driveLongV1P = 0.035
-driveLongV1I = 0
-driveLongV1D = 0.4
+//USED IN SEMI-AUTOMATIC BALL HOLDER
+ShooterWaitTime = 0.25
+HoldWaitTime = 1
 
-driveShortV1P = 0.15
-driveShortV1I = 0
-driveShortV1D = 0.4
 
 gyroGainV2 = 0.048
-
-driveDistTolerance = 4
 
 driveLongV2P = 0.035
 driveLongV2I = 0
@@ -179,6 +64,7 @@ driveShortV2P = 0.07
 driveShortV2I = 0
 driveShortV2D = 0.35
 
+
 turnP180 = 0.1
 turnI180 = 0.0
 turnD180 = 0.5
@@ -187,128 +73,92 @@ turnPLessThan180 = 0.05
 turnILessThan180 = 0
 turnDLessThan180 = 0.30
 
-/****************************************Respective Autons****************************/
+/*********************************PID Gains and Misc***************************/
 
 
-testAngleGoal = -10
+--------------------------------------------------------------------------------
 
-intakePWM = 1
 
-twoBallTurn1 = 90
+//******************************ONE BALL HOT CONSTANTS************************//
 
-TBDriveForwardDist1 = 20
+OBHotGoalDelay = 0.25
 
-TBDriveAngle1 = 0
+OBWindTimeout = 5
 
-twoBallTurn2 = -90
-
-TBDriveForwardDist2 = 40
-
-TBDriveAngle2 = 0
-
-OBHTurnLeft1 = -20
-
-OBHTurnRight1 = 20
-
-OBV1WaitForHot = 4
-
-//MULTIPLY BY TWO ***************************************************
-OBV1DriveForwardDist = 32.5
-
-OBV1DriveAngle = 0
-
-OBDriveForwardDist = 60
-
+//Multiply Distance in inches by 2 if only one encoder
+OBDriveForwardDist = 32.5
 OBDriveAngle = 0
+OBDriveDistTimeout = 3
 
-//MULTIPLY BY TWO ***************************************************
+OBWaitForHot = 3
+
+//******************************ONE BALL HOT CONSTANTS************************//
+
+
+--------------------------------------------------------------------------------
+
+
+//********************************TWO BALL CONSTANTS**************************//
+
+TBV3FirstShotWindTimeout = 4
+TBV3SmallDelay = 0.1
+
+//Multiply by 2
 TBV3DriveForwardDist1 = 35
-TBV3DriveForwardDist = 7.5
-
-
 TBV3DriveAngle1 = 0
+TBV3DriveDistTimeout1 = 2.75
 
 
-//MULTIPLY BY TWO ***************************************************
+//Multiply by 2
 TBV3DriveForwardDist2 = 15
-
 TBV3DriveAngle2 = 0
+TBV3DriveDistTimeout2 = 2.75
+
 
 TBV3IntakePWM1 = 0.8
+TBV3IntakeTime1 = 0.4
 
 TBV3Outake = -0.25
-
-TBV3IntakePWM2 = 1
+TBV3OutakeTime1 = 0.28
 
 TBV3OutakePWM = -0.5
+TBV3OutakeTime = 0.4
+
+
+TBV3IntakePWM2 = 1
+TBV3IntakeTime2 = 0.4
 
 TBV3IntakePWM3 = 1
+TBV3IntakeTime3 = 0.5
 
+
+InBetweenTime = 2
+
+TBV3WaitBeforeSecondShot = 0.5
+
+//********************************TWO BALL CONSTANTS**************************//
+
+
+--------------------------------------------------------------------------------
+
+
+//******************************TWO BALL HOT CONSTANTS************************//
+
+//******************************TWO BALL HOT CONSTANTS************************//
+
+
+--------------------------------------------------------------------------------
+
+
+//******************************TEST AUTON CONSTANTS**************************//
+
+waitBeforeDrive = 0
 testDriveDist = 30
-
 testDriveAngle = 0
+testDriveDistTimeout = 2
 
-TBHTurnLeft1 = -10
+testAngleGoal = -10
+testAngleTimeout = 0.38
 
-TBHTurnRight1 = 10
-
-TBHLeftTurnLeft2 = -80
-
-TBHRightTurnLeft2 = 100
-
-TBHDriveForwardDist1 = 17
-
-TBHDriveAngle1 = 0
-
-TBHWinchSetpoint = 197
-
-TBHintakePWM = 0.6
-
-TBHTurnToShoot = 90
-
-TBHDriveForwardDist2 = 70
-
-TBHDriveAngle2 = 0
-
-TBAdjustmentDriveForward = 18
-
-TBAdjustmentDriveBackward = -16
-
-
-//**********TWO BALL HOT NEW*********//
-
-
-TBHV2WinchTimeOut = 4
-
-TBHV2DriveForward
-
-TBHV2DriveForwardTimeOut = 4
-
-TBHV2IntakeOneSpeed
-
-TBHV2IntakeOneTimeOut = 4
-
-TBHV2LeftHotTurnOne
-
-TBHV2BallSettlingWait = 0.2
-
-TBHV2PostBallSettlingWait = 2
-
-TBHV2EngageWinchTimeOut = 4
-
-TBHV2SecondLeftTurnTimeOut = 4
-
-TBHV2SecondRightTurnTimeOut = 4
-
-TBHV2IntakeTwoSpeed = 0.7
-
-TBHV2IntakeTwoTimeOut = 4
-
-TBHV2LastWait = 0.5
-
-
-
-TBHV2TurnTimeOut = 4
-
-TBHV2ShootBallTimeOut = 4
+//******************************TEST AUTON CONSTANTS**************************//
 
