@@ -27,8 +27,7 @@ public class SetBallSettlerCommand implements AutonCommand{
 
     public boolean run() {
 
-        catapult.toggleBallSettler(true);
-    
+        catapult.toggleBallSettler(true);  
         return true;
     }
 

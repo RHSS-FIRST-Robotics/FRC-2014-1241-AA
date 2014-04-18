@@ -26,29 +26,22 @@ public class WindBackWinchTimeOutCommand implements AutonCommand {
         catapult = Catapult.getInstance();
         
         this.winchPos = setpoint;
-            
         
         this.timeOutInSecs = timeOut; 
         Constants.getInstance();
     }
-    public void init()
-    {
+    
+    public void init(){
         t.reset();
         t.start();   
     }
+    
     public boolean run(){
-       
-//        if(!(catapult.getWinchPot() == winchPos))
-//            catapult.setWinchPos(winchPos, Constants.getDouble("CatapultPotPosTolerance"));
-//        else
-//            catapult.setWinchPWM(0);
-       //catapult.winchSetpoint = winchPos;
         catapult.setWinchPos(winchPos);
-        return Math.abs(catapult.getWinchPot()-winchPos)<Constants.getDouble("bWinchPosTolerance") || t.get() > timeOutInSecs ;
+        return (Math.abs(catapult.getWinchPot() - winchPos) < Constants.getDouble("bWinchPosTolerance")) || t.get() > timeOutInSecs ;
     }
-    public void done()
-    {
+    
+    public void done(){
         catapult.setWinchPWM(0);
     }       
-
 }

@@ -18,9 +18,11 @@ import theory6.auton.AutonController;
 import theory6.subsystems.Catapult;
 import theory6.subsystems.DriveTrain;
 import theory6.subsystems.Intake;
+import theory6.utilities.CheesyVisionServer;
 import theory6.utilities.Constants;
 import theory6.utilities.SendableChooser;
 import theory6.utilities.ToggleBoolean;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -46,6 +48,9 @@ public class AA1241 extends IterativeRobot {
     
     ToggleBoolean shootDelay = new ToggleBoolean();
     Timer settlerTimer;
+    
+    CheesyVisionServer cvServer = CheesyVisionServer.getInstance();
+    public final int listenPort = 1180;
 
     public void robotInit() 
     {
@@ -62,11 +67,17 @@ public class AA1241 extends IterativeRobot {
         
         settlerTimer = new Timer();
         settlerTimer.stop();
+        
+        cvServer.setPort(listenPort);
+        cvServer.start();
         Constants.getInstance();
     }
 
     public void autonomousInit(){
         compressor.stop();
+        
+        cvServer.reset();
+        cvServer.startSamplingCounts();
 
         ac.clear();
         catapult.firstRun = true;
@@ -112,6 +123,7 @@ public class AA1241 extends IterativeRobot {
         updateSmartDashboard();
     }
     public void disabledInit(){
+        cvServer.stopSamplingCounts();
         log("Entered disabledInit... reloading constants...");
         compressor.stop();
         Constants.load();
@@ -178,8 +190,6 @@ public class AA1241 extends IterativeRobot {
         intake.intakeBall(intakeJoy, 3);
         intake.setIntakePosTeleop(toolPad.getRawButton(GamepadConstants.LEFT_BUMPER));
         
-        
-                    
         //Winch code
         catapult.windWinch(winchJoy, toolPad.getRawButton(GamepadConstants.B_BUTTON), //preset one
                                      toolPad.getRawButton(GamepadConstants.A_BUTTON)); //preset two
@@ -192,10 +202,8 @@ public class AA1241 extends IterativeRobot {
         shootDelay.set(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
                 
         if(shootDelay.get()){
-            
             settlerTimer.start();
-            settlerTimer.reset();
-           
+            settlerTimer.reset();   
         }
         
         if(settlerTimer.get() > Constants.getDouble("ShooterWaitTime")) {
@@ -204,8 +212,8 @@ public class AA1241 extends IterativeRobot {
             settlerTimer.stop();
         }
         
-        catapult.holdBallSettler(toolPad.getRawButton(GamepadConstants.LEFT_TRIGGER), toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
-
+        catapult.holdBallSettler(toolPad.getRawButton(GamepadConstants.LEFT_TRIGGER), 
+                                 toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
         
         //DSLCD and SmartDashboard Output
         updateDSLCD();
@@ -234,6 +242,8 @@ public class AA1241 extends IterativeRobot {
         dsLCD.println(DriverStationLCD.Line.kUser4, 1, "WEngaged?: " + (catapult.isEngaged() ? 1 : 0));
                 
         dsLCD.println(DriverStationLCD.Line.kUser5, 1, "Limit Switch: " + catapult.getLimitSwitch());
+        
+        dsLCD.println(DriverStationLCD.Line.kUser5, 1, "CVL:" + cvServer.getLeftStatus() + " " + "CVR:" + cvServer.getRightStatus());
 
         if ((lcdUpdateCycle % 50) == 0) {
             dsLCD.updateLCD();
@@ -241,12 +251,14 @@ public class AA1241 extends IterativeRobot {
         else {
             lcdUpdateCycle++;
         }
-     
+    }
+    
+    private void updateJavaSystemOut() {
+        log("Current left: " + cvServer.getLeftStatus() + ", current right: " + cvServer.getRightStatus());
+        log("Left count: " + cvServer.getLeftCount() + ", right count: " + cvServer.getRightCount() + ", total: " + cvServer.getTotalCount() + "\n");
     }
     
     private void log(Object aObject){
-        
         System.out.println(String.valueOf(aObject));
-        
     }
 }

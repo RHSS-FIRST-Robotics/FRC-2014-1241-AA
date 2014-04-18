@@ -37,7 +37,8 @@ public class Intake {
         leftSide = new Talon(ElectricalConstants.LEFT_SIDE_INTAKE_PWM);
         rightSide = new Talon(ElectricalConstants.RIGHT_SIDE_INTAKE_PWM);
         
-        intakeAnglePiston = new DoubleSolenoid (ElectricalConstants.INTAKE_DOWN, ElectricalConstants.INTAKE_UP);
+        intakeAnglePiston = new DoubleSolenoid (ElectricalConstants.INTAKE_DOWN, 
+                                                ElectricalConstants.INTAKE_UP);
         intakeAngleToggle = new ToggleBoolean();
     }
     public static Intake getInstance() {

@@ -32,7 +32,7 @@ public class EngageWinchCommand implements AutonCommand{
     }
     public boolean run() {
 
-       catapult.engageWinch(true);
+        catapult.engageWinch(true);
 
         return t.get() > timeOutInSecs;
     }
