@@ -36,7 +36,7 @@ public class DriveToPosTimeOutCommand implements AutonCommand {
     double longD = 0;
     
     double prevTime = 0;
-    double prevAvgDist = 0;
+    double prevDist = 0;
     
     DriveTrain driveTrain;
     
@@ -50,7 +50,6 @@ public class DriveToPosTimeOutCommand implements AutonCommand {
         drivePID = new PIDController(Constants.getDouble("driveLongV2P"), 
                                      Constants.getDouble("driveLongV2I"), 
                                      Constants.getDouble("driveLongV2D"));
-
         
         longP = Constants.getDouble("driveLongV2P");
         longI = Constants.getDouble("driveLongV2I");
@@ -86,14 +85,21 @@ public class DriveToPosTimeOutCommand implements AutonCommand {
         double currLeftDist = driveTrain.getLeftEncoderDist();
         double currRightDist = driveTrain.getRightEncoderDist();
         
-        double currAvgDist = (currLeftDist + currRightDist) / 2;
+        double currDist;
+        
+        //drive until first encoder reaches setpoint
+        if(distGoal >= 0) 
+            currDist = Math.max(currLeftDist, currRightDist);
+        else //(distGoal < 0)
+            currDist = Math.min(currLeftDist, currRightDist);
+                    
         double currTime = driveTimer.get();
-        //double driveVel = currAvgDist/(currTime - prevTime);
+        double driveVel = currDist/(currTime - prevTime);
 
         prevTime = currTime;
-        prevAvgDist = currAvgDist;
+        prevDist = currDist;
 
-        double drivePIDOutput = MathLogic.limitAbs(drivePID.calcPID(distGoal, currAvgDist), 1);
+        double drivePIDOutput = MathLogic.PWMLimit(drivePID.calcPID(distGoal, currDist));
 
         double angleDiff = driveTrain.getGyroAngle() - (angleGoal + initialGyroAngle); 
         double straightGain = angleDiff * gyroGain;
@@ -103,12 +109,11 @@ public class DriveToPosTimeOutCommand implements AutonCommand {
         
         leftPwr -= straightGain;
         rightPwr += straightGain;
-        
-        System.out.println(leftPwr);
+
         driveTrain.setLeftPWM(MathLogic.PWMLimit(leftPwr));
         driveTrain.setRightPWM(-MathLogic.PWMLimit(rightPwr));
 
-        return (Math.abs(currAvgDist - distGoal) < 3) /*&& (Math.abs(driveVel) < 6)*/ || timeOutTimer.get() > timeout;
+        return (Math.abs(currDist - distGoal) < 3) /*&& (Math.abs(driveVel) < 6)*/ || timeOutTimer.get() > timeout;
     }
     
     public void done() {
