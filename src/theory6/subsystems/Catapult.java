@@ -30,14 +30,11 @@ public class Catapult {
     DoubleSolenoid winchReleasePiston;
     
     public DoubleSolenoid ballHolder;
-
-    ToggleBoolean winchStateToggle;
-    ToggleBoolean winchShiftToggle;
-    ToggleBoolean holderStateToggle;
     
     AnalogChannel winchPot;
     
     Timer winchShiftTimer;
+    Timer ballHolderTimer;
     
     boolean holdState = false;
 
@@ -54,9 +51,6 @@ public class Catapult {
     final int FULLY_ENGAGED = 1;  
     int setEngaged = FULLY_ENGAGED;
     
-    //final int WIND_WINCH = 2;
-    //int setWinchPosSeq = WIND_WINCH;
-    
     public boolean firstRun = false; //used in disengageWinch
     
     boolean engageFlag = false;
@@ -68,13 +62,9 @@ public class Catapult {
     
     final boolean RETRACT = false;
     final boolean HOLD	= true;
-
-    ToggleBoolean ballSettlerHold = new ToggleBoolean();
     
     boolean ballSettlerHoldState = RETRACTED;
 
-    Timer ballHolderTimer;
-    
     public Catapult()
     {   
         winchPot= new AnalogChannel(ElectricalConstants.WINCH_POT);
@@ -86,13 +76,8 @@ public class Catapult {
                                                  ElectricalConstants.WINCH_DISENGAGE);
         ballHolder = new DoubleSolenoid(ElectricalConstants.HOLD_ENGAGE, 
                                         ElectricalConstants.HOLD_DISENGAGE);
-
-        winchStateToggle = new ToggleBoolean();
-        winchShiftToggle = new ToggleBoolean();
         
         catapultLimit = new DigitalInput(ElectricalConstants.CATAPULT_LIMIT_SWITCH);
-        
-        holderStateToggle = new ToggleBoolean();
         
         winchShiftTimer = new Timer();
         winchShiftTimer.start();
@@ -189,7 +174,8 @@ public class Catapult {
         return done;
     }
     
-    public void toggleWinchPiston(boolean winchPistonToggleButton) {        
+    public void toggleWinchPiston(boolean winchPistonToggleButton) {      
+        ToggleBoolean winchStateToggle = new ToggleBoolean();
         winchStateToggle.set(winchPistonToggleButton);
         
         if(winchStateToggle.get())
@@ -202,6 +188,9 @@ public class Catapult {
     }
     
     public void engageWinch(boolean winchShiftToggleButton) {
+        
+        ToggleBoolean winchShiftToggle = new ToggleBoolean();
+
         winchShiftToggle.set(winchShiftToggleButton);
         
         if(winchShiftToggleButton){
@@ -243,6 +232,8 @@ public class Catapult {
     
     public void toggleBallSettler(boolean holdToggle) {
                
+        ToggleBoolean holderStateToggle = new ToggleBoolean();
+        
         holderStateToggle.set(holdToggle);
         
         if(holderStateToggle.get())
@@ -256,6 +247,7 @@ public class Catapult {
     
     public void holdBallSettler(boolean holdToggle, boolean shooterButton) {   
        
+        ToggleBoolean ballSettlerHold = new ToggleBoolean();
         
         ballSettlerHold.set(shooterButton);
         

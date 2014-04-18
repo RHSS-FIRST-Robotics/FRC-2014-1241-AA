@@ -50,8 +50,7 @@ public class ElectricalConstants {
     //**************************************************************************
   
     public static final int COMPRESSOR_PRESSURE_SENSOR          = 5;
-    public static final int CATAPULT_LIMIT_SWITCH                        = 6;
-    //public static final int INTAKE_BALL_LIMIT                   = ;
+    public static final int CATAPULT_LIMIT_SWITCH               = 6;
 
     //******************UPDATE THESE CONSTANTS WITH REAL ROBOT******************
     public static final int driveWheelRadius = 2;//wheel radius in inches
