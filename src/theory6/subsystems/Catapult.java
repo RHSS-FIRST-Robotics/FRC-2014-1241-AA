@@ -40,6 +40,8 @@ public class Catapult {
     Timer shooterTimer;
     Timer winchShiftTimer;
     
+    Timer timeInBetween;
+    
     boolean holdState = false;
 
     final boolean ENGAGED = true;
@@ -70,6 +72,8 @@ public class Catapult {
     final boolean RETRACT = false;
     final boolean HOLD	= true;
 
+    ToggleBoolean ballSettlerHold = new ToggleBoolean();
+    
     boolean ballSettlerHoldState = RETRACTED;
 
     Timer ballHolderTimer;
@@ -93,6 +97,9 @@ public class Catapult {
         
         winchShiftTimer = new Timer();
         winchShiftTimer.start();
+        
+        timeInBetween = new Timer();
+        timeInBetween.start();
         
         shooterTimer = new Timer();
         shooterTimer.start();
@@ -127,12 +134,12 @@ public class Catapult {
         
         error = setpoint - getWinchPot();
         
-        if((Math.abs(error) < Constants.getDouble("bWinchPosTolerance")) && catapultLimit.get()){
+        if((Math.abs(error) < Constants.getDouble("bWinchPosTolerance"))){
             setpoint = getWinchPot();
             setWinchPWM(0);
         }
         
-        if (error == 0 && catapultLimit.get()){
+        if (error == 0){
             setWinchPWM(0);
         }
         
@@ -180,8 +187,7 @@ public class Catapult {
         error = winchSetpoint - getWinchPot();
         
         boolean done = (Math.abs(error) < Constants.getDouble("bWinchPosTolerance")) &&
-                       (Math.abs(lastDeltaError) < Constants.getDouble("bWinchDeltaErrorTolerance")) &&
-                        catapultLimit.get();
+                       (Math.abs(lastDeltaError) < Constants.getDouble("bWinchDeltaErrorTolerance"));
         
         deltaError = error - lastError;
         lastError = error;
@@ -254,15 +260,27 @@ public class Catapult {
         else
             ballHolder.set(DoubleSolenoid.Value.kReverse);
     }
+    public void shootBallRetract(boolean shooterButton){
+        
+        if(getBallSettlerState()){
+            timeInBetween.reset();
+            timeInBetween.start();
+            
+        }
+        
+        
+    }
     
     public void holdBallSettler(boolean holdToggle, boolean shooterButton) {   
+       
         
-        LogicalNotToggleBoolean ballSettlerHold = new LogicalNotToggleBoolean();
         ballSettlerHold.set(shooterButton);
         
         if(ballSettlerHold.get())
             ballHolderTimer.reset();
-
+        
+        
+        
         if(holdToggle)
             ballHolder.set(DoubleSolenoid.Value.kReverse);
         else if (!holdToggle && ballHolderTimer.get() > Constants.getDouble("HoldWaitTime"))
@@ -271,7 +289,7 @@ public class Catapult {
             ballHolder.set(DoubleSolenoid.Value.kReverse);
  
     }
-        
+       
     public void autoBallSettler(boolean shootButton, boolean intakeButton, boolean manualButton) {
 
             LogicalNotToggleBoolean ballSettlerHold = new LogicalNotToggleBoolean();

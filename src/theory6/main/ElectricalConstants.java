@@ -21,7 +21,7 @@ public class ElectricalConstants {
     public static final int TOP_LEFT_DRIVE_PWM                  = 2;
     
     public static final int FRONT_AND_BACK_RIGHT_DRIVE_PWM      = 7; 
-    public static final int TOP_RIGHT_DRIVE_PWM                 = 8;
+    public static final int TOP_RIGHT_DRIVE_PWM                 = 10;
     
     public static final int LEFT_SIDE_INTAKE_PWM                = 4;
     public static final int RIGHT_SIDE_INTAKE_PWM               = 5;
@@ -40,8 +40,8 @@ public class ElectricalConstants {
     //*************************** ENCODERS *************************************
     //**************************************************************************
  
-    public static final int LEFT_DRIVE_ENC_A                    = 1; 
-    public static final int LEFT_DRIVE_ENC_B                    = 2; 
+    public static final int LEFT_DRIVE_ENC_A                    = 13; 
+    public static final int LEFT_DRIVE_ENC_B                    = 14; 
     public static final int RIGHT_DRIVE_ENC_A                   = 3; 
     public static final int RIGHT_DRIVE_ENC_B                   = 4;     
 

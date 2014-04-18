@@ -1,28 +1,35 @@
 /****************************************Shooter Presets****************************/
 //B
-bWinchPosOne = 787
+bWinchPosOne = 884
+
 
 //A
-bWinchPosTwo = 853
+bWinchPosTwo = 948
 
 bWinchPosThree = 0
 
 //Auton Shot Presets
 
-//s-7
-TBWinchSetpoint = 846
+//s-1
+TBWinchSetpoint = 947
 
-//S -4
-TBWinchSetpointTwo = 849
+//S +2
+TBWinchSetpointTwo = 949
 
-DOBWinchSetpoint = 849
+//S-4
+DOBWinchSetpoint = 944
 
-OBWinchSetpoint = 849
+OBWinchSetpoint = 944
+//-1
+TBV3WinchSetpoint = 947
+//-2
+TBV3WinchSetpointTwo = 946
 
-TBV3WinchSetpoint = 849
+//TBHWinchSetpoint = 640
 
-TBHWinchSetpoint = 197
+//TBHV2WinchSetpoint = 640
 
+//TBHV2SecondWinchSetpoint = 631
 
 
 
@@ -43,9 +50,9 @@ aDriveToNewZoneTimeOut = 0
 
 TBWinchDisengageTimeout = 0.75
 
-ShooterWaitTime = 0.3
+ShooterWaitTime = 0.25
 
-HoldWaitTime = 1.5
+HoldWaitTime = 1
 
 TBSecondShotWindTimeout = 4
 
@@ -73,11 +80,11 @@ OBDriveDistTimeout = 3
 
 OBWindTimeout = 5
 
-camTrackTime = 1
+camTrackTime = 0.25
 
 winchDisengageTimeout = 0.3
 
-TBV3SmallDelay = 0.25
+TBV3SmallDelay = 0.1
 
 TBV3FirstShotWindTimeout = 4
 
@@ -85,15 +92,15 @@ TBV3DriveDistTimeout1 = 2.75
 
 TBV3DriveDistTimeout2 = 2.75
 
-TBV3IntakeTime1 = 0.5
+TBV3IntakeTime1 = 0.4
 
 TBV3OutakeTime = 0.4
 
-TBV3OutakeTime1 = 0.6
+TBV3OutakeTime1 = 0.28
 
-TBV3IntakeTime2 = 0.75
+TBV3IntakeTime2 = 0.4
 
-TBV3WaitBeforeSecondShot = 0.75
+TBV3WaitBeforeSecondShot = 0.5
 
 TBV3IntakeTime3 = 0.5
 
@@ -203,7 +210,10 @@ OBHTurnLeft1 = -20
 
 OBHTurnRight1 = 20
 
-OBV1DriveForwardDist = 75
+OBV1WaitForHot = 4
+
+//MULTIPLY BY TWO ***************************************************
+OBV1DriveForwardDist = 32.5
 
 OBV1DriveAngle = 0
 
@@ -211,11 +221,16 @@ OBDriveForwardDist = 60
 
 OBDriveAngle = 0
 
-TBV3DriveForwardDist1 = 70
+//MULTIPLY BY TWO ***************************************************
+TBV3DriveForwardDist1 = 35
+TBV3DriveForwardDist = 7.5
+
 
 TBV3DriveAngle1 = 0
 
-TBV3DriveForwardDist2 = 30
+
+//MULTIPLY BY TWO ***************************************************
+TBV3DriveForwardDist2 = 15
 
 TBV3DriveAngle2 = 0
 
@@ -247,7 +262,7 @@ TBHDriveAngle1 = 0
 
 TBHWinchSetpoint = 197
 
-TBHintakePWM = 1
+TBHintakePWM = 0.6
 
 TBHTurnToShoot = 90
 
@@ -259,4 +274,41 @@ TBAdjustmentDriveForward = 18
 
 TBAdjustmentDriveBackward = -16
 
+
+//**********TWO BALL HOT NEW*********//
+
+
+TBHV2WinchTimeOut = 4
+
+TBHV2DriveForward
+
+TBHV2DriveForwardTimeOut = 4
+
+TBHV2IntakeOneSpeed
+
+TBHV2IntakeOneTimeOut = 4
+
+TBHV2LeftHotTurnOne
+
+TBHV2BallSettlingWait = 0.2
+
+TBHV2PostBallSettlingWait = 2
+
+TBHV2EngageWinchTimeOut = 4
+
+TBHV2SecondLeftTurnTimeOut = 4
+
+TBHV2SecondRightTurnTimeOut = 4
+
+TBHV2IntakeTwoSpeed = 0.7
+
+TBHV2IntakeTwoTimeOut = 4
+
+TBHV2LastWait = 0.5
+
+
+
+TBHV2TurnTimeOut = 4
+
+TBHV2ShootBallTimeOut = 4
 

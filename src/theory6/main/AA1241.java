@@ -38,7 +38,6 @@ public class AA1241 extends IterativeRobot {
     
     Joystick drivePad;
     Joystick toolPad;
-    
     double lcdUpdateCycle = 0;
     
     SendableChooser autonSwitcher;
@@ -185,6 +184,7 @@ public class AA1241 extends IterativeRobot {
         catapult.windWinch(winchJoy, toolPad.getRawButton(GamepadConstants.B_BUTTON), //preset one
                                      toolPad.getRawButton(GamepadConstants.A_BUTTON)); //preset two
                
+        
         //catapult.engageWinch(toolPad.getRawButton(GamepadConstants.RIGHT_TRIGGER));
         //catapult.setWinchPWM(winchJoy);
         
@@ -192,8 +192,10 @@ public class AA1241 extends IterativeRobot {
         shootDelay.set(toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
                 
         if(shootDelay.get()){
+            
             settlerTimer.start();
             settlerTimer.reset();
+           
         }
         
         if(settlerTimer.get() > Constants.getDouble("ShooterWaitTime")) {
@@ -203,6 +205,7 @@ public class AA1241 extends IterativeRobot {
         }
         
         catapult.holdBallSettler(toolPad.getRawButton(GamepadConstants.LEFT_TRIGGER), toolPad.getRawButton(GamepadConstants.RIGHT_BUMPER));
+
         
         //DSLCD and SmartDashboard Output
         updateDSLCD();

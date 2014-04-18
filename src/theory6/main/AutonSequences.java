@@ -72,16 +72,17 @@ public class AutonSequences {
             
         ac.addCommand(new WaitCommand(Constants.getDouble("camTrackTime")));
         
-        if((SmartDashboard.getString("Left Target", "No Connection") == "Hot")) {
+        if(("Hot".equals(SmartDashboard.getString("Right Target", "No Connection")))) {
            ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("winchDisengageTimeout")));
         }
-        else if((SmartDashboard.getString("Right Target", "No Connection") == "Hot")) {
+        else{
             ac.addCommand(new WaitCommand(Constants.getDouble("OBV1WaitForHot")));
             ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("winchDisengageTimeout")));
         }
-        else {
-            ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("winchDisengageTimeout")));
-        }
+        
+//        else {
+//            ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("winchDisengageTimeout")));
+//        }
         
         return ac;
     }
@@ -155,6 +156,8 @@ public class AutonSequences {
         ac.clear();
         Constants.getInstance();   
         
+        ac.addCommand(new SetIntakePositionCommand());
+        
         ac.addCommand(new WindBackWinchTimeOutCommand(Constants.getDouble("TBV3WinchSetpoint"),
                                                        Constants.getDouble("TBV3FirstShotWindTimeout")));
         
@@ -162,7 +165,7 @@ public class AutonSequences {
         
         ac.addCommand(new SetBallSettlerCommand());
         
-        ac.addCommand(new SetIntakePositionCommand());
+        
         
         ac.addCommand(new WaitCommand(Constants.getDouble("TBV3SmallDelay")));
         
@@ -198,11 +201,17 @@ public class AutonSequences {
         
         //ac.addCommand(new IntakeOnCommand(Constants.getDouble("TBV3IntakePWM")));
         
+//this        
         ac.addCommand(new TwoParallelMotionsCommand(new IntakeTimeOutCommand(Constants.getDouble("TBV3IntakePWM3"), 
                                                Constants.getDouble("TBV3IntakeTime3")), 0, 
-                new WindBackWinchTimeOutCommand(Constants.getDouble("TBV3WinchSetpoint"), Constants.getDouble("TBV3FirstShotWindTimeout"))));
+                new WindBackWinchTimeOutCommand(Constants.getDouble("TBV3WinchSetpointTwo"), Constants.getDouble("TBV3FirstShotWindTimeout"))));
         
-   
+//        ac.addCommand(new TwoParallelMotionsCommand(new DriveToPosTimeOutCommand(Constants.getDouble("TBV3DriveForwardDist"), 
+//                                                                                 Constants.getDouble("TBV3DriveAngle"), 
+//                                                                                 Constants.getDouble("TBV3DriveDistTimeout")), 0,  
+//                      new TwoParallelMotionsCommand(new IntakeTimeOutCommand(Constants.getDouble("TBV3IntakePWM3"),Constants.getDouble("TBV3IntakeTime3")), 0, 
+//                      new WindBackWinchTimeOutCommand(Constants.getDouble("TBV3WinchSetpointTwo"), Constants.getDouble("TBV3FirstShotWindTimeout")))));
+////        
                 
         ac.addCommand(new TwoParallelMotionsCommand(new WindBackWinchTimeOutCommand(Constants.getDouble("TBV3WinchSetpoint"),
                                                                                     Constants.getDouble("TBV3FirstShotWindTimeout")),
@@ -220,6 +229,8 @@ public class AutonSequences {
         
         ac.addCommand(new WaitCommand(Constants.getDouble("TBV3WaitBeforeSecondShot")));
         
+
+        
         ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("winchDisengageTimeout")));
         
 
@@ -235,11 +246,11 @@ public class AutonSequences {
         
         ac.addCommand(new WaitCommand(Constants.getDouble("camTrackTime")));
             
-        if((SmartDashboard.getString("Left Target", "No Connection") == "Hot")) {
+        if(("Hot".equals(SmartDashboard.getString("Left Target", "No Connection")))) {
            ac.addCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("TBHTurnLeft1"),Constants.getDouble("TBHTurnLeftTimeout1")));
            whichGoal = LEFT_HOT;
         }
-        else if((SmartDashboard.getString("Right Target", "No Connection") == "Hot")) {
+        else if(("Hot".equals(SmartDashboard.getString("Right Target", "No Connection")))) {
            ac.addCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("TBHTurnRight1"),Constants.getDouble("TBHTurnRightTimeout1")));
            whichGoal = RIGHT_HOT;
         }
@@ -323,13 +334,13 @@ public class AutonSequences {
                                                     0,
                                                     new IntakeTimeOutCommand(Constants.getDouble("TBHV2IntakeOneSpeed"), Constants.getDouble("TBHV2IntakeOneTimeOut")))));
         
-        if((SmartDashboard.getString("Left Target", "No Connection") == "Hot")) {
+        if(("Hot".equals(SmartDashboard.getString("Left Target", "No Connection")))) {
           ac.addCommand(new TwoParallelMotionsCommand(new TurnDegreesTimeOutCommand(Constants.getDouble("TBHV2LeftHotTurnOne"), Constants.getDouble("TBHV2TurnTimeOut")), 
                                                       0,
                                                       new WindBackWinchTimeOutCommand(Constants.getDouble("TBHV2WinchSetpoint"), Constants.getDouble("TBHV2WinchTimeOut"))));
            whichGoal = LEFT_HOT;
         }
-        else if((SmartDashboard.getString("Right Target", "No Connection") == "Hot")) {
+        else if(("Hot".equals(SmartDashboard.getString("Right Target", "No Connection")))) {
            ac.addCommand(new WindBackWinchTimeOutCommand(Constants.getDouble("TBHV2WinchSetpoint"), Constants.getDouble("TBHV2WinchTimeOut")));
            whichGoal = RIGHT_HOT;
         }
@@ -417,6 +428,13 @@ public class AutonSequences {
         ac.clear();
         
         Constants.getInstance();   
+        
+        
+        
+        ac.addCommand(new WindBackWinchTimeOutCommand(Constants.getDouble("TBV3WinchSetpoint"),
+                                                       Constants.getDouble("TBV3FirstShotWindTimeout")));
+        
+        ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("winchDisengageTimeout")));
         
         return ac;
     } 
