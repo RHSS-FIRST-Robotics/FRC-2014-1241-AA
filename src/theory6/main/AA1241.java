@@ -87,31 +87,19 @@ public class AA1241 extends IterativeRobot {
         catapult.ballHolder.set(DoubleSolenoid.Value.kReverse);
         
          switch(autonSwitcher.getSelected()){
-             case 0:
-                ac = autonSeq.oneBallDriveForward();
-                break;
-            case 1:
-                ac = autonSeq.driveForwardOneBall();
+            case 0:
+                ac = autonSeq.oneBallHot();
                 break;                
+            case 1:
+                ac = autonSeq.twoBall();
+                break;
             case 2:
-                ac = autonSeq.twoBallDriveForwardV1GTREast();
-                break;
-            case 3:
-                ac = autonSeq.twoBallDriveForwardV2();
-                break;
-            case 4:
-                ac = autonSeq.twoBallHotDriveForwardV1();
-                break;
-            case 5:
-                ac = autonSeq.twoBallHotDriveForwardV2();
-                break;
-            case 6:
                 ac = autonSeq.testDrive();
                 break;
-            case 7:
+            case 3:
                 ac = autonSeq.testTurn();
                 break;
-            case 8:
+            case 4:
                 ac = autonSeq.test();
                 break;
          }
@@ -124,43 +112,43 @@ public class AA1241 extends IterativeRobot {
     }
     public void disabledInit(){
         cvServer.stopSamplingCounts();
-        log("Entered disabledInit... reloading constants...");
+        //log("Entered disabledInit... reloading constants...");
         compressor.stop();
         Constants.load();
     }
             
     public void disabledPeriodic(){
         ac.clear();
-        /*if(toolPad.getRawButton(GamepadConstants.A_BUTTON)){
-            log("About to recalibrate gyro");
-            driveTrain.recalibrateGyro();
-            driveTrain.resetGyro();
-            log("Finished recalibrating Gyro");
-        }*/
+
+        
         if(toolPad.getRawButton(GamepadConstants.B_BUTTON)){
             driveTrain.resetEncoders();
-            log("Reset Encoders");
+            //log("Reset Encoders");
         }
         else if(toolPad.getRawButton(GamepadConstants.Y_BUTTON)){
             driveTrain.resetGyro();
-            log("Reset Gyro");
+            //log("Reset Gyro");
         }
         else if (toolPad.getRawButton(GamepadConstants.START_BUTTON)){
             Constants.load();
-            log("Reloading Constants in disabled periodic");
+            //log("Reloading Constants in disabled periodic");
+        }
+        else if((toolPad.getRawAxis(GamepadConstants.DPAD_Y) == -1)
+                && toolPad.getRawButton(GamepadConstants.A_BUTTON) 
+                && toolPad.getRawButton(GamepadConstants.START_BUTTON)
+                && toolPad.getRawButton(GamepadConstants.BACK_BUTTON)){
+            //log("About to recalibrate gyro");
+            driveTrain.recalibrateGyro();
+            driveTrain.resetGyro();
+            //log("Finished recalibrating Gyro");
         }
 
-        autonSwitcher.addDefault("Drive Forward - One Ball", 1);
-        
-        autonSwitcher.addInteger("One Ball - Drive Forward", 0); 
-        autonSwitcher.addInteger("Drive Forward - One Ball", 1);
-        autonSwitcher.addInteger("Two Ball V1 GTR East", 2);
-        autonSwitcher.addInteger("Two Ball V2", 3);
-        autonSwitcher.addInteger("Two Ball Hot V1", 4);
-        autonSwitcher.addInteger("Two Ball Hot v2", 5);
-        autonSwitcher.addInteger("Drive Up", 6);
-        autonSwitcher.addInteger("Test-Turn", 7);
-        autonSwitcher.addInteger("Test", 8);
+        autonSwitcher.addDefault("One Ball Hot", 0);
+      
+        autonSwitcher.addInteger("Two Ball", 1);
+        autonSwitcher.addInteger("Test-Drive", 2);
+        autonSwitcher.addInteger("Test-Turn", 3);
+        autonSwitcher.addInteger("Test", 4);
         
         SmartDashboard.putData("Autonomous Mode", autonSwitcher);  
         
