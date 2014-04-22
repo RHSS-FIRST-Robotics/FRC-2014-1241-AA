@@ -38,7 +38,7 @@ public class WindBackWinchTimeOutCommand implements AutonCommand {
     
     public boolean run(){
         catapult.setWinchPos(winchPos);
-        return (Math.abs(catapult.getWinchPot() - winchPos) < Constants.getDouble("bWinchPosTolerance")) || t.get() > timeOutInSecs ;
+        return (Math.abs(catapult.getWinchPot() - winchPos) < Constants.getDouble("bWinchPosTolerance")) || catapult.getLS() == false || t.get() > timeOutInSecs ;
     }
     
     public void done(){

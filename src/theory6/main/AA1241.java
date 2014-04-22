@@ -49,9 +49,22 @@ public class AA1241 extends IterativeRobot {
     ToggleBoolean shootDelay = new ToggleBoolean();
     Timer settlerTimer;
     
+    Timer hotDetectTimer;
+        
     CheesyVisionServer cvServer = CheesyVisionServer.getInstance();
     public final int listenPort = 1180;
+    
+    final int LEFT_HOT = 0;
+    final int RIGHT_HOT = 1;
+    final int DID_NOT_DETECT = 2;
+    
+    int hotGoal = -1;
+    
+    boolean RIGHT = false;
+    boolean LEFT = true;
 
+    boolean autoSide = RIGHT;
+    
     public void robotInit() 
     {
         compressor = new Compressor(ElectricalConstants.COMPRESSOR_PRESSURE_SENSOR,
@@ -68,9 +81,18 @@ public class AA1241 extends IterativeRobot {
         settlerTimer = new Timer();
         settlerTimer.stop();
         
+        hotDetectTimer = new Timer();
+        //hotDetectTimer.reset();
+        hotDetectTimer.stop();
+        
         cvServer.setPort(listenPort);
         cvServer.start();
         Constants.getInstance();
+        
+        SmartDashboard.putBoolean("Left Hot", cvServer.getLeftStatus());
+        SmartDashboard.putBoolean("Right Hot", cvServer.getRightStatus());
+        SmartDashboard.putString("Registered", "None");
+        SmartDashboard.putString("Hands", "Down");
     }
 
     public void autonomousInit(){
@@ -86,9 +108,42 @@ public class AA1241 extends IterativeRobot {
         driveTrain.resetEncoders();
         catapult.ballHolder.set(DoubleSolenoid.Value.kReverse);
         
-         switch(autonSwitcher.getSelected()){
+        SmartDashboard.putBoolean("Left Hot", cvServer.getLeftStatus());
+        SmartDashboard.putBoolean("Right Hot", cvServer.getRightStatus());
+        SmartDashboard.putString("Registered", "None");
+        SmartDashboard.putString("Hands", "Up");
+         
+        switch(autonSwitcher.getSelected()){
             case 0:
-                ac = autonSeq.oneBallHot();
+               
+                hotDetectTimer.start();
+                while (!cvServer.getLeftStatus() && !cvServer.getRightStatus()) {
+                    if(hotDetectTimer.get() > Constants.getDouble("hotDetectTimeout"))
+                        break;
+                }
+                
+                if(cvServer.getLeftStatus() && !cvServer.getRightStatus()) {
+                     hotGoal = LEFT_HOT;
+                     SmartDashboard.putBoolean("Left Hot", true);
+                     SmartDashboard.putBoolean("Right Hot", false);
+                     SmartDashboard.putString("Registered", "Left");
+                 }
+                 else if(!cvServer.getLeftStatus() && cvServer.getRightStatus()){
+                     hotGoal = RIGHT_HOT;
+                     SmartDashboard.putBoolean("Left Hot", false);
+                     SmartDashboard.putBoolean("Right Hot", true);
+                     SmartDashboard.putString("Registered", "Right");
+                 }
+                 else {
+                     hotGoal = DID_NOT_DETECT;
+                     SmartDashboard.putBoolean("Left Hot", false);
+                     SmartDashboard.putBoolean("Right Hot", false);
+                     SmartDashboard.putString("Registered", "DNR");
+                 }
+                
+                SmartDashboard.putString("Hands", "Down");
+                
+                ac = autonSeq.oneBallHot(autoSide, hotGoal);
                 break;                
             case 1:
                 ac = autonSeq.twoBall();
@@ -102,7 +157,7 @@ public class AA1241 extends IterativeRobot {
             case 4:
                 ac = autonSeq.test();
                 break;
-         }
+        }
     }
     
     public void autonomousPeriodic() {
@@ -142,6 +197,11 @@ public class AA1241 extends IterativeRobot {
             driveTrain.resetGyro();
             //log("Finished recalibrating Gyro");
         }
+        
+        if (toolPad.getRawAxis(GamepadConstants.DPAD_X) == -1)
+            autoSide = RIGHT;
+        else if (toolPad.getRawAxis(GamepadConstants.DPAD_X) == 1)
+            autoSide = LEFT;
 
         autonSwitcher.addDefault("One Ball Hot", 0);
       
@@ -211,8 +271,13 @@ public class AA1241 extends IterativeRobot {
     
     private void updateSmartDashboard() {
         
-        SmartDashboard.putString("Left Target", SmartDashboard.getString("Left Target", "No Connection"));
-        SmartDashboard.putString("Right Target", SmartDashboard.getString("Right Target", "No Connection"));
+        //SmartDashboard.putString("Left Target", SmartDashboard.getString("Left Target", "No Connection"));
+        //SmartDashboard.putString("Right Target", SmartDashboard.getString("Right Target", "No Connection"));
+        SmartDashboard.putString("Registered", "None");
+        SmartDashboard.putString("Hands", "Down");
+        SmartDashboard.putString("Auto-Side", autoSide ? "Left" : "Right");
+        SmartDashboard.putBoolean("CV Left", cvServer.getLeftStatus());
+        SmartDashboard.putBoolean("CV Right", cvServer.getRightStatus());
     }
     
     private void updateDSLCD() {
@@ -229,9 +294,9 @@ public class AA1241 extends IterativeRobot {
 
         dsLCD.println(DriverStationLCD.Line.kUser4, 1, "WEngaged?: " + (catapult.isEngaged() ? 1 : 0));
                 
-        dsLCD.println(DriverStationLCD.Line.kUser5, 1, "Limit Switch: " + catapult.getLimitSwitch());
+        dsLCD.println(DriverStationLCD.Line.kUser5, 1, "CLimit: " + catapult.getLS());
         
-        dsLCD.println(DriverStationLCD.Line.kUser5, 1, "CVL:" + cvServer.getLeftStatus() + " " + "CVR:" + cvServer.getRightStatus());
+        dsLCD.println(DriverStationLCD.Line.kUser6, 1, "CVL:" + (cvServer.getLeftStatus() ? 1 : 0) + " " + "CVR:" + (cvServer.getRightStatus() ? 1 : 0));
 
         if ((lcdUpdateCycle % 50) == 0) {
             dsLCD.updateLCD();

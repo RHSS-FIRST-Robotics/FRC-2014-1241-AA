@@ -18,54 +18,54 @@ import theory6.utilities.Constants;
  * @author Sagar
  */
 public class AutonSequences {
-        
-    DriveTrain driveTrain = DriveTrain.getInstance();
-    CheesyVisionServer cvServer = CheesyVisionServer.getInstance();
     
     final int LEFT_HOT = 0;
     final int RIGHT_HOT = 1;
     final int DID_NOT_DETECT = 2;
     
-    public AutonController oneBallHot() { //Starts right side
+    public AutonController oneBallHot(boolean isLeftSideAuto, int hotGoal) { //Starts right side
         AutonController ac = new AutonController();
         ac.clear();
         Constants.getInstance();
         
-        //OBWinchSetpoint
-        //OBDriveForwardDist
-        //OBDriveAngle
-        //OBDriveDistTimeout
-        //OBWaitForHot
-        int hotGoal = -1;
         ac.addCommand(new WindBackWinchTimeOutCommand(Constants.getDouble("OBWinchSetpoint"), 
                                                       Constants.getDouble("OBWindTimeout")));
         
         ac.addCommand(new SetBallSettlerCommand());
         
-        ac.addCommand(new WaitCommand(Constants.getDouble("OBHotGoalDelay")));
-        
-        if(cvServer.getLeftStatus() && !cvServer.getRightStatus()) 
-            hotGoal = LEFT_HOT;
-        else if(!cvServer.getLeftStatus() && cvServer.getRightStatus())
-            hotGoal = RIGHT_HOT;
-        else 
-            hotGoal = DID_NOT_DETECT;
-        
         switch(hotGoal) {
             case RIGHT_HOT:
-            case DID_NOT_DETECT:
-                ac.addCommand(new DriveToPosTimeOutCommand(Constants.getDouble("OBDriveForwardDist"), Constants.getDouble("OBDriveAngle"), 
-                                                   Constants.getDouble("OBDriveDistTimeout"))); 
+                ac.addCommand(new DriveToPosTimeOutCommand(Constants.getDouble("OBDriveForwardDist"), 
+                                                           Constants.getDouble("OBDriveAngle"), 
+                                                           Constants.getDouble("OBDriveDistTimeout"))); 
+                
+                if (isLeftSideAuto) //if we're on the left side make sure we wait for hot goal!
+                    ac.addCommand(new WaitCommand(Constants.getDouble("OBWaitForHot")));
+                                
                 ac.addCommand(new SetBallSettlerCommand());
                 ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("winchDisengageTimeout")));
                 break;
             
             case LEFT_HOT:
-                ac.addCommand(new DriveToPosTimeOutCommand(Constants.getDouble("OBDriveForwardDist"), Constants.getDouble("OBDriveAngle"), 
-                                                   Constants.getDouble("OBDriveDistTimeout"))); 
-                ac.addCommand(new WaitCommand(Constants.getDouble("OBWaitForHot")));
+                ac.addCommand(new DriveToPosTimeOutCommand(Constants.getDouble("OBDriveForwardDist"), 
+                                                           Constants.getDouble("OBDriveAngle"), 
+                                                           Constants.getDouble("OBDriveDistTimeout"))); 
+                
+                if (!isLeftSideAuto) //if we're on the right side make sure we wait for hot goal!
+                    ac.addCommand(new WaitCommand(Constants.getDouble("OBWaitForHot")));
+                
                 ac.addCommand(new SetBallSettlerCommand());
                 ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("winchDisengageTimeout")));
+                break;
+                
+            case DID_NOT_DETECT:
+            default:
+                ac.addCommand(new DriveToPosTimeOutCommand(Constants.getDouble("OBDriveForwardDist"), 
+                                                           Constants.getDouble("OBDriveAngle"), 
+                                                           Constants.getDouble("OBDriveDistTimeout"))); 
+                ac.addCommand(new SetBallSettlerCommand());
+                ac.addCommand(new ShootBallTimeOutCommand(Constants.getDouble("winchDisengageTimeout")));
+                break;
         }
 
         return ac;

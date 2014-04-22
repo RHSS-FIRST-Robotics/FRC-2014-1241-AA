@@ -64,6 +64,9 @@ public class Catapult {
     final boolean HOLD	= true;
     
     boolean ballSettlerHoldState = RETRACTED;
+    
+    final boolean PRESSED = false;
+    final boolean NOT_PRESSED = true;
 
     public Catapult()
     {   
@@ -104,31 +107,29 @@ public class Catapult {
         return winchPot.getAverageValue();
     }
     
-    public boolean getLimitSwitch(){
+    public boolean getLS(){
         return catapultLimit.get();
     }
     
     public void setWinchPos(double setpoint) {
         
         error = setpoint - getWinchPot();
-        
-        if((Math.abs(error) < Constants.getDouble("bWinchPosTolerance"))){
+                
+        if(getLS() == PRESSED){
             setpoint = getWinchPot();
+            winchSetpoint = getWinchPot();
             setWinchPWM(0);
-        }
-        
-        if (error == 0){
-            setWinchPWM(0);
-        }
-        
-        else if (Math.abs(error) > Constants.getDouble("bWinchPosTolerance")) {
+        }      
+        else if (Math.abs(error) > Constants.getDouble("bWinchPosTolerance") && getLS() == NOT_PRESSED) {
             if(error > 0) {
                 setWinchPWM(Constants.getDouble("bWinchWindBackSpeed"));
             }
             else if(error < 0) {
                 setWinchPWM(-Constants.getDouble("bWinchWindBackSpeed"));
             }
-        }        
+        }    
+        else
+            setWinchPWM(0);
     }
     
     public void windWinch(double manualAdjustment, 
@@ -149,7 +150,7 @@ public class Catapult {
             winchSetpoint = Constants.getDouble("bWinchPosTwo");
                 
         else if(winchPistonState == ENGAGED) {           
-            if(Math.abs(manualAdjustment) > 0.1) {
+            if(Math.abs(manualAdjustment) > 0.1 && getLS() == PRESSED) {
                setWinchPWM(manualAdjustment); 
                winchSetpoint = getWinchPot();
             }

@@ -81,7 +81,7 @@ turnDLessThan180 = 0.30
 
 //******************************ONE BALL HOT CONSTANTS************************//
 
-OBHotGoalDelay = 0.25
+hotDetectTimeout = 3
 
 OBWindTimeout = 5
 
