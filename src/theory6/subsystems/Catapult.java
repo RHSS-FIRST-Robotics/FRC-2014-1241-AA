@@ -112,28 +112,31 @@ public class Catapult {
     }
     
     public void setWinchPos(double setpoint) {
-        
         error = setpoint - getWinchPot();
-                
-        if(getLS() == PRESSED){
-            setpoint = getWinchPot();
-            winchSetpoint = getWinchPot();
+        
+        if(!catapultLimit.get()){
             setWinchPWM(0);
-        }      
-        else if (Math.abs(error) > Constants.getDouble("bWinchPosTolerance") && getLS() == NOT_PRESSED) {
+            winchSetpoint = getWinchPot();
+            log("in setpoint == winchPot");
+        }
+
+        else if (Math.abs(error) > Constants.getDouble("bWinchPosTolerance") && catapultLimit.get()) {
             if(error > 0) {
                 setWinchPWM(Constants.getDouble("bWinchWindBackSpeed"));
+                log("in first");
             }
             else if(error < 0) {
                 setWinchPWM(-Constants.getDouble("bWinchWindBackSpeed"));
+                log("in second");
             }
-        }    
-        else
-            setWinchPWM(0);
+        }
+        
+        else 
+            setWinchPWM(0);     
     }
     
     public void windWinch(double manualAdjustment, 
-                          boolean presetOne, boolean presetTwo){
+            boolean presetOne, boolean presetTwo){
         
         ToggleBoolean engageFirst = new ToggleBoolean();
         engageFirst.set(Math.abs(manualAdjustment) > 0.1 || presetOne || presetTwo);
@@ -148,16 +151,26 @@ public class Catapult {
             winchSetpoint = Constants.getDouble("bWinchPosOne");
         else if (presetTwo) 
             winchSetpoint = Constants.getDouble("bWinchPosTwo");
+        
                 
-        else if(winchPistonState == ENGAGED) {           
-            if(Math.abs(manualAdjustment) > 0.1 && getLS() == PRESSED) {
-               setWinchPWM(manualAdjustment); 
-               winchSetpoint = getWinchPot();
-            }
-            else {
-                setWinchPos(winchSetpoint);
-
-            }
+        else if(winchPistonState == ENGAGED) {
+                
+                if(Math.abs(manualAdjustment) > 0.1) {
+                   
+                    if(manualAdjustment > -0.1 && !catapultLimit.get())
+                        setWinchPWM(0); 
+                    else
+                        setWinchPWM(manualAdjustment); 
+                           
+                   winchSetpoint = getWinchPot();
+                }
+                else 
+                    setWinchPos(winchSetpoint);
+                //else {
+                    //winchSetpoint = getWinchPot();
+                //}
+                log("in preset" + winchSetpoint);
+           // }  
         }
         
     }
